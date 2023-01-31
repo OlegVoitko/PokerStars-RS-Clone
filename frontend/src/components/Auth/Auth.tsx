@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import './Auth.scss';
 
 interface IFormInput {
@@ -22,11 +23,15 @@ const Auth: FC = () => {
     console.log(errors);
   };
 
+  const { t } = useTranslation();
+
   return (
     <form onSubmit={handleSubmit(onSubmit)} className='auth-form'>
+      <p>{t('password')}</p>
       <input
         className='auth-form__input'
-        placeholder='nickName'
+        // placeholder='nickName'
+        placeholder={t('nickName')}
         {...register('nick', { required: true, maxLength: 10 })}
       />
       {errors.nick && errors.nick.type === 'required' && (
@@ -36,7 +41,8 @@ const Auth: FC = () => {
         <span className='form__error-msg'>Max length 10 symbols</span>
       )}
       <input
-        placeholder='password'
+        placeholder={t('password')}
+        // placeholder='password'
         type='password'
         className='auth-form__input'
         {...register('password', { required: true, minLength: 6 })}
