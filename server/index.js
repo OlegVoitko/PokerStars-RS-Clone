@@ -19,7 +19,6 @@ const run = async () => {
     await mongoose.connect(db);
     console.log('db connct');
     const users = await User.find();
-    console.log(users);
   } catch (e) {
     console.log(e);
   }
@@ -44,12 +43,22 @@ const run = async () => {
     res.status(200).send(newUser);
   });
 
+  app.post('/signin', async (req, res) => {
+    const { nickname, password } = req.body;
+    const [user] = await User.find({ nickname });
+    if (user && user.password === password) {
+      res.status(200).send({ id: user.id });
+      return;
+    }
+    res.status(400).send({ error: 'Invalid login or password' });
+  })
+
   io.on('connection', () => {
     console.log('a user connected');
   });
 
   server.listen(port, () => {
-    console.log(`listening on ${port}`);
+    console.log(`listening on port: ${port}`);
   });
 };
 

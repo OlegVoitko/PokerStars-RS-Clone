@@ -3,11 +3,10 @@
 //TEST EXAMPLE
 
 let user = {
-  name: 'Johd',
-  surname: 'Smith',
+  nickname: 'Jod',
   password: '123456',
 };
-const url = 'http://localhost:8000/users';
+const url = 'http://localhost:8000/signup';
 const test = async () => {
 	let response = await fetch(url, {
   method: 'POST',
@@ -20,4 +19,16 @@ const test = async () => {
 	console.log(body);
 }
 
-test();
+const auth = async () => {
+	let response = await fetch('http://localhost:8000/signin', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json;charset=utf-8'
+  },
+  body: JSON.stringify(user)
+	});
+	const body = await response.json();
+	console.log(body);
+}
+
+auth();
