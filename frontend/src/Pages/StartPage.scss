@@ -1,0 +1,77 @@
+@import '../index';
+
+.start-page-container {
+  background: no-repeat url('../assets/images/background_start-page.jpg') ;
+  background-size: cover;
+  height: 1148px;
+  width: 100%;
+}
+
+.app-title span {
+  font-size: 15rem;
+  text-shadow: 3px 2px 2px $color-text;
+  color: $color-title;
+  height: 846px;
+  position: absolute;
+  width: 214px;
+  left: 600px;
+  top: 0;
+  transform-origin: bottom center;
+  text-transform: capitalize;
+}
+
+.char1 {
+  transform: rotate(-50deg);
+}
+
+.char2 {
+  transform: rotate(-40deg);
+}
+
+.char3 {
+  transform: rotate(-30deg);
+}
+
+.char4 {
+  transform: rotate(-20deg);
+}
+
+.char5 {
+  transform: rotate(-10deg);
+}
+
+.char6 {
+  transform: rotate(0deg);
+}
+
+.char7 {
+  transform: rotate(10deg);
+}
+
+.char8 {
+  transform: rotate(20deg);
+}
+
+.char9 {
+  transform: rotate(30deg);
+}
+
+.char10 {
+  transform: rotate(40deg);
+}
+
+.char11 {
+  transform: rotate(50deg);
+}
+
+.language {
+  position: fixed;
+  right: 2%;
+  top: 2%;
+  height: 3rem;
+  //background-image: url('../assets/icons/united-kingdom-flag-icon.svg');
+}
+
+//.language-option {
+//  background-image: url('../assets/icons/russia-flag-icon.svg');
+//}
