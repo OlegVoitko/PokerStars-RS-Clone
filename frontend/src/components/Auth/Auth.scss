@@ -5,6 +5,9 @@
   flex-direction: column;
   gap: 10px;
   width: 20%;
+  position: fixed;
+  right: 20%;
+  bottom: 50%;
 }
 
 .auth-form__input {

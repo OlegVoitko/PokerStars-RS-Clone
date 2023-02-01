@@ -7,10 +7,8 @@ interface IFormInput {
   nick: string;
   password: string;
 }
-// interface AuthProps {}
-//
-// const Auth: FC<AuthProps> = () => (
-const Auth: FC = () => {
+
+const Auth: FC = (): JSX.Element => {
   const {
     register,
     handleSubmit,
@@ -27,11 +25,9 @@ const Auth: FC = () => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className='auth-form'>
-      <p>{t('password')}</p>
       <input
         className='auth-form__input'
-        // placeholder='nickName'
-        placeholder={t('nickName')}
+        placeholder={t('nick')}
         {...register('nick', { required: true, maxLength: 10 })}
       />
       {errors.nick && errors.nick.type === 'required' && (
@@ -42,7 +38,6 @@ const Auth: FC = () => {
       )}
       <input
         placeholder={t('password')}
-        // placeholder='password'
         type='password'
         className='auth-form__input'
         {...register('password', { required: true, minLength: 6 })}
