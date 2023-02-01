@@ -1,10 +1,15 @@
 import React, { FC, useState } from 'react';
+import { useSelector } from 'react-redux';
 import Auth from '../components/Auth/Auth';
 import { useTranslation } from 'react-i18next';
-import { Languages, Language } from '../helper';
+import { Languages } from '../helper';
 import './StartPage.scss';
+// import {PlayerState} from "../store/playerSlice";
+import { RootState } from '../store/store';
 
 const StartPage: FC = () => {
+  const isUserAuth = useSelector((state: RootState) => state.player.isAuth);
+  console.log('check slice', isUserAuth);
   const { i18n } = useTranslation();
   const [language, setLanguage] = useState('en');
 
