@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useRef, useEffect } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { useAppSelector } from '../../hooks/hook';
 import { socket } from '../../socket';
@@ -23,6 +23,8 @@ const Chat: FC = (): JSX.Element => {
     mode: 'onBlur',
   });
 
+  const bottomList = useRef<HTMLDivElement>(null);
+
   const renderMessages = (data: IMessage[]) => {
     return data.map(({ text, nickname, date }, i) => (
       <li key={i}>{`${date.toString().slice(0, -8)} ${nickname}: ${text}`}</li>
@@ -38,10 +40,21 @@ const Chat: FC = (): JSX.Element => {
     socket.emit('send', messageData);
     setValue('text', '');
   };
-  console.log(errors);
+
+  const scrollToBottom = () => {
+    bottomList.current?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
+
   return (
     <section className='chat'>
-      <ul className='chat__messages-list'>{renderMessages(messages)}</ul>
+      <ul className='chat__messages-list'>
+        {renderMessages(messages)}
+        <div ref={bottomList}></div>
+      </ul>
       <form className='chat__form' onSubmit={handleSubmit(onSubmit)}>
         <input className='chat__input' type='text' {...register('text', { required: true })} />
         <button className='chat__btn' type='submit' disabled={!!errors.text}>
