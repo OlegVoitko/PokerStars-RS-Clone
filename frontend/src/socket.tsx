@@ -1,13 +1,14 @@
 import { io, Socket } from 'socket.io-client';
 import store from './store/store';
 import { addMessage } from './store/chatSlice';
+import { IMessage } from './store/chatSlice';
 
 interface ServerToClientEvents {
   ['new message']: (data: string) => void;
 }
 
 interface ClientToServerEvents {
-  send: (text: string) => void;
+  send: (data: IMessage) => void;
 }
 
 export const socket: Socket<ServerToClientEvents, ClientToServerEvents> =

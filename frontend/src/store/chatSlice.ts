@@ -1,7 +1,14 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+export interface IMessage {
+  text: string;
+  id?: number;
+  nickname: string;
+  date: Date;
+}
+
 export type ChatState = {
-  messages: string[];
+  messages: IMessage[];
 };
 
 const initialState: ChatState = {
@@ -12,7 +19,7 @@ const chatSlice = createSlice({
   name: 'players',
   initialState,
   reducers: {
-    addMessage: (state, { payload }: { payload: string }) => {
+    addMessage: (state, { payload }: { payload: IMessage }) => {
       state.messages.push(payload);
     },
   },
