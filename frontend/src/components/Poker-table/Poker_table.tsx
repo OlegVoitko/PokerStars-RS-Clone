@@ -1,13 +1,16 @@
 import React from 'react';
 import './Poker_table.scss';
 import CustomizedSlider from './Slider_table';
+import Sound from './SoundOnOff';
 
 const Poker_table = (): JSX.Element => {
   return (
     <div className='poker-table__wrapper'>
       <div className='poker__background'>
         <div className='poker-table__container'>
-          <div className='additional-features'>11</div>
+          <div className='additional-features'>
+            <Sound />
+          </div>
           <img
             className='poker-table__table-image'
             src={require('../../assets/poker_table.jpg')}
