@@ -10,6 +10,10 @@ const User = mongoose.model('User', userSchema);
 
 const port = process.env.PORT || 8000;
 
+const state = {
+  messages: [],
+};
+
 const run = async () => {
   const app = express();
   const server = http.createServer(app);
@@ -23,7 +27,11 @@ const run = async () => {
     console.log(e);
   }
 
-  const io = new Server(server);
+  const io = new Server(server, {
+    cors: {
+      origin: '*',
+    },
+  });
 
   app.get('/', (req, res) => {
     res.send('hello!');
@@ -51,10 +59,15 @@ const run = async () => {
       return;
     }
     res.status(400).send({ error: 'Invalid login or password' });
-  })
+  });
 
-  io.on('connection', () => {
+  io.on('connection', (socket) => {
     console.log('a user connected');
+    socket.on('send', (data) => {
+      console.log(data);
+      state.messages.push(data.text);
+      io.emit('new message', data);
+    });
   });
 
   server.listen(port, () => {
