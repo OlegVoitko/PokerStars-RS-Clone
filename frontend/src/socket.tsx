@@ -1,23 +1,18 @@
 import { io, Socket } from 'socket.io-client';
+import store from './store/store';
+import { addMessage } from './store/chatSlice';
 
 interface ServerToClientEvents {
-  noArg: () => void;
-  basicEmit: (a: number, b: string, c: Buffer) => void;
-  withAck: (d: string, callback: (e: number) => void) => void;
+  ['new message']: (data: string) => void;
 }
 
 interface ClientToServerEvents {
-  send: (data: { text: string }) => void;
-}
-
-interface InterServerEvents {
-  ping: () => void;
-}
-
-interface SocketData {
-  name: string;
-  age: number;
+  send: (text: string) => void;
 }
 
 export const socket: Socket<ServerToClientEvents, ClientToServerEvents> =
   io('http://localhost:8000/');
+
+socket.on('new message', (data) => {
+  store.dispatch(addMessage(data));
+});

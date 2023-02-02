@@ -1,5 +1,7 @@
 import React, { FC } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
+import { useAppSelector } from '../../hooks/hook';
+
 import { socket } from '../../socket';
 
 import './style.scss';
@@ -9,6 +11,8 @@ interface IChatForm {
 }
 
 const Chat: FC = (): JSX.Element => {
+  const { messages } = useAppSelector((state) => state.chat);
+  console.log(messages);
   const {
     register,
     handleSubmit,
@@ -18,7 +22,7 @@ const Chat: FC = (): JSX.Element => {
   });
 
   const onSubmit: SubmitHandler<IChatForm> = (data) => {
-    socket.emit('send', data);
+    socket.emit('send', data.text);
     console.log(data);
   };
   console.log(errors);
