@@ -64,8 +64,7 @@ const run = async () => {
   io.on('connection', (socket) => {
     console.log('a user connected');
     socket.on('send', (data) => {
-      console.log(data);
-      state.messages.push(data.text);
+      state.messages.push(data);
       io.emit('new message', data);
     });
   });
