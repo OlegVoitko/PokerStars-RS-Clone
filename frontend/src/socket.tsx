@@ -4,7 +4,7 @@ import { addMessage } from './store/chatSlice';
 import { IMessage } from './store/chatSlice';
 
 interface ServerToClientEvents {
-  ['new message']: (data: string) => void;
+  ['new message']: (data: IMessage) => void;
 }
 
 interface ClientToServerEvents {

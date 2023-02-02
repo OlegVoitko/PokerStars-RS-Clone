@@ -4,7 +4,6 @@ import Auth from '../components/Auth/Auth';
 import './StartPage.scss';
 import { RootState } from '../store/store';
 import { Link } from 'react-router-dom';
-import Chat from '../components/Chat/Chat';
 
 const StartPage: FC = () => {
   const isUserAuth = useSelector((state: RootState) => state.player.isAuth);
@@ -31,7 +30,6 @@ const StartPage: FC = () => {
           <span className='logo__rsSchool'></span>
         </Link>
       </div>
-      <Chat />
     </>
   );
 };
