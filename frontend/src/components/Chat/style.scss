@@ -8,7 +8,7 @@
   background-color: #ffffff;
   border: 2px solid #d5e3c3;
   &__messages-list {
-    height: 100px;
+    max-height: 120px;
     overflow-y: scroll;
   }
   &__form {
