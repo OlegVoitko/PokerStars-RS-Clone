@@ -1,4 +1,5 @@
 {
   "nick": "Nickname",
-  "password": "Password"
+  "password": "Password",
+  "submit": "Submit"
 }

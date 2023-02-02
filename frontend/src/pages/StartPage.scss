@@ -3,13 +3,13 @@
 .start-page-container {
   background: no-repeat url('../assets/images/background_start-page.jpg') ;
   background-size: cover;
-  height: 1148px;
+  height: 100vh;
   width: 100%;
 }
 
 .app-title span {
   font-size: 15rem;
-  text-shadow: 3px 2px 2px $color-text;
+  text-shadow: 4px 3px 2px $color-text, 3px 3px 2px $color-text;
   color: $color-title;
   height: 846px;
   position: absolute;
@@ -64,14 +64,14 @@
   transform: rotate(50deg);
 }
 
-.language {
-  position: fixed;
+.logo__rsSchool {
+  background-image: url(../assets/icons/rs_school_js.svg);
+  background-repeat: no-repeat;
+  width: 110px;
+  height: 50px;
+  display: block;
+  position: absolute;
   right: 2%;
-  top: 2%;
-  height: 3rem;
-  //background-image: url('../assets/icons/united-kingdom-flag-icon.svg');
+  bottom: 2%;
+  cursor: pointer;
 }
-
-//.language-option {
-//  background-image: url('../assets/icons/russia-flag-icon.svg');
-//}
