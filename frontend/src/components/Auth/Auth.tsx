@@ -48,7 +48,7 @@ const Auth: FC = (): JSX.Element => {
       {errors.password && errors.password.type === 'minLength' && (
         <span className='form__error-msg'>Min length 6 symbols</span>
       )}
-      <input type='submit' className='auth-form__input' />
+      <input type='submit' value={t('submit')} className='auth-form__input' />
     </form>
   );
 };
