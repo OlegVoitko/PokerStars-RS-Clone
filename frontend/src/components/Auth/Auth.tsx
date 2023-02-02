@@ -2,13 +2,16 @@ import React, { FC } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import './Auth.scss';
+import { useCreatePlayerMutation } from '../../services/playerAPI';
 
 interface IFormInput {
-  nick: string;
+  nickname: string;
   password: string;
 }
 
 const Auth: FC = (): JSX.Element => {
+  const [createPlayer, { isLoading }] = useCreatePlayerMutation();
+
   const {
     register,
     handleSubmit,
@@ -16,9 +19,13 @@ const Auth: FC = (): JSX.Element => {
   } = useForm<IFormInput>({
     mode: 'onBlur',
   });
+
   const onSubmit: SubmitHandler<IFormInput> = (data) => {
-    console.log(data);
-    console.log(errors);
+    const res = createPlayer(data);
+
+    console.log('data', data);
+    console.log('errors', errors);
+    console.log('res', res);
   };
 
   const { t } = useTranslation();
@@ -28,12 +35,12 @@ const Auth: FC = (): JSX.Element => {
       <input
         className='auth-form__input'
         placeholder={t('nick')}
-        {...register('nick', { required: true, maxLength: 10 })}
+        {...register('nickname', { required: true, maxLength: 10 })}
       />
-      {errors.nick && errors.nick.type === 'required' && (
+      {errors.nickname && errors.nickname.type === 'required' && (
         <span className='form__error-msg'>Nick is required</span>
       )}
-      {errors.nick && errors.nick.type === 'maxLength' && (
+      {errors.nickname && errors.nickname.type === 'maxLength' && (
         <span className='form__error-msg'>Max length 10 symbols</span>
       )}
       <input

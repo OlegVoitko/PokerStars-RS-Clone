@@ -3,6 +3,7 @@ import { Server } from 'socket.io';
 import http from 'http';
 import mongoose from 'mongoose';
 import { userSchema } from './model/model.js';
+import cors from 'cors';
 
 const db = 'mongodb+srv://admin:zzzzzzzz@cluster0.dpzge.mongodb.net/?retryWrites=true&w=majority';
 
@@ -15,6 +16,9 @@ const run = async () => {
   const server = http.createServer(app);
   app.use(express.json()); // for parsing application/json
   app.use(express.urlencoded({ extended: true }));
+  app.use(cors({
+    origin: '*'
+  }));
   try {
     await mongoose.connect(db);
     console.log('db connct');
