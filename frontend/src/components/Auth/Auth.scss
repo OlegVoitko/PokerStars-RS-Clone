@@ -1,0 +1,25 @@
+@import './../../index';
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 20%;
+  position: fixed;
+  right: 20%;
+  bottom: 50%;
+}
+
+.auth-form__input {
+  border-radius: 4px;
+  border: 1px solid white;
+  padding: 1rem 1.5rem;
+}
+
+.form__error-msg {
+  color: $color-button_exit;
+}
+
+.auth-form__input {
+  cursor: pointer;
+}
