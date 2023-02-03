@@ -37,6 +37,7 @@ const Chat: FC = (): JSX.Element => {
       nickname,
       date: new Date(Date.now()),
     };
+    //TODO dispatch (thunk)
     socket.emit('send', messageData);
     setValue('text', '');
   };
