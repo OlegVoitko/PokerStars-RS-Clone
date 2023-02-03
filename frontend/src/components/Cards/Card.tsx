@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import React from 'react';
 
 const totalNumCards = 52;
@@ -26,7 +28,7 @@ const randomizePosition = (min: number, max: number) => {
 };
 
 const generateDeckOfCards = () => {
-  const deck: { cardFace: string; suit: string; value: any; }[] = [];
+  const deck: { cardFace: string; suit: string; value: any }[] = [];
   for (const suit of suits) {
     for (const card of cards) {
       deck.push({
@@ -58,4 +60,3 @@ const shuffle = (deck: any[]) => {
   }
   return shuffledDeck;
 };
-

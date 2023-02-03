@@ -1,12 +1,20 @@
-import * as React from 'react';
+import React from 'react';
 import { Routes, Route } from 'react-router-dom';
-import Table_poker from './components/Poker-table/Poker_table';
+import './App.css';
+import Layout from './pages/Layout';
+import StartPage from './pages/StartPage';
+import PlayerRoom from './pages/PlayerRoom';
+import TableRoom from './pages/TableRoom';
 
 function App() {
   return (
     <>
       <Routes>
-        <Route path='' element={<Table_poker />}></Route>
+        <Route path='/' element={<Layout />}>
+          <Route index element={<StartPage />} />
+          <Route path='table' element={<TableRoom />} />
+          <Route path='player' element={<PlayerRoom />} />
+        </Route>
       </Routes>
     </>
   );
