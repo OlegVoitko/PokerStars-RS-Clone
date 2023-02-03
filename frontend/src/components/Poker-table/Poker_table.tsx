@@ -2,8 +2,16 @@ import React from 'react';
 import './Poker_table.scss';
 import CustomizedSlider from './Slider_table';
 import Sound from './SoundOnOff';
+import SeatBtn from './SeatBtn';
+import { IDeck, shuffle } from '../Cards/Card';
+import { useAppSelector } from '../../hooks/hook';
 
 const Poker_table = (): JSX.Element => {
+  const gameplay = useAppSelector((state) => state.gameplay);
+  const deck: IDeck[] = shuffle();
+  const board = deck.slice(0, 5);
+  console.log(board);
+
   return (
     <div className='poker-table__wrapper'>
       <div className='poker__background'>
@@ -20,6 +28,9 @@ const Poker_table = (): JSX.Element => {
           <div className='bank__container'>
             <img src={require('../../assets/chip-bank.png')} alt='chip bank' />
             <h4>12345</h4>
+          </div>
+          <div className='poker-table__seat-btn action__buttons'>
+            <SeatBtn />
           </div>
           <div className='action__bar'>
             <div className='action__buttons'>

@@ -63,9 +63,16 @@ const run = async () => {
 
   io.on('connection', (socket) => {
     console.log('a user connected');
+    //chat
     socket.on('send', (data) => {
       state.messages.push(data);
       io.emit('new message', data);
+    });
+
+    //game
+    socket.on('playerSeat', (data) => {
+      console.log('seat');
+      io.emit('addPlayer', data);
     });
   });
 
