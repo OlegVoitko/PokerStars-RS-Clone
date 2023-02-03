@@ -3,9 +3,9 @@ import { initReactI18next } from 'react-i18next';
 // import enTraslation from '../locales/translation.json';
 
 const resources = {
-  en: {
-    translation: enTraslation,
-  },
+  // en: {
+  //   translation: enTraslation,
+  // },
 };
 
 i18n
