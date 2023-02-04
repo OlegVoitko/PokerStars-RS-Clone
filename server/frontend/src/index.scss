@@ -88,19 +88,12 @@ html {
 body {
   background-color: $color-background;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
-  height: 100%;
-  background-color: #fff7f2;
-  font-family: Verdana, Geneva, Tahoma, sans-serif;
-  height: 100%;
+	height: 100%;
   display: flex;
   flex-direction: column;
   margin: 0;
   font-size: 1.6rem;
-  color: $color-text;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu',
-    'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  color: $color-text;  
 }
 
 .wrapper {

@@ -1,4 +1,5 @@
 import React from 'react';
+import Chat from '../Chat/Chat';
 import './Poker_table.scss';
 import CustomizedSlider from './Slider_table';
 import Sound from './SoundOnOff';
@@ -30,6 +31,9 @@ const Poker_table = (): JSX.Element => {
             <div className='action__bar__slider'>
               <CustomizedSlider />
             </div>
+            <section className='tableroom__chat'>
+              <Chat />
+            </section>
           </div>
         </div>
       </div>
