@@ -1,8 +1,8 @@
 import React, { FC, useRef, useEffect } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
-import { useAppSelector } from '../../hooks/hook';
-// import { socket } from '../../socket';
+import { useAppSelector, useAppDispatch } from '../../hooks/hook';
 import { IMessage } from '../../store/chatSlice';
+import { sendMessage } from '../../store/chatSlice';
 import './style.scss';
 
 interface IChatForm {
@@ -13,6 +13,7 @@ const nickname = 'Joe';
 
 const Chat: FC = (): JSX.Element => {
   const { messages } = useAppSelector((state) => state.chat);
+  const dispatch = useAppDispatch();
 
   const {
     register,
@@ -27,7 +28,7 @@ const Chat: FC = (): JSX.Element => {
 
   const renderMessages = (data: IMessage[]) => {
     return data.map(({ text, nickname, date }, i) => (
-      <li key={i}>{`${date.toString().slice(0, -8)} ${nickname}: ${text}`}</li>
+      <li key={i}>{`${new Date(date).toString().slice(0, 24)} ${nickname}: ${text}`}</li>
     ));
   };
 
@@ -35,10 +36,9 @@ const Chat: FC = (): JSX.Element => {
     const messageData = {
       text: data.text,
       nickname,
-      date: new Date(Date.now()),
+      date: Date.now(),
     };
-    //TODO dispatch (thunk)
-    // socket.emit('send', messageData);
+    dispatch(sendMessage(messageData));
     setValue('text', '');
   };
 
