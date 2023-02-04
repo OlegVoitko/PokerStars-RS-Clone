@@ -1,7 +1,7 @@
 import React, { FC, useRef, useEffect } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { useAppSelector } from '../../hooks/hook';
-import { socket } from '../../socket';
+// import { socket } from '../../socket';
 import { IMessage } from '../../store/chatSlice';
 import './style.scss';
 
@@ -38,7 +38,7 @@ const Chat: FC = (): JSX.Element => {
       date: new Date(Date.now()),
     };
     //TODO dispatch (thunk)
-    socket.emit('send', messageData);
+    // socket.emit('send', messageData);
     setValue('text', '');
   };
 

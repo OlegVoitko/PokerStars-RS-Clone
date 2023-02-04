@@ -1,16 +1,32 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './Poker_table.scss';
 import CustomizedSlider from './Slider_table';
 import Sound from './SoundOnOff';
 import SeatBtn from './SeatBtn';
-import { IDeck, shuffle } from '../Cards/Card';
 import { useAppSelector } from '../../hooks/hook';
+import { IPlayer } from './gameLogic/gameLogic';
+import { useUpdateGameplayMutation } from '../../services/gameplayApi';
+import { IGamePlay } from '../../store/gameplaySlice';
 
 const Poker_table = (): JSX.Element => {
-  const gameplay = useAppSelector((state) => state.gameplay);
-  const deck: IDeck[] = shuffle();
-  const board = deck.slice(0, 5);
+  const gameplay: IGamePlay = useAppSelector((state: { gameplay: IGamePlay }) => state.gameplay);
+  const { playersInDeal, isDeal, wait, board } = gameplay;
+  const [updateGameplay] = useUpdateGameplayMutation();
+
   console.log(board);
+  console.log(playersInDeal);
+
+  const renderPlayer = (players: IPlayer[]) =>
+    players.map((p, i) => (
+      <div className='player' key={i}>
+        Stack: {p.stack}
+        hand: {`${p.hand[0].cardFace}${p.hand[0].suit} ${p.hand[1].cardFace}${p.hand[1].suit}`}
+      </div>
+    ));
+
+  useEffect(() => {
+    updateGameplay(gameplay);
+  }, [playersInDeal, isDeal]);
 
   return (
     <div className='poker-table__wrapper'>
@@ -42,6 +58,7 @@ const Poker_table = (): JSX.Element => {
               <CustomizedSlider />
             </div>
           </div>
+          <div className='players-in-deal'>{renderPlayer(playersInDeal)}</div>
         </div>
       </div>
     </div>

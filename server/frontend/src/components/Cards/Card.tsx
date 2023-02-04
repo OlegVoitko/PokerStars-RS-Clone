@@ -1,4 +1,4 @@
-export interface IDeck {
+export interface ICard {
   cardFace: string;
   suit: string;
   value: number;
@@ -34,7 +34,7 @@ const randomizePosition = (min: number, max: number) => {
 };
 
 const generateDeckOfCards = () => {
-  const deck: IDeck[] = [];
+  const deck: ICard[] = [];
   for (const suit of suits) {
     for (const card of cards) {
       deck.push({
@@ -47,7 +47,7 @@ const generateDeckOfCards = () => {
   return deck;
 };
 
-export const shuffle = (): IDeck[] => {
+export const shuffle = (): ICard[] => {
   const deck = generateDeckOfCards();
   const shuffledDeck = new Array(totalNumCards);
   const filledSlots: number[] = [];

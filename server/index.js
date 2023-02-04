@@ -63,6 +63,7 @@ const run = async () => {
 
   io.on('connection', (socket) => {
     console.log('a user connected');
+
     //chat
     socket.on('send', (data) => {
       state.messages.push(data);
@@ -70,9 +71,13 @@ const run = async () => {
     });
 
     //game
-    socket.on('playerSeat', (data) => {
+    socket.on('addPlayer', (data) => {
       console.log('seat');
       io.emit('addPlayer', data);
+    });
+    socket.on('updateGameplay', (data) => {
+      console.log('seat');
+      io.emit('updateGameplay', data);
     });
   });
 

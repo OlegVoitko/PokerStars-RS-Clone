@@ -2,16 +2,17 @@ import { io, Socket } from 'socket.io-client';
 import store from './store/store';
 import { addMessage } from './store/chatSlice';
 import { IMessage } from './store/chatSlice';
-import { IPlayerID, playerSeat } from './store/gameplaySlice';
+import { IGamePlay, IPlayer, playerSeat } from './store/gameplaySlice';
 
 interface ServerToClientEvents {
   ['new message']: (data: IMessage) => void;
-  addPlayer: (data: IPlayerID) => void;
+  addPlayer: (data: IPlayer) => void;
 }
 
 interface ClientToServerEvents {
   send: (data: IMessage) => void;
-  playerSeat: (data: IPlayerID) => void;
+  addPlayer: (data: IPlayer) => void;
+  updateGameplay: (data: IGamePlay) => void;
 }
 
 export const socket: Socket<ServerToClientEvents, ClientToServerEvents> =
