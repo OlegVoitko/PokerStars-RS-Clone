@@ -18,7 +18,7 @@ const EnterForm: FC<EnterFormProps> = ({ handleSubmitFunc }): JSX.Element => {
   const { t } = useTranslation();
   const {
     register,
-    handleSubmit,
+    // handleSubmit,
     formState: { errors },
   } = useForm<IFormInput>({
     mode: 'onBlur',
@@ -26,8 +26,7 @@ const EnterForm: FC<EnterFormProps> = ({ handleSubmitFunc }): JSX.Element => {
 
   return (
     <>
-      {/*{error && <p>{error.message}</p>}*/}
-      <form onSubmit={handleSubmitFunc} className='auth-form' action='/table'>
+      <form onSubmit={handleSubmitFunc} className='auth-form'>
         <input
           className='auth-form__input'
           placeholder={t('nick')}

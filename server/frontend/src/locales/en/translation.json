@@ -4,5 +4,6 @@
   "submit": "Submit",
   "register": "Register",
   "login": "Login",
-  "guest": "Enter as Guest"
+  "guest": "Enter as Guest",
+  "back": "Back to main page"
 }

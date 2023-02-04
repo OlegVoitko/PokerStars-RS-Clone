@@ -8,14 +8,6 @@ export const authApi = createApi({
     baseUrl: 'http://localhost:8000/',
   }),
   endpoints: (build) => ({
-    checkPlayer: build.mutation<Player, NewUser>({
-      query: (body: NewUser) => ({
-        url: `signin`,
-        method: 'POST',
-        body,
-      }),
-    }),
-
     createPlayer: build.mutation<Player, NewUser>({
       // createPlayer: build.mutation<Player | ErrorResponse, NewUser>({
       query: (body: NewUser) => ({
@@ -25,6 +17,17 @@ export const authApi = createApi({
         prepareHeaders: (headers: Headers) => {
           headers.set('Content-Type', 'application/json;charset=utf-8');
           headers.set('Access-Control-Allow-Origin', '*');
+          return headers;
+        },
+      }),
+    }),
+    checkPlayer: build.mutation<Player, NewUser>({
+      query: (body: NewUser) => ({
+        url: `signin`,
+        method: 'POST',
+        body,
+        prepareHeaders: (headers: Headers) => {
+          headers.set('Content-Type', 'application/json;charset=utf-8');
           return headers;
         },
       }),
