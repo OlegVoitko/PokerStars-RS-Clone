@@ -4,5 +4,14 @@ export interface NewUser {
 }
 
 export interface Player extends NewUser {
-  id: number,
+  _id: string,
+}
+
+// export interface ErrorAuth {
+//   data: string,
+//   status: number
+// }
+
+export interface ErrorResponse {
+  error: string
 }

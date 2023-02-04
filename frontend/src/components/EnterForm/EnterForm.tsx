@@ -1,22 +1,21 @@
 import React, { FC } from 'react';
-import { useForm, SubmitHandler } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import './Auth.scss';
-import { useCreatePlayerMutation } from '../../services/playerAPI';
-import { useNavigate } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
+import './EnterForm.scss';
 
-export interface IFormInput {
+interface EnterFormProps {
+  // handleSubmitFunc: (data: IFormInput) =>  Promise<void>
+  handleSubmitFunc: (e: React.FormEvent<HTMLFormElement>) => void;
+}
+
+interface IFormInput {
   nickname: string;
   password: string;
 }
 
-const Auth: FC = (): JSX.Element => {
-  const navigate = useNavigate();
-  // const state = { user: null, error: null };
-  // const [authenticated, setauthenticated] = useState(localStorage.getItem(localStorage.getItem("authenticated")|| false));
-
-  const [createPlayer, { isLoading }] = useCreatePlayerMutation();
-
+// const EnterForm: FC = (): JSX.Element => {
+const EnterForm: FC<EnterFormProps> = ({ handleSubmitFunc }): JSX.Element => {
+  const { t } = useTranslation();
   const {
     register,
     handleSubmit,
@@ -25,32 +24,10 @@ const Auth: FC = (): JSX.Element => {
     mode: 'onBlur',
   });
 
-  const onSubmit: SubmitHandler<IFormInput> = async (data) => {
-    // const res = await createPlayer(data);
-    createPlayer(data)
-      .unwrap()
-      .then((data) => {
-        //TODO change isAuth
-        console.log('data', data);
-        navigate('/table');
-      })
-      .catch((error) => {
-        console.log('error', error);
-      });
-    // if () {
-    //   console.log(res);
-    // }
-    // console.log('data', data);
-    // console.log('errors', errors);
-    // console.log('res', res);
-  };
-
-  const { t } = useTranslation();
-
   return (
     <>
       {/*{error && <p>{error.message}</p>}*/}
-      <form onSubmit={handleSubmit(onSubmit)} className='auth-form' action='/table'>
+      <form onSubmit={handleSubmitFunc} className='auth-form' action='/table'>
         <input
           className='auth-form__input'
           placeholder={t('nick')}
@@ -80,4 +57,4 @@ const Auth: FC = (): JSX.Element => {
   );
 };
 
-export default Auth;
+export default EnterForm;

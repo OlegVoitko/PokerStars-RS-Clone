@@ -1,0 +1,25 @@
+@import './../../index';
+
+.app-enter-buttons__container {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  padding: 30px 50px;
+}
+
+.app-enter-buttons__button {
+  background-color: $color-table;
+  color: $color-button_exit;
+  border: 1px solid $color-title;
+  border-radius: 8px;
+  font-size: 2rem;
+  font-weight: bold;
+  cursor: pointer;
+  width: 100%;
+  min-width: 130px;
+  padding: 5px;
+  transition: all 0.3s ease;
+  &:hover {
+    color: $color-numbers;
+  }
+}

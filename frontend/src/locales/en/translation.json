@@ -1,5 +1,8 @@
 {
   "nick": "Nickname",
   "password": "Password",
-  "submit": "Submit"
+  "submit": "Submit",
+  "register": "Register",
+  "login": "Login",
+  "guest": "Enter as Guest"
 }
