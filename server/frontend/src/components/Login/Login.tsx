@@ -4,11 +4,11 @@ import { SubmitHandler } from 'react-hook-form';
 import { IFormInput } from '../Auth/Auth';
 import { useCheckPlayerMutation } from '../../services/playerAPI';
 import { useNavigate } from 'react-router-dom';
-import './Login.scss';
 import { useTranslation } from 'react-i18next';
 import { useForm } from 'react-hook-form';
 import { useAppDispatch } from '../../hooks/hook';
 import { registerPlayer } from '../../store/playerSlice';
+import './Login.scss';
 
 const Login = (): JSX.Element => {
   const dispatch = useAppDispatch();
@@ -55,7 +55,7 @@ const Login = (): JSX.Element => {
     <>
       {/*<EnterForm handleSubmitFunc={onLoginSubmit} />*/}
       <h2 className='form__title'>{t('login')}</h2>
-      {submitError && <p className='form__error-msg submit__error-msg'>{submitError}</p>}
+      {submitError && <p className='form__error-msg submit__error-msg'>{t(`${submitError}`)}</p>}
       <form onSubmit={handleSubmit(onSubmit)} className='auth-form'>
         <input
           className='auth-form__input'
@@ -63,10 +63,10 @@ const Login = (): JSX.Element => {
           {...register('nickname', { required: true, maxLength: 10 })}
         />
         {errors.nickname && errors.nickname.type === 'required' && (
-          <span className='form__error-msg'>Nick is required</span>
+          <span className='form__error-msg'>{t('required_field')}</span>
         )}
         {errors.nickname && errors.nickname.type === 'maxLength' && (
-          <span className='form__error-msg'>Max length 10 symbols</span>
+          <span className='form__error-msg'>{t('max_length_rule')}</span>
         )}
         <input
           placeholder={t('password')}
@@ -75,10 +75,10 @@ const Login = (): JSX.Element => {
           {...register('password', { required: true, minLength: 6 })}
         />
         {errors.password && errors.password.type === 'required' && (
-          <span className='form__error-msg'>Password is required</span>
+          <span className='form__error-msg'>{t('required_field')}</span>
         )}
         {errors.password && errors.password.type === 'minLength' && (
-          <span className='form__error-msg'>Min length 6 symbols</span>
+          <span className='form__error-msg'>{t('min_length_rule')}</span>
         )}
         <input type='submit' value={t('submit')} className='auth-form__input' />
       </form>
