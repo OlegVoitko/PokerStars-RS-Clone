@@ -2,24 +2,27 @@ import { createSlice } from '@reduxjs/toolkit';
 
 export type PlayerState = {
   isAuth: boolean;
-  id?: null;
+  id: number;
   nick: string;
   password: string;
   coins: number;
 };
 
+const initialState = {
+  isAuth: false,
+  id: 0,
+  nick: '',
+  password: '',
+  coins: 0,
+} as PlayerState;
+
 const playerSlice = createSlice({
   name: 'players',
-  initialState: {
-    isAuth: false,
-    id: null,
-    nick: '',
-    password: '',
-    coins: 0,
-  },
+  initialState,
   reducers: {
-    registerPlayer() {},
-    // register: (state, action: PayloadAction<boolean>) => state.isAuth = action.payload,
+    registerPlayer(state, { payload }: { payload: number }) {
+      state.id = payload;
+    },
     getFirstCoins() {},
     winCoins() {},
     loseCoins() {},

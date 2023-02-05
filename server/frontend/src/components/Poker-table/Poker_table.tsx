@@ -4,16 +4,18 @@ import './Poker_table.scss';
 import CustomizedSlider from './Slider_table';
 import Sound from './SoundOnOff';
 import SeatBtn from './SeatBtn';
-import { useAppSelector } from '../../hooks/hook';
+import { useAppDispatch, useAppSelector } from '../../hooks/hook';
 import { IPlayer } from './gameLogic/gameLogic';
-import { useUpdateGameplayMutation } from '../../services/gameplayApi';
-import { IGamePlay } from '../../store/gameplaySlice';
+// import { useUpdateGameplayMutation } from '../../services/gameplayApi';
+import { IGameplay, checkAction, updateGameFetch } from '../../store/gameplaySlice';
 
 const Poker_table = (): JSX.Element => {
-  const gameplay: IGamePlay = useAppSelector((state: { gameplay: IGamePlay }) => state.gameplay);
-  const { playersInDeal, isDeal, wait, board } = gameplay;
-  const [updateGameplay] = useUpdateGameplayMutation();
-
+  const dispatch = useAppDispatch();
+  const gameplay: IGameplay = useAppSelector((state: { gameplay: IGameplay }) => state.gameplay);
+  const { id } = useAppSelector((state) => state.player);
+  const { playersInDeal, isDeal, wait, board, currentPlayer } = gameplay;
+  // const [updateGameplay] = useUpdateGameplayMutation();
+  console.log(id, gameplay.currentPlayer?.id, 11111111111111);
   console.log(board);
   console.log(playersInDeal);
 
@@ -21,13 +23,20 @@ const Poker_table = (): JSX.Element => {
     players.map((p, i) => (
       <div className='player' key={i}>
         Stack: {p.stack}
+        <br />
         hand: {`${p.hand[0].cardFace}${p.hand[0].suit} ${p.hand[1].cardFace}${p.hand[1].suit}`}
       </div>
     ));
 
   useEffect(() => {
-    updateGameplay(gameplay);
-  }, [playersInDeal, isDeal]);
+    console.log(gameplay);
+    dispatch(updateGameFetch(gameplay));
+    console.log('USEEFFECT');
+  }, [gameplay]);
+
+  const handleCheck = () => {
+    dispatch(checkAction({ id }));
+  };
 
   return (
     <div className='poker-table__wrapper'>
@@ -50,14 +59,21 @@ const Poker_table = (): JSX.Element => {
             <SeatBtn />
           </div>
           <div className='action__bar'>
-            <div className='action__buttons'>
-              <button className='action__buttons__fold'>Fold</button>
-              <button className='action__buttons__Call'>Call</button>
-              <button className='action__buttons__RaiseTo'>Raise To</button>
-            </div>
-            <div className='action__bar__slider'>
-              <CustomizedSlider />
-            </div>
+            {currentPlayer?.id === id && (
+              <div>
+                <div className='action__buttons'>
+                  <button className='action__buttons__fold'>Fold</button>
+                  <button className='action__buttons__Call'>Call</button>
+                  <button className='action__buttons__Call' onClick={handleCheck}>
+                    Check
+                  </button>
+                  <button className='action__buttons__RaiseTo'>Raise To</button>
+                </div>
+                <div className='action__bar__slider'>
+                  <CustomizedSlider />
+                </div>
+              </div>
+            )}
             <section className='tableroom__chat'>
               <Chat />
             </section>
