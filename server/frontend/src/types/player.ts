@@ -2,7 +2,7 @@ export interface IPlayer {
   nickname: string,
   password: string,
   _id: string,
-  __v: number
+  __v?: number
 }
 
 export interface NewUser {

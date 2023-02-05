@@ -1,10 +1,9 @@
-import React, { FC, useState, useEffect } from 'react';
+import React, { FC, useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import './Auth.scss';
 import { useCreatePlayerMutation } from '../../services/playerAPI';
 import { useNavigate } from 'react-router-dom';
-import EnterForm from '../EnterForm/EnterForm';
 import { useAppDispatch, useAppSelector } from '../../hooks/hook';
 import { registerPlayer } from '../../store/playerSlice';
 
@@ -16,7 +15,6 @@ export interface IFormInput {
 const Auth: FC = (): JSX.Element => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  // const { player } = useAppSelector((state) => state.player);
   const [submitError, setSubmitError] = useState('');
 
   const [createPlayer, { isLoading, isSuccess, error, isError }] = useCreatePlayerMutation();
@@ -37,12 +35,11 @@ const Auth: FC = (): JSX.Element => {
         //TODO notify about successful registration
         dispatch(registerPlayer(data));
         console.log('data', data);
-        // navigate('/table');
+        navigate('/table');
       })
       .catch((error) => {
         console.log('error.data.error', error.data.error);
         setSubmitError(error.data.error);
-        // setSubmitError(error.data.error);
       });
   };
 

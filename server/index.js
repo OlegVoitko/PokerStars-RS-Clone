@@ -59,7 +59,8 @@ const run = async () => {
     const { nickname, password } = req.body;
     const [user] = await User.find({ nickname });
     if (user && user.password === password) {
-      res.status(200).send({ id: user.id });
+      // res.status(200).send({ id: user.id });
+      res.status(200).send(user);
       return;
     }
     res.status(400).send({ error: 'Invalid login or password' });

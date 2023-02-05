@@ -1,6 +1,4 @@
 import React, { useState } from 'react';
-import EnterForm from '../EnterForm/EnterForm';
-import { SubmitHandler } from 'react-hook-form';
 import { IFormInput } from '../Auth/Auth';
 import { useCheckPlayerMutation } from '../../services/playerAPI';
 import { useNavigate } from 'react-router-dom';
@@ -33,27 +31,19 @@ const Login = (): JSX.Element => {
     console.log('data', data);
     checkPlayer(data)
       .unwrap()
-      .then((data) => {
-        //TODO change isAuth
-        console.log('data', data);
-        dispatch(registerPlayer(data));
+      .then((player) => {
+        //TODO notify about successful registration
+        dispatch(registerPlayer(player));
         navigate('/table');
       })
       .catch((error) => {
         console.log('error', error);
         setSubmitError(error.data.error);
       });
-    // if () {
-    //   console.log(res);
-    // }
-    // console.log('data', data);
-    // console.log('errors', errors);
-    // console.log('res', res);
   };
 
   return (
     <>
-      {/*<EnterForm handleSubmitFunc={onLoginSubmit} />*/}
       <h2 className='form__title'>{t('login')}</h2>
       {submitError && <p className='form__error-msg submit__error-msg'>{t(`${submitError}`)}</p>}
       <form onSubmit={handleSubmit(onSubmit)} className='auth-form'>
@@ -82,7 +72,6 @@ const Login = (): JSX.Element => {
         )}
         <input type='submit' value={t('submit')} className='auth-form__input' />
       </form>
-      {/*<EnterForm handleSubmitFunc={(e) => onLoginSubmit} />*/}
       <button className='app-enter-buttons__button button__back' onClick={() => navigate('/')}>
         {t('back')}
       </button>
