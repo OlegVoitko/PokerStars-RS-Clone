@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { NewUser, Player } from '../types/player';
+import { NewUser, IPlayer } from '../types/player';
 // import { ErrorResponse, NewUser, Player } from '../types/player';
 
 export const authApi = createApi({
@@ -8,7 +8,7 @@ export const authApi = createApi({
     baseUrl: 'http://localhost:8000/',
   }),
   endpoints: (build) => ({
-    createPlayer: build.mutation<Player, NewUser>({
+    createPlayer: build.mutation<IPlayer, NewUser>({
       // createPlayer: build.mutation<Player | ErrorResponse, NewUser>({
       query: (body: NewUser) => ({
         url: `signup`,
@@ -21,7 +21,7 @@ export const authApi = createApi({
         },
       }),
     }),
-    checkPlayer: build.mutation<Player, NewUser>({
+    checkPlayer: build.mutation<IPlayer, NewUser>({
       query: (body: NewUser) => ({
         url: `signin`,
         method: 'POST',

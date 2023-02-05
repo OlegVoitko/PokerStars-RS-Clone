@@ -5,7 +5,8 @@ import './Auth.scss';
 import { useCreatePlayerMutation } from '../../services/playerAPI';
 import { useNavigate } from 'react-router-dom';
 import EnterForm from '../EnterForm/EnterForm';
-import { useAppSelector } from '../../hooks/hook';
+import { useAppDispatch, useAppSelector } from '../../hooks/hook';
+import { registerPlayer } from '../../store/playerSlice';
 
 export interface IFormInput {
   nickname: string;
@@ -13,6 +14,7 @@ export interface IFormInput {
 }
 
 const Auth: FC = (): JSX.Element => {
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
   // const { player } = useAppSelector((state) => state.player);
   const [submitError, setSubmitError] = useState('');
@@ -33,8 +35,9 @@ const Auth: FC = (): JSX.Element => {
       .unwrap()
       .then((data) => {
         //TODO notify about successful registration
+        dispatch(registerPlayer(data));
         console.log('data', data);
-        navigate('/table');
+        // navigate('/table');
       })
       .catch((error) => {
         console.log('error.data.error', error.data.error);

@@ -7,8 +7,11 @@ import { useNavigate } from 'react-router-dom';
 import './Login.scss';
 import { useTranslation } from 'react-i18next';
 import { useForm } from 'react-hook-form';
+import { useAppDispatch } from '../../hooks/hook';
+import { registerPlayer } from '../../store/playerSlice';
 
 const Login = (): JSX.Element => {
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { t } = useTranslation();
   const [submitError, setSubmitError] = useState('');
@@ -33,6 +36,7 @@ const Login = (): JSX.Element => {
       .then((data) => {
         //TODO change isAuth
         console.log('data', data);
+        dispatch(registerPlayer(data));
         navigate('/table');
       })
       .catch((error) => {
