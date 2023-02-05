@@ -1,22 +1,30 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { socket } from '../socket';
 
 export interface IMessage {
   text: string;
   id?: number;
   nickname: string;
-  date: Date;
+  date: number;
 }
 
-export type ChatState = {
+interface ChatState {
   messages: IMessage[];
-};
+  loading: 'idle' | 'pending' | 'succeeded' | 'failed';
+}
 
-const initialState: ChatState = {
+const initialState = {
   messages: [],
-};
+  loading: 'idle',
+} as ChatState;
+
+export const sendMessage = createAsyncThunk('chat/sendMessage', async (message: IMessage) => {
+  socket.emit('send', message);
+  return message;
+});
 
 const chatSlice = createSlice({
-  name: 'players',
+  name: 'chat',
   initialState,
   reducers: {
     addMessage: (state, { payload }: { payload: IMessage }) => {
