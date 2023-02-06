@@ -7,7 +7,7 @@ import SeatBtn from './SeatBtn';
 import { useAppDispatch, useAppSelector } from '../../hooks/hook';
 import { IPlayer } from './gameLogic/gameLogic';
 // import { useUpdateGameplayMutation } from '../../services/gameplayApi';
-import { IGameplay, checkAction, updateGameFetch } from '../../store/gameplaySlice';
+import { IGameplay, checkAction, checkActionFetch } from '../../store/gameplaySlice';
 
 const Poker_table = (): JSX.Element => {
   const dispatch = useAppDispatch();
@@ -15,9 +15,6 @@ const Poker_table = (): JSX.Element => {
   const { id } = useAppSelector((state) => state.player);
   const { playersInDeal, isDeal, wait, board, currentPlayer } = gameplay;
   // const [updateGameplay] = useUpdateGameplayMutation();
-  console.log(id, gameplay.currentPlayer?.id, 11111111111111);
-  console.log(board);
-  console.log(playersInDeal);
 
   const renderPlayer = (players: IPlayer[]) =>
     players.map((p, i) => (
@@ -28,14 +25,14 @@ const Poker_table = (): JSX.Element => {
       </div>
     ));
 
-  useEffect(() => {
-    console.log(gameplay);
-    dispatch(updateGameFetch(gameplay));
-    console.log('USEEFFECT');
-  }, [gameplay]);
+  // useEffect(() => {
+  //   console.log(gameplay);
+  //   dispatch(updateGameFetch(gameplay));
+  //   console.log('USEEFFECT');
+  // }, [gameplay]);
 
   const handleCheck = () => {
-    dispatch(checkAction({ id }));
+    dispatch(checkActionFetch({ id }));
   };
 
   return (

@@ -95,9 +95,8 @@ const run = async () => {
         state.players = [];
       }
     });
-    socket.on('game:updateGame', (data) => {
-      console.log('seat');
-      io.emit('game:updateGame', data);
+    socket.on('game:checkAction', (data) => {
+      io.emit('game:checkAction', data);
     });
   });
 

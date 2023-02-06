@@ -39,11 +39,13 @@ export const seatPlayer = createAsyncThunk('game/seatPlayer', async (player: IPl
   return player;
 });
 
-export const updateGameFetch = createAsyncThunk('game/updateGame', async (game: IGameplay) => {
-  console.log(game);
-  socket.emit('game:updateGame', game);
-  return game;
-});
+export const checkActionFetch = createAsyncThunk(
+  'game/checkAction',
+  async (data: { id: number }) => {
+    socket.emit('game:checkAction', data);
+    return data;
+  }
+);
 
 const gameplaySlice = createSlice({
   name: 'players',
