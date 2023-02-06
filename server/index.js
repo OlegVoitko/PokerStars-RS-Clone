@@ -13,6 +13,7 @@ const port = process.env.PORT || 8000;
 
 const state = {
   messages: [],
+  players: [],
 };
 
 const run = async () => {
@@ -66,11 +67,41 @@ const run = async () => {
     res.status(400).send({ error: 'Invalid login or password' });
   });
 
+  let id = 1;
+
   io.on('connection', (socket) => {
     console.log('a user connected');
+    id++;
+    socket.emit('test', id);
+    //chat
     socket.on('send', (data) => {
       state.messages.push(data);
       io.emit('new message', data);
+    });
+
+    const testplayers = [
+      {
+        id: 1,
+        hand: [],
+        stack: 1000,
+      },
+      {
+        id: 2,
+        hand: [],
+        stack: 2000,
+      },
+    ];
+    //game
+    socket.on('game:seatPlayer', (player) => {
+      console.log('seat');
+      state.players.push(player);
+      io.emit('game:seatPlayer', state.players);
+      if (state.players.length === 2) {
+        state.players = [];
+      }
+    });
+    socket.on('game:checkAction', (data) => {
+      io.emit('game:checkAction', data);
     });
   });
 

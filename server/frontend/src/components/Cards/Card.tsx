@@ -1,11 +1,17 @@
-// @ts-nocheck
+export interface ICard {
+  cardFace: string;
+  suit: string;
+  value: number;
+}
 
-import React from 'react';
+interface IValueMap {
+  [key: string]: number;
+}
 
 const totalNumCards = 52;
 const suits = ['Heart', 'Spade', 'Club', 'Diamond'];
 const cards = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A'];
-const VALUE_MAP = {
+const VALUE_MAP: IValueMap = {
   2: 1,
   3: 2,
   4: 3,
@@ -28,7 +34,7 @@ const randomizePosition = (min: number, max: number) => {
 };
 
 const generateDeckOfCards = () => {
-  const deck: { cardFace: string; suit: string; value: any }[] = [];
+  const deck: ICard[] = [];
   for (const suit of suits) {
     for (const card of cards) {
       deck.push({
@@ -41,7 +47,8 @@ const generateDeckOfCards = () => {
   return deck;
 };
 
-const shuffle = (deck: any[]) => {
+export const shuffle = (): ICard[] => {
+  const deck = generateDeckOfCards();
   const shuffledDeck = new Array(totalNumCards);
   const filledSlots: number[] = [];
   for (let i = 0; i < totalNumCards; i++) {
