@@ -13,23 +13,29 @@ export interface IPlayer {
 }
 
 export interface IGameplay {
+  stage: number;
   playersCount: number;
+  playersCompleteAction: number;
   activePosition: number;
   isDeal: boolean;
   playersInDeal: IPlayer[];
   currentPlayer: IPlayer | null;
   board: ICard[];
+  showCards: ICard[];
   wait: IPlayer[];
   loading: 'idle' | 'pending' | 'succeeded' | 'failed';
 }
 
 const initialState: IGameplay = {
+  stage: 0,
   playersCount: 0,
+  playersCompleteAction: 0,
   activePosition: 0,
   isDeal: false,
   playersInDeal: [],
   currentPlayer: null,
   board: [],
+  showCards: [],
   wait: [],
   loading: 'idle',
 };
@@ -66,6 +72,28 @@ const gameplaySlice = createSlice({
       }
     },
     checkAction: (state, { payload }: { payload: { id: number } }) => {
+      state.playersCompleteAction += 1;
+      if (state.playersCompleteAction === state.playersCount) {
+        state.stage += 1;
+        state.playersCompleteAction = 0;
+        state.activePosition = 0;
+        state.currentPlayer = state.playersInDeal[0];
+        if (state.stage === 1) {
+          state.showCards.push(...state.board.slice(0, 3));
+        }
+        if (state.stage === 2) {
+          state.showCards.push(state.board[3]);
+        }
+        if (state.stage === 3) {
+          state.showCards.push(state.board[4]);
+        }
+        if (state.stage === 4) {
+          state.stage = 0;
+          state.showCards = [{ cardFace: 'SHOWDOWN', value: 0, suit: '' }];
+        }
+        return;
+      }
+
       const currentPlayer = state.playersInDeal.find(({ id }) => id === payload.id) as IPlayer;
       currentPlayer.action = 'check';
       const nextPlayer =

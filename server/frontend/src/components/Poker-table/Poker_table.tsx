@@ -6,6 +6,7 @@ import Sound from './SoundOnOff';
 import SeatBtn from './SeatBtn';
 import { useAppDispatch, useAppSelector } from '../../hooks/hook';
 import { IPlayer } from './gameLogic/gameLogic';
+import { ICard } from '../Cards/Card';
 // import { useUpdateGameplayMutation } from '../../services/gameplayApi';
 import { IGameplay, checkAction, checkActionFetch } from '../../store/gameplaySlice';
 
@@ -13,7 +14,7 @@ const Poker_table = (): JSX.Element => {
   const dispatch = useAppDispatch();
   const gameplay: IGameplay = useAppSelector((state: { gameplay: IGameplay }) => state.gameplay);
   const { id } = useAppSelector((state) => state.player);
-  const { playersInDeal, isDeal, wait, board, currentPlayer } = gameplay;
+  const { playersInDeal, isDeal, wait, board, currentPlayer, showCards } = gameplay;
   // const [updateGameplay] = useUpdateGameplayMutation();
 
   const renderPlayer = (players: IPlayer[]) =>
@@ -24,6 +25,17 @@ const Poker_table = (): JSX.Element => {
         hand: {`${p.hand[0].cardFace}${p.hand[0].suit} ${p.hand[1].cardFace}${p.hand[1].suit}`}
       </div>
     ));
+
+  const renderCards = (cards: ICard[]) => {
+    console.log(cards);
+    // {cardFace: '3', suit: 'Spade', value: 2}
+
+    return cards.map((card, i) => (
+      <div key={i}>
+        {card.cardFace} {card.suit}
+      </div>
+    ));
+  };
 
   // useEffect(() => {
   //   console.log(gameplay);
@@ -47,7 +59,7 @@ const Poker_table = (): JSX.Element => {
             src={require('../../assets/poker_table.jpg')}
             alt='poker table'
           />
-          <div className='card__container'></div>
+          <div className='card__container'>{renderCards(showCards)}</div>
           <div className='bank__container'>
             <img src={require('../../assets/chip-bank.png')} alt='chip bank' />
             <h4>12345</h4>
