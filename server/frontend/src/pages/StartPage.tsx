@@ -1,12 +1,12 @@
 import React, { FC } from 'react';
 import { useSelector } from 'react-redux';
-import Auth from '../components/Auth/Auth';
-import './StartPage.scss';
 import { RootState } from '../store/store';
 import { Link } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
+import './StartPage.scss';
 
 const StartPage: FC = () => {
-  const isUserAuth = useSelector((state: RootState) => state.player.isAuth);
+  const isUserAuth = useSelector((state: RootState) => state.player);
   console.log('check slice', isUserAuth);
 
   return (
@@ -25,7 +25,9 @@ const StartPage: FC = () => {
           <span className='char10'>r</span>
           <span className='char11'>s</span>
         </h1>
-        <Auth />
+        <div className='form-container'>
+          <Outlet />
+        </div>
         <Link target='_blank' to='https://rs.school/js/'>
           <span className='logo__rsSchool'></span>
         </Link>

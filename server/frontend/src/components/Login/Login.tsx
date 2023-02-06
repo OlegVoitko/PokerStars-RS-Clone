@@ -1,20 +1,17 @@
 import React from 'react';
-import { useForm, SubmitHandler } from 'react-hook-form';
-import { useTranslation } from 'react-i18next';
-import './Auth.scss';
+import { IFormInput } from '../Auth/Auth';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import { useAppDispatch, useAppSelector } from '../../hooks/hook';
-import { registerPlayerThunk } from '../../store/playerSlice';
+import { loginPlayerThunk } from '../../store/playerSlice';
+import './Login.scss';
 
-export interface IFormInput {
-  nickname: string;
-  password: string;
-}
-
-const Auth = (): JSX.Element => {
+const Login = (): JSX.Element => {
   const { error, player } = useAppSelector((state) => state.player);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const {
     register,
@@ -24,20 +21,17 @@ const Auth = (): JSX.Element => {
     mode: 'onBlur',
   });
 
-  // const onRegisterSubmit: SubmitHandler<IFormInput> = async (data) => {
-  const onSubmit: SubmitHandler<IFormInput> = async (data) => {
-    await dispatch(registerPlayerThunk(data));
-    //TODO notify about successful registration
+  const onSubmit: SubmitHandler<IFormInput> = async (data: IFormInput): Promise<void> => {
+    //TODO notify about successful login
+    await dispatch(loginPlayerThunk(data));
     if (player) {
       navigate('/table');
     }
   };
 
-  const { t } = useTranslation();
-
   return (
     <>
-      <h2 className='form__title'>{t('register')}</h2>
+      <h2 className='form__title'>{t('login')}</h2>
       {error && <p className='form__error-msg submit__error-msg'>{t(`${error}`)}</p>}
       <form onSubmit={handleSubmit(onSubmit)} className='auth-form'>
         <input
@@ -72,4 +66,4 @@ const Auth = (): JSX.Element => {
   );
 };
 
-export default Auth;
+export default Login;

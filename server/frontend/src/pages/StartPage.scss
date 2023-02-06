@@ -75,3 +75,13 @@
   bottom: 2%;
   cursor: pointer;
 }
+
+.form-container {
+  padding: 50px;
+  border-radius: 8px;
+  background: $color-block-form;
+  position: absolute;
+  max-width: 40%;
+  right: 15%;
+  top: 40%;
+}

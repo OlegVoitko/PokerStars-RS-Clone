@@ -11,7 +11,6 @@ const Header = (): JSX.Element => {
     const value = e.target.value;
     setLanguage(language);
     i18n.changeLanguage(value);
-    console.log('handleChangeLanguage', value);
   };
 
   return (
