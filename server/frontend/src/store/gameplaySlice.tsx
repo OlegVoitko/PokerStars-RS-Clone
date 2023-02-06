@@ -5,7 +5,7 @@ import { deal } from '../components/Poker-table/gameLogic/gameLogic';
 import { shuffle } from '../components/Cards/Card';
 
 export interface IPlayer {
-  id: number;
+  id: string;
   hand: ICard[];
   stack: number;
   bet: number;
@@ -47,7 +47,7 @@ export const seatPlayer = createAsyncThunk('game/seatPlayer', async (player: IPl
 
 export const checkActionFetch = createAsyncThunk(
   'game/checkAction',
-  async (data: { id: number }) => {
+  async (data: { id: string }) => {
     socket.emit('game:checkAction', data);
     return data;
   }
@@ -71,7 +71,7 @@ const gameplaySlice = createSlice({
         state.wait = payload;
       }
     },
-    checkAction: (state, { payload }: { payload: { id: number } }) => {
+    checkAction: (state, { payload }: { payload: { id: string } }) => {
       state.playersCompleteAction += 1;
       if (state.playersCompleteAction === state.playersCount) {
         state.stage += 1;

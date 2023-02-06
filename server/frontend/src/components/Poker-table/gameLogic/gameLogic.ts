@@ -1,7 +1,7 @@
 import { ICard } from '../../Cards/Card';
 
 export interface IPlayer {
-  id: number;
+  id: string;
   hand: ICard[];
   stack: number;
 }
@@ -23,11 +23,3 @@ export const deal = (players: IPlayer[], deck: ICard[]) => {
   }
   return copy;
 };
-
-const state: IGamePlay = {
-  currentPlayer: null,
-  playersInDial: [],
-  board: [],
-};
-
-const game = () => {};

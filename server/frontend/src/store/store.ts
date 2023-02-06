@@ -5,7 +5,6 @@ import gameplayReduser from './gameplaySlice';
 // import { gameplayApi } from '../services/gameplayApi';
 
 const store = configureStore({
-  // export default configureStore({
   reducer: {
     // [gameplayApi.reducerPath]: gameplayApi.reducer,
     player: playerReducer,

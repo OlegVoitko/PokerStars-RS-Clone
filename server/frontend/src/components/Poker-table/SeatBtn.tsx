@@ -4,7 +4,9 @@ import { IPlayer } from '../../store/gameplaySlice';
 import { seatPlayer } from '../../store/gameplaySlice';
 
 const SeatBtn = () => {
-  const { id } = useAppSelector((state) => state.player);
+  const player1 = useAppSelector((state) => state.player.player);
+  const id = player1?._id as string;
+  console.log(player1, id);
   const dispatch = useAppDispatch();
   const player = {
     id,

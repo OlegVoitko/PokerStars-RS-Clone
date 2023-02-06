@@ -13,7 +13,7 @@ import { IGameplay, checkAction, checkActionFetch } from '../../store/gameplaySl
 const Poker_table = (): JSX.Element => {
   const dispatch = useAppDispatch();
   const gameplay: IGameplay = useAppSelector((state: { gameplay: IGameplay }) => state.gameplay);
-  const { id } = useAppSelector((state) => state.player);
+  const id = useAppSelector((state) => state.player.player?._id) as string;
   const { playersInDeal, isDeal, wait, board, currentPlayer, showCards } = gameplay;
   // const [updateGameplay] = useUpdateGameplayMutation();
 

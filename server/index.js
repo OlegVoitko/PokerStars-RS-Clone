@@ -3,6 +3,7 @@ import { Server } from 'socket.io';
 import http from 'http';
 import mongoose from 'mongoose';
 import { userSchema } from './model/model.js';
+import cors from 'cors';
 
 const db = 'mongodb+srv://admin:zzzzzzzz@cluster0.dpzge.mongodb.net/?retryWrites=true&w=majority';
 
@@ -20,6 +21,9 @@ const run = async () => {
   const server = http.createServer(app);
   app.use(express.json()); // for parsing application/json
   app.use(express.urlencoded({ extended: true }));
+  app.use(cors({
+    origin: '*'
+  }));
   try {
     await mongoose.connect(db);
     console.log('db connct');
@@ -56,7 +60,8 @@ const run = async () => {
     const { nickname, password } = req.body;
     const [user] = await User.find({ nickname });
     if (user && user.password === password) {
-      res.status(200).send({ id: user.id });
+      // res.status(200).send({ id: user.id });
+      res.status(200).send(user);
       return;
     }
     res.status(400).send({ error: 'Invalid login or password' });
