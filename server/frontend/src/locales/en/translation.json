@@ -6,6 +6,8 @@
   "login": "Login",
   "guest": "Enter as Guest",
   "back": "Back to main page",
+  "table": "Start game",
+  "success": "You are logged in",
   "Invalid login or password": "Invalid login or password",
   "User already Exist": "User already Exist",
   "required_field": "This field is required",
