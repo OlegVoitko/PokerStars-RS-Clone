@@ -21,9 +21,11 @@ const run = async () => {
   const server = http.createServer(app);
   app.use(express.json()); // for parsing application/json
   app.use(express.urlencoded({ extended: true }));
-  app.use(cors({
-    origin: '*'
-  }));
+  app.use(
+    cors({
+      origin: '*',
+    })
+  );
   try {
     await mongoose.connect(db);
     console.log('db connct');
@@ -102,6 +104,9 @@ const run = async () => {
     });
     socket.on('game:checkAction', (data) => {
       io.emit('game:checkAction', data);
+    });
+    socket.on('game:restartDeal', (deck) => {
+      io.emit('game:restartDeal', deck);
     });
   });
 

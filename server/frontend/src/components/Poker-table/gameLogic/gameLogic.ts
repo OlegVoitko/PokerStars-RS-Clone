@@ -6,20 +6,18 @@ export interface IPlayer {
   stack: number;
 }
 
-export interface IGamePlay {
+export interface IHand {
   playersInDial: IPlayer[];
   currentPlayer: IPlayer | null;
   board: ICard[];
 }
 
-export const deal = (players: IPlayer[], deck: ICard[]) => {
+export const deal = (count: number, deck: ICard[]) => {
   let currentCard = 0;
-  const copy = { ...players };
-  for (let i = 0; i < players.length; i += 1) {
-    console.log(copy[i]);
-    console.log(deck);
-    copy[i].hand.push(deck[currentCard], deck[currentCard + 1]);
+  const hands = Array(count);
+  for (let i = 0; i < count; i += 1) {
+    hands[i] = [deck[currentCard], deck[currentCard + 1]];
     currentCard += 2;
   }
-  return copy;
+  return hands;
 };
