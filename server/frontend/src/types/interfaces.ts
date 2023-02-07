@@ -35,3 +35,23 @@ export interface IUserState {
   status: string | null;
   error: string | null;
 }
+
+export interface IGameplay {
+  stage: number;
+  usersCount: number;
+  usersCompleteAction: number;
+  activePosition: number;
+  isDeal: boolean;
+  usersInDeal: IUser[];
+  currentUser: IUser | null;
+  board: ICard[];
+  showCards: ICard[];
+  wait: IUser[];
+  loading: 'idle' | 'pending' | 'succeeded' | 'failed';
+}
+
+export interface IHand {
+  usersInDial: IUser[];
+  currentPlayer: IUser | null;
+  board: ICard[];
+}

@@ -5,9 +5,8 @@ import CustomizedSlider from './Slider_table';
 import Sound from './SoundOnOff';
 import SeatBtn from './SeatBtn';
 import { useAppDispatch, useAppSelector } from '../../hooks/hook';
-import { IGameplay } from '../../types/gameInterfaces';
 import { shuffle } from '../../utils/gameHelper';
-import { ICard, IUser } from '../../types/interfaces';
+import { ICard, IUser, IGameplay } from '../../types/interfaces';
 import { checkAction, checkActionFetch, restartDealFetch } from '../../store/gameplaySlice';
 
 const Poker_table = (): JSX.Element => {

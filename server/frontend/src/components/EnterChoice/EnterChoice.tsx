@@ -16,7 +16,13 @@ const EnterChoice = (): JSX.Element => {
       nickname: 'Guest',
       password: '',
       bankroll: START_BANKROLL,
-      gameState: null,
+      gameState: {
+        hand: [],
+        stack: START_BANKROLL,
+        state: 'wait',
+        bet: 0,
+        action: '',
+      },
     };
     dispatch(registerUser(guest));
     navigate('/table');

@@ -30,7 +30,13 @@ export const registerUserThunk = createAsyncThunk(
         nickname: data.nickname,
         password: data.password,
         bankroll: START_BANKROLL,
-        gameState: null,
+        gameState: {
+          hand: [],
+          stack: START_BANKROLL,
+          state: 'wait',
+          bet: 0,
+          action: '',
+        },
       };
       // console.log('createAsyncThunk data', data);
       dispatch(registerUser(userData));
@@ -63,7 +69,13 @@ export const loginUserThunk = createAsyncThunk(
         nickname: data.nickname,
         password: data.password,
         bankroll: START_BANKROLL,
-        gameState: null,
+        gameState: {
+          hand: [],
+          stack: START_BANKROLL,
+          state: 'wait',
+          bet: 0,
+          action: '',
+        },
       };
       // console.log('loginUserThunk data', data);
       dispatch(registerUser(userData));
