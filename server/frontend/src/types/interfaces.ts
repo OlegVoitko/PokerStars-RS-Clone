@@ -5,11 +5,10 @@ export interface ICard {
 }
 
 export interface IUserGamestate {
-  id: string;
   hand: ICard[];
   stack: number;
   bet: number;
-  action: string;
+  state: string;
 }
 
 export interface IUser {

@@ -2,13 +2,13 @@ import { io, Socket } from 'socket.io-client';
 import store from './store/store';
 import { addMessage } from './store/chatSlice';
 import { IMessage } from './store/chatSlice';
-import { ICard } from './types/interfaces';
+import { ICard, IUser } from './types/interfaces';
 import { playerSeat, checkAction, restartDeal } from './store/gameplaySlice';
 import { IGameplay, IPlayer } from './types/gameInterfaces';
 
 interface ServerToClientEvents {
   ['new message']: (data: IMessage) => void;
-  ['game:seatPlayer']: (data: IPlayer[]) => void;
+  ['game:seatPlayer']: (data: IUser[]) => void;
   ['game:checkAction']: (data: { id: string }) => void;
   ['game:restartDeal']: (deck: ICard[]) => void;
   test: (id: number) => void;
@@ -16,7 +16,7 @@ interface ServerToClientEvents {
 
 interface ClientToServerEvents {
   send: (data: IMessage) => void;
-  ['game:seatPlayer']: (data: IPlayer) => void;
+  ['game:seatPlayer']: (data: IUser) => void;
   ['game:checkAction']: (data: { id: string }) => void;
   ['game:restartDeal']: (deck: ICard[]) => void;
   updateGameplay: (data: IGameplay) => void;

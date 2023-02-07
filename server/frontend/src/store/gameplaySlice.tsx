@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { socket } from '../socket';
-import { ICard } from '../types/interfaces';
+import { ICard, IUser } from '../types/interfaces';
 import { IPlayer, IGameplay } from '../types/gameInterfaces';
 import { deal } from '../utils/gameHelper';
 // import { deal } from '../components/Poker-table/gameLogic/gameLogic';
@@ -19,9 +19,9 @@ const initialState: IGameplay = {
   loading: 'idle',
 };
 
-export const seatPlayer = createAsyncThunk('game/seatPlayer', async (player: IPlayer) => {
-  socket.emit('game:seatPlayer', player);
-  return player;
+export const seatPlayer = createAsyncThunk('game/seatPlayer', async (user: IUser) => {
+  socket.emit('game:seatPlayer', user);
+  return user;
 });
 
 export const checkActionFetch = createAsyncThunk(

@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { IUser, INewUser, IUserState } from '../types/interfaces';
+import { IUser, INewUser, IUserState, IUserGamestate } from '../types/interfaces';
 import { START_BANKROLL } from '../utils/constants';
 
 const initialState: IUserState = {
@@ -81,6 +81,12 @@ const userSlice = createSlice({
     registerUser: (state, { payload }: { payload: IUser }) => {
       state.user = payload;
     },
+    setUserGamestate: (state, { payload }: { payload: IUserGamestate }) => {
+      if (state.user) {
+        state.user.gameState = payload;
+      }
+      // state.user && state.user.gameState = payload;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(registerUserThunk.pending, (state, action) => {
@@ -110,6 +116,6 @@ const userSlice = createSlice({
   },
 });
 
-export const { registerUser } = userSlice.actions;
+export const { registerUser, setUserGamestate } = userSlice.actions;
 
 export default userSlice.reducer;

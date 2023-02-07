@@ -5,7 +5,7 @@ import { useAppSelector } from '../hooks/hook';
 
 const TableRoom = (): JSX.Element => {
   const { user } = useAppSelector((state) => state.user);
-  console.log('tableRoom player', user);
+  console.log('tableRoom ', user);
 
   return (
     <>
