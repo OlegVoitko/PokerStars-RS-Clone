@@ -4,16 +4,16 @@ import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useAppDispatch, useAppSelector } from '../../hooks/hook';
-import { loginPlayerThunk } from '../../store/playerSlice';
+import { loginUserThunk } from '../../store/userSlice';
 import './Login.scss';
 
 const Login = (): JSX.Element => {
-  const { error, player, status } = useAppSelector((state) => state.player);
+  const { error, user, status } = useAppSelector((state) => state.user);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { t } = useTranslation();
 
-  useEffect(() => {}, [player]);
+  useEffect(() => {}, [user]);
 
   const {
     register,
@@ -24,7 +24,7 @@ const Login = (): JSX.Element => {
   });
 
   const onSubmit: SubmitHandler<IFormInput> = async (data: IFormInput): Promise<void> => {
-    await dispatch(loginPlayerThunk(data));
+    await dispatch(loginUserThunk(data));
   };
 
   return (

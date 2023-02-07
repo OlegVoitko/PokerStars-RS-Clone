@@ -4,8 +4,8 @@ import './TableRoom.scss';
 import { useAppSelector } from '../hooks/hook';
 
 const TableRoom = (): JSX.Element => {
-  const { player } = useAppSelector((state) => state.player);
-  console.log('tableRoom player', player);
+  const { user } = useAppSelector((state) => state.user);
+  console.log('tableRoom player', user);
 
   return (
     <>

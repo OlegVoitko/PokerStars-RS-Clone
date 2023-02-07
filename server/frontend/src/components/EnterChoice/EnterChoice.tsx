@@ -1,10 +1,10 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { registerPlayer } from '../../store/playerSlice';
+import { registerUser } from '../../store/userSlice';
 import { useAppDispatch } from '../../hooks/hook';
 import './EnterChoice.scss';
-
+import { START_BANKROLL } from '../../utils/constants';
 
 const EnterChoice = (): JSX.Element => {
   const dispatch = useAppDispatch();
@@ -15,8 +15,10 @@ const EnterChoice = (): JSX.Element => {
       _id: String(Date.now()),
       nickname: 'Guest',
       password: '',
+      bankroll: START_BANKROLL,
+      gameState: null,
     };
-    dispatch(registerPlayer(guest));
+    dispatch(registerUser(guest));
     navigate('/table');
   };
 
@@ -28,9 +30,7 @@ const EnterChoice = (): JSX.Element => {
       <button className='app-enter-buttons__button' onClick={() => navigate('/login')}>
         {t('login')}
       </button>
-      {/*<button className='app-enter-buttons__button' onClick={() => navigate('/table')}>*/}
       <button className='app-enter-buttons__button' onClick={guestEnterHandle}>
-
         {t('guest')}
       </button>
     </div>

@@ -6,8 +6,8 @@ import { Outlet } from 'react-router-dom';
 import './StartPage.scss';
 
 const StartPage: FC = () => {
-  const isUserAuth = useSelector((state: RootState) => state.player);
-  console.log('check slice', isUserAuth);
+  const { user } = useSelector((state: RootState) => state.user);
+  console.log('check slice', user);
 
   return (
     <>

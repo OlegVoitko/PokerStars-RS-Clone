@@ -1,10 +1,10 @@
 // import { useAddPlayerMutation } from '../../services/gameplayApi';
 import { useAppDispatch, useAppSelector } from '../../hooks/hook';
-import { IPlayer } from '../../store/gameplaySlice';
+import { IPlayer } from '../../types/gameInterfaces';
 import { seatPlayer } from '../../store/gameplaySlice';
 
 const SeatBtn = () => {
-  const player1 = useAppSelector((state) => state.player.player);
+  const player1 = useAppSelector((state) => state.user.user);
   const id = player1?._id as string;
   const dispatch = useAppDispatch();
   const player = {

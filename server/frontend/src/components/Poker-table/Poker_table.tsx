@@ -5,21 +5,17 @@ import CustomizedSlider from './Slider_table';
 import Sound from './SoundOnOff';
 import SeatBtn from './SeatBtn';
 import { useAppDispatch, useAppSelector } from '../../hooks/hook';
-import { IPlayer } from './gameLogic/gameLogic';
-import { ICard, shuffle } from '../Cards/Card';
-import {
-  IGameplay,
-  checkAction,
-  checkActionFetch,
-  restartDealFetch,
-} from '../../store/gameplaySlice';
+import { IPlayer, IGameplay } from '../../types/gameInterfaces';
+import { shuffle } from '../Cards/Card';
+import { ICard } from '../../types/interfaces';
+import { checkAction, checkActionFetch, restartDealFetch } from '../../store/gameplaySlice';
 
 const Poker_table = (): JSX.Element => {
   const dispatch = useAppDispatch();
   const { playersInDeal, isDeal, wait, board, currentPlayer, showCards, stage } = useAppSelector(
     (state: { gameplay: IGameplay }) => state.gameplay
   );
-  const id = useAppSelector((state) => state.player.player?._id) as string;
+  const id = useAppSelector((state) => state.user.user?._id) as string;
 
   const renderPlayer = (players: IPlayer[]) =>
     players.map((p, i) => (

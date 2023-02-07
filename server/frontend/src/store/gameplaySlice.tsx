@@ -1,29 +1,8 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { socket } from '../socket';
-import { ICard } from '../components/Cards/Card';
+import { ICard } from '../types/interfaces';
+import { IPlayer, IGameplay } from '../types/gameInterfaces';
 import { deal } from '../components/Poker-table/gameLogic/gameLogic';
-
-export interface IPlayer {
-  id: string;
-  hand: ICard[];
-  stack: number;
-  bet: number;
-  action: string;
-}
-
-export interface IGameplay {
-  stage: number;
-  playersCount: number;
-  playersCompleteAction: number;
-  activePosition: number;
-  isDeal: boolean;
-  playersInDeal: IPlayer[];
-  currentPlayer: IPlayer | null;
-  board: ICard[];
-  showCards: ICard[];
-  wait: IPlayer[];
-  loading: 'idle' | 'pending' | 'succeeded' | 'failed';
-}
 
 const initialState: IGameplay = {
   stage: 0,

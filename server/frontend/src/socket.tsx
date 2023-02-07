@@ -2,8 +2,9 @@ import { io, Socket } from 'socket.io-client';
 import store from './store/store';
 import { addMessage } from './store/chatSlice';
 import { IMessage } from './store/chatSlice';
-import { ICard } from './components/Cards/Card';
-import { IGameplay, IPlayer, playerSeat, checkAction, restartDeal } from './store/gameplaySlice';
+import { ICard } from './types/interfaces';
+import { playerSeat, checkAction, restartDeal } from './store/gameplaySlice';
+import { IGameplay, IPlayer } from './types/gameInterfaces';
 
 interface ServerToClientEvents {
   ['new message']: (data: IMessage) => void;

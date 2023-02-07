@@ -1,8 +1,4 @@
-export interface ICard {
-  cardFace: string;
-  suit: string;
-  value: number;
-}
+import { ICard } from '../../types/interfaces';
 
 interface IValueMap {
   [key: string]: number;
