@@ -35,3 +35,11 @@
 .button__back {
   margin-top: 40px;
 }
+
+.submit__success-msg {
+  text-align: center;
+  margin-top: 20px;
+  color: $color-text_success;
+  font-size: 2rem;
+  font-weight: bold;
+}

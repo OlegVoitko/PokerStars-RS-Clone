@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { IFormInput } from '../Auth/Auth';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -8,10 +8,12 @@ import { loginPlayerThunk } from '../../store/playerSlice';
 import './Login.scss';
 
 const Login = (): JSX.Element => {
-  const { error, player } = useAppSelector((state) => state.player);
+  const { error, player, status } = useAppSelector((state) => state.player);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { t } = useTranslation();
+
+  useEffect(() => {}, [player]);
 
   const {
     register,
@@ -22,11 +24,7 @@ const Login = (): JSX.Element => {
   });
 
   const onSubmit: SubmitHandler<IFormInput> = async (data: IFormInput): Promise<void> => {
-    //TODO notify about successful login
     await dispatch(loginPlayerThunk(data));
-    if (player) {
-      navigate('/table');
-    }
   };
 
   return (
@@ -62,6 +60,17 @@ const Login = (): JSX.Element => {
       <button className='app-enter-buttons__button button__back' onClick={() => navigate('/')}>
         {t('back')}
       </button>
+      {status === 'fulfilled' && (
+        <>
+          <p className='submit__success-msg'>{t('success')}</p>
+          <button
+            className='app-enter-buttons__button button__back'
+            onClick={() => navigate('/table')}
+          >
+            {t('table')}
+          </button>
+        </>
+      )}
     </>
   );
 };
