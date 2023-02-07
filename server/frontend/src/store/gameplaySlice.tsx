@@ -2,7 +2,8 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { socket } from '../socket';
 import { ICard } from '../types/interfaces';
 import { IPlayer, IGameplay } from '../types/gameInterfaces';
-import { deal } from '../components/Poker-table/gameLogic/gameLogic';
+import { deal } from '../utils/gameHelper';
+// import { deal } from '../components/Poker-table/gameLogic/gameLogic';
 
 const initialState: IGameplay = {
   stage: 0,

@@ -21,3 +21,9 @@ export interface IGameplay {
   wait: IPlayer[];
   loading: 'idle' | 'pending' | 'succeeded' | 'failed';
 }
+
+export interface IHand {
+  playersInDial: IPlayer[];
+  currentPlayer: IPlayer | null;
+  board: ICard[];
+}

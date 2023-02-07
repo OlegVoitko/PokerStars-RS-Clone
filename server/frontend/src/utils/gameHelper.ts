@@ -62,12 +62,12 @@ export const shuffle = (): ICard[] => {
   return shuffledDeck;
 };
 
-// export const deal = (count: number, deck: ICard[]) => {
-//   let currentCard = 0;
-//   const hands = Array(count);
-//   for (let i = 0; i < count; i += 1) {
-//     hands[i] = [deck[currentCard], deck[currentCard + 1]];
-//     currentCard += 2;
-//   }
-//   return hands;
-// };
+export const deal = (count: number, deck: ICard[]) => {
+  let currentCard = 0;
+  const hands = Array(count);
+  for (let i = 0; i < count; i += 1) {
+    hands[i] = [deck[currentCard], deck[currentCard + 1]];
+    currentCard += 2;
+  }
+  return hands;
+};
