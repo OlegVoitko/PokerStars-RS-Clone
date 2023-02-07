@@ -101,6 +101,6 @@ const playerSlice = createSlice({
   },
 });
 
-const { registerPlayer } = playerSlice.actions;
+export const { registerPlayer } = playerSlice.actions;
 
 export default playerSlice.reducer;

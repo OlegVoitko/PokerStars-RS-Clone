@@ -52,6 +52,9 @@ export const checkActionFetch = createAsyncThunk(
     return data;
   }
 );
+export const restartDealFetch = createAsyncThunk('game/restartDeal', async () => {
+  socket.emit('game:restartDeal');
+});
 
 const gameplaySlice = createSlice({
   name: 'players',
@@ -88,7 +91,6 @@ const gameplaySlice = createSlice({
           state.showCards.push(state.board[4]);
         }
         if (state.stage === 4) {
-          state.stage = 0;
           state.showCards = [{ cardFace: 'SHOWDOWN', value: 0, suit: '' }];
         }
         return;
@@ -101,12 +103,22 @@ const gameplaySlice = createSlice({
       state.currentPlayer = state.playersInDeal[nextPlayer];
       state.activePosition = nextPlayer;
     },
+    restartDeal: (state) => {
+      const deck = shuffle();
+      state.board.push(...deck.slice(0, 5));
+      deal(state.playersInDeal, deck.slice(5));
+      state.stage = 0;
+      state.activePosition = 0;
+      state.currentPlayer = state.playersInDeal[0];
+      state.showCards = [];
+      state.wait = [];
+    },
     updateGame: (state, { payload }: { payload: IGameplay }) => {
       state = payload;
     },
   },
 });
 
-export const { playerSeat, checkAction, updateGame } = gameplaySlice.actions;
+export const { playerSeat, checkAction, updateGame, restartDeal } = gameplaySlice.actions;
 
 export default gameplaySlice.reducer;
