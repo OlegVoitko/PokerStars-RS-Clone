@@ -1,12 +1,10 @@
-import { ICard } from '../../types/interfaces';
+import { ICard } from '../types/interfaces';
+import { CARD_DECK } from '../utils/constants';
 
 interface IValueMap {
   [key: string]: number;
 }
 
-const totalNumCards = 52;
-const suits = ['Heart', 'Spade', 'Club', 'Diamond'];
-const cards = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A'];
 const VALUE_MAP: IValueMap = {
   2: 1,
   3: 2,
@@ -31,8 +29,8 @@ const randomizePosition = (min: number, max: number) => {
 
 const generateDeckOfCards = () => {
   const deck: ICard[] = [];
-  for (const suit of suits) {
-    for (const card of cards) {
+  for (const suit of CARD_DECK.suits) {
+    for (const card of CARD_DECK.cards) {
       deck.push({
         cardFace: card,
         suit: suit,
@@ -45,17 +43,17 @@ const generateDeckOfCards = () => {
 
 export const shuffle = (): ICard[] => {
   const deck = generateDeckOfCards();
-  const shuffledDeck = new Array(totalNumCards);
+  const shuffledDeck = new Array(CARD_DECK.totalNumCards);
   const filledSlots: number[] = [];
-  for (let i = 0; i < totalNumCards; i++) {
+  for (let i = 0; i < CARD_DECK.totalNumCards; i++) {
     if (i === 51) {
       const lastSlot = shuffledDeck.findIndex((el) => typeof el == 'undefined');
       shuffledDeck[lastSlot] = deck[i];
       filledSlots.push(lastSlot);
     } else {
-      let shuffleToPosition = randomizePosition(0, totalNumCards - 1);
+      let shuffleToPosition = randomizePosition(0, CARD_DECK.totalNumCards - 1);
       while (filledSlots.includes(shuffleToPosition)) {
-        shuffleToPosition = randomizePosition(0, totalNumCards - 1);
+        shuffleToPosition = randomizePosition(0, CARD_DECK.totalNumCards - 1);
       }
       shuffledDeck[shuffleToPosition] = deck[i];
       filledSlots.push(shuffleToPosition);
@@ -63,3 +61,13 @@ export const shuffle = (): ICard[] => {
   }
   return shuffledDeck;
 };
+
+// export const deal = (count: number, deck: ICard[]) => {
+//   let currentCard = 0;
+//   const hands = Array(count);
+//   for (let i = 0; i < count; i += 1) {
+//     hands[i] = [deck[currentCard], deck[currentCard + 1]];
+//     currentCard += 2;
+//   }
+//   return hands;
+// };
