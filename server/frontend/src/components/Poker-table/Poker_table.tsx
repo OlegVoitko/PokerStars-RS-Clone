@@ -6,7 +6,7 @@ import Sound from './SoundOnOff';
 import SeatBtn from './SeatBtn';
 import { useAppDispatch, useAppSelector } from '../../hooks/hook';
 import { IPlayer, IGameplay } from '../../types/gameInterfaces';
-import { shuffle } from '../Cards/Card';
+import { shuffle } from '../../utils/gameHelper';
 import { ICard } from '../../types/interfaces';
 import { checkAction, checkActionFetch, restartDealFetch } from '../../store/gameplaySlice';
 
