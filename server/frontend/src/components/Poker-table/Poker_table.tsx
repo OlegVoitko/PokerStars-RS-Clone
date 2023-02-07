@@ -6,16 +6,20 @@ import Sound from './SoundOnOff';
 import SeatBtn from './SeatBtn';
 import { useAppDispatch, useAppSelector } from '../../hooks/hook';
 import { IPlayer } from './gameLogic/gameLogic';
-import { ICard } from '../Cards/Card';
-// import { useUpdateGameplayMutation } from '../../services/gameplayApi';
-import { IGameplay, checkAction, checkActionFetch } from '../../store/gameplaySlice';
+import { ICard, shuffle } from '../Cards/Card';
+import {
+  IGameplay,
+  checkAction,
+  checkActionFetch,
+  restartDealFetch,
+} from '../../store/gameplaySlice';
 
 const Poker_table = (): JSX.Element => {
   const dispatch = useAppDispatch();
-  const gameplay: IGameplay = useAppSelector((state: { gameplay: IGameplay }) => state.gameplay);
+  const { playersInDeal, isDeal, wait, board, currentPlayer, showCards, stage } = useAppSelector(
+    (state: { gameplay: IGameplay }) => state.gameplay
+  );
   const id = useAppSelector((state) => state.player.player?._id) as string;
-  const { playersInDeal, isDeal, wait, board, currentPlayer, showCards } = gameplay;
-  // const [updateGameplay] = useUpdateGameplayMutation();
 
   const renderPlayer = (players: IPlayer[]) =>
     players.map((p, i) => (
@@ -27,9 +31,6 @@ const Poker_table = (): JSX.Element => {
     ));
 
   const renderCards = (cards: ICard[]) => {
-    console.log(cards);
-    // {cardFace: '3', suit: 'Spade', value: 2}
-
     return cards.map((card, i) => (
       <div key={i}>
         {card.cardFace} {card.suit}
@@ -37,11 +38,14 @@ const Poker_table = (): JSX.Element => {
     ));
   };
 
-  // useEffect(() => {
-  //   console.log(gameplay);
-  //   dispatch(updateGameFetch(gameplay));
-  //   console.log('USEEFFECT');
-  // }, [gameplay]);
+  useEffect(() => {
+    if (stage === 4 || (!isDeal && wait.length === 2)) {
+      setTimeout(() => {
+        const deck = shuffle();
+        dispatch(restartDealFetch(deck));
+      }, 3000);
+    }
+  }, [dispatch, stage, wait]);
 
   const handleCheck = () => {
     dispatch(checkActionFetch({ id }));

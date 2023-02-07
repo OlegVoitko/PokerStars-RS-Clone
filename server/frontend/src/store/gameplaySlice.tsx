@@ -2,7 +2,6 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { socket } from '../socket';
 import { ICard } from '../components/Cards/Card';
 import { deal } from '../components/Poker-table/gameLogic/gameLogic';
-import { shuffle } from '../components/Cards/Card';
 
 export interface IPlayer {
   id: string;
@@ -52,24 +51,17 @@ export const checkActionFetch = createAsyncThunk(
     return data;
   }
 );
+export const restartDealFetch = createAsyncThunk('game/restartDeal', async (deck: ICard[]) => {
+  socket.emit('game:restartDeal', deck);
+  return deck;
+});
 
 const gameplaySlice = createSlice({
   name: 'players',
   initialState,
   reducers: {
     playerSeat: (state, { payload }: { payload: IPlayer[] }) => {
-      if (!state.isDeal && payload.length === 2) {
-        const deck = shuffle();
-        state.playersCount = 2;
-        state.isDeal = true;
-        state.currentPlayer = payload[state.activePosition];
-        state.playersInDeal.push(...payload);
-        state.board.push(...deck.slice(0, 5));
-        deal(state.playersInDeal, deck.slice(5));
-        state.wait = [];
-      } else {
-        state.wait = payload;
-      }
+      state.wait = payload;
     },
     checkAction: (state, { payload }: { payload: { id: string } }) => {
       state.playersCompleteAction += 1;
@@ -88,7 +80,6 @@ const gameplaySlice = createSlice({
           state.showCards.push(state.board[4]);
         }
         if (state.stage === 4) {
-          state.stage = 0;
           state.showCards = [{ cardFace: 'SHOWDOWN', value: 0, suit: '' }];
         }
         return;
@@ -101,12 +92,22 @@ const gameplaySlice = createSlice({
       state.currentPlayer = state.playersInDeal[nextPlayer];
       state.activePosition = nextPlayer;
     },
-    updateGame: (state, { payload }: { payload: IGameplay }) => {
-      state = payload;
+    restartDeal: (state, { payload: deck }: { payload: ICard[] }) => {
+      state.isDeal = true;
+      state.playersCount += state.wait.length;
+      state.board = deck.slice(0, 5);
+      state.stage = 0;
+      state.activePosition = 0;
+      state.showCards = [];
+      state.playersInDeal.push(...state.wait);
+      const hands = deal(state.playersInDeal.length, deck.slice(5));
+      state.playersInDeal.forEach((p, i) => (p.hand = hands[i]));
+      state.wait = [];
+      state.currentPlayer = state.playersInDeal[0];
     },
   },
 });
 
-export const { playerSeat, checkAction, updateGame } = gameplaySlice.actions;
+export const { playerSeat, checkAction, restartDeal } = gameplaySlice.actions;
 
 export default gameplaySlice.reducer;

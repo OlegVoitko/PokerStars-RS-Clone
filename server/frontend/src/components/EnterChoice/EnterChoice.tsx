@@ -5,6 +5,7 @@ import { registerPlayer } from '../../store/playerSlice';
 import { useAppDispatch } from '../../hooks/hook';
 import './EnterChoice.scss';
 
+
 const EnterChoice = (): JSX.Element => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -29,6 +30,7 @@ const EnterChoice = (): JSX.Element => {
       </button>
       {/*<button className='app-enter-buttons__button' onClick={() => navigate('/table')}>*/}
       <button className='app-enter-buttons__button' onClick={guestEnterHandle}>
+
         {t('guest')}
       </button>
     </div>
