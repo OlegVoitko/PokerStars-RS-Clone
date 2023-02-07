@@ -2,13 +2,14 @@ import { io, Socket } from 'socket.io-client';
 import store from './store/store';
 import { addMessage } from './store/chatSlice';
 import { IMessage } from './store/chatSlice';
+import { ICard } from './components/Cards/Card';
 import { IGameplay, IPlayer, playerSeat, checkAction, restartDeal } from './store/gameplaySlice';
 
 interface ServerToClientEvents {
   ['new message']: (data: IMessage) => void;
   ['game:seatPlayer']: (data: IPlayer[]) => void;
   ['game:checkAction']: (data: { id: string }) => void;
-  ['game:restartDeal']: () => void;
+  ['game:restartDeal']: (deck: ICard[]) => void;
   test: (id: number) => void;
 }
 
@@ -16,7 +17,7 @@ interface ClientToServerEvents {
   send: (data: IMessage) => void;
   ['game:seatPlayer']: (data: IPlayer) => void;
   ['game:checkAction']: (data: { id: string }) => void;
-  ['game:restartDeal']: () => void;
+  ['game:restartDeal']: (deck: ICard[]) => void;
   updateGameplay: (data: IGameplay) => void;
 }
 
@@ -34,6 +35,6 @@ socket.on('game:seatPlayer', (data) => {
 socket.on('game:checkAction', (data) => {
   store.dispatch(checkAction(data));
 });
-socket.on('game:restartDeal', () => {
-  store.dispatch(restartDeal());
+socket.on('game:restartDeal', (deck) => {
+  store.dispatch(restartDeal(deck));
 });
