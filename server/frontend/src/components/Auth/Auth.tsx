@@ -12,7 +12,7 @@ export interface IFormInput {
 }
 
 const Auth = (): JSX.Element => {
-  const { error, player } = useAppSelector((state) => state.player);
+  const { error, player, status } = useAppSelector((state) => state.player);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
@@ -27,10 +27,6 @@ const Auth = (): JSX.Element => {
   // const onRegisterSubmit: SubmitHandler<IFormInput> = async (data) => {
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
     await dispatch(registerPlayerThunk(data));
-    //TODO notify about successful registration
-    if (player) {
-      navigate('/table');
-    }
   };
 
   const { t } = useTranslation();
@@ -68,6 +64,17 @@ const Auth = (): JSX.Element => {
       <button className='app-enter-buttons__button button__back' onClick={() => navigate('/')}>
         {t('back')}
       </button>
+      {status === 'fulfilled' && (
+        <>
+          <p className='submit__success-msg'>{t('success')}</p>
+          <button
+            className='app-enter-buttons__button button__back'
+            onClick={() => navigate('/table')}
+          >
+            {t('table')}
+          </button>
+        </>
+      )}
     </>
   );
 };
