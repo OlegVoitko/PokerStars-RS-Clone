@@ -1,4 +1,4 @@
-import { ICard } from './interfaces';
+import { ICard, IUser } from './interfaces';
 
 export interface IPlayer {
   id: string;
@@ -10,20 +10,20 @@ export interface IPlayer {
 
 export interface IGameplay {
   stage: number;
-  playersCount: number;
-  playersCompleteAction: number;
+  usersCount: number;
+  usersCompleteAction: number;
   activePosition: number;
   isDeal: boolean;
-  playersInDeal: IPlayer[];
-  currentPlayer: IPlayer | null;
+  usersInDeal: IUser[];
+  currentUser: IUser | null;
   board: ICard[];
   showCards: ICard[];
-  wait: IPlayer[];
+  wait: IUser[];
   loading: 'idle' | 'pending' | 'succeeded' | 'failed';
 }
 
 export interface IHand {
-  playersInDial: IPlayer[];
-  currentPlayer: IPlayer | null;
+  usersInDial: IUser[];
+  currentPlayer: IUser | null;
   board: ICard[];
 }

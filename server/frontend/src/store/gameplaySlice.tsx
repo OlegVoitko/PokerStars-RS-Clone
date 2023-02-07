@@ -7,12 +7,12 @@ import { deal } from '../utils/gameHelper';
 
 const initialState: IGameplay = {
   stage: 0,
-  playersCount: 0,
-  playersCompleteAction: 0,
+  usersCount: 0,
+  usersCompleteAction: 0,
   activePosition: 0,
   isDeal: false,
-  playersInDeal: [],
-  currentPlayer: null,
+  usersInDeal: [],
+  currentUser: null,
   board: [],
   showCards: [],
   wait: [],
@@ -26,7 +26,7 @@ export const seatPlayer = createAsyncThunk('game/seatPlayer', async (user: IUser
 
 export const checkActionFetch = createAsyncThunk(
   'game/checkAction',
-  async (data: { id: string }) => {
+  async (data: { _id: string }) => {
     socket.emit('game:checkAction', data);
     return data;
   }
@@ -37,19 +37,19 @@ export const restartDealFetch = createAsyncThunk('game/restartDeal', async (deck
 });
 
 const gameplaySlice = createSlice({
-  name: 'players',
+  name: 'users',
   initialState,
   reducers: {
-    playerSeat: (state, { payload }: { payload: IPlayer[] }) => {
+    userSeat: (state, { payload }: { payload: IUser[] }) => {
       state.wait = payload;
     },
-    checkAction: (state, { payload }: { payload: { id: string } }) => {
-      state.playersCompleteAction += 1;
-      if (state.playersCompleteAction === state.playersCount) {
+    checkAction: (state, { payload }: { payload: { _id: string } }) => {
+      state.usersCompleteAction += 1;
+      if (state.usersCompleteAction === state.usersCount) {
         state.stage += 1;
-        state.playersCompleteAction = 0;
+        state.usersCompleteAction = 0;
         state.activePosition = 0;
-        state.currentPlayer = state.playersInDeal[0];
+        state.currentUser = state.usersInDeal[0];
         if (state.stage === 1) {
           state.showCards.push(...state.board.slice(0, 3));
         }
@@ -65,29 +65,37 @@ const gameplaySlice = createSlice({
         return;
       }
 
-      const currentPlayer = state.playersInDeal.find(({ id }) => id === payload.id) as IPlayer;
-      currentPlayer.action = 'check';
-      const nextPlayer =
-        state.activePosition + 1 > state.playersCount - 1 ? 0 : state.activePosition + 1;
-      state.currentPlayer = state.playersInDeal[nextPlayer];
-      state.activePosition = nextPlayer;
+      const currentUser = state.usersInDeal.find(({ _id }) => _id === payload._id) as IUser;
+
+      if (currentUser?.gameState?.action) {
+        currentUser.gameState.action = 'check';
+      }
+      // currentUser.gameState!.action = 'check';
+      const nextUser =
+        state.activePosition + 1 > state.usersCount - 1 ? 0 : state.activePosition + 1;
+      state.currentUser = state.usersInDeal[nextUser];
+      state.activePosition = nextUser;
     },
     restartDeal: (state, { payload: deck }: { payload: ICard[] }) => {
       state.isDeal = true;
-      state.playersCount += state.wait.length;
+      state.usersCount += state.wait.length;
       state.board = deck.slice(0, 5);
       state.stage = 0;
       state.activePosition = 0;
       state.showCards = [];
-      state.playersInDeal.push(...state.wait);
-      const hands = deal(state.playersInDeal.length, deck.slice(5));
-      state.playersInDeal.forEach((p, i) => (p.hand = hands[i]));
+      state.usersInDeal.push(...state.wait);
+      const hands = deal(state.usersInDeal.length, deck.slice(5));
+      state.usersInDeal.forEach((u, i) => {
+        if (u.gameState) {
+          u.gameState.hand = hands[i];
+        }
+      }); //here is the same problem - Object is possibly 'null'.ts(2531)
       state.wait = [];
-      state.currentPlayer = state.playersInDeal[0];
+      state.currentUser = state.usersInDeal[0];
     },
   },
 });
 
-export const { playerSeat, checkAction, restartDeal } = gameplaySlice.actions;
+export const { userSeat, checkAction, restartDeal } = gameplaySlice.actions;
 
 export default gameplaySlice.reducer;

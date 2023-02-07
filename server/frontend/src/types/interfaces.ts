@@ -9,6 +9,7 @@ export interface IUserGamestate {
   stack: number;
   bet: number;
   state: string;
+  action: string; //'check' | 'fold' | 'call'
 }
 
 export interface IUser {

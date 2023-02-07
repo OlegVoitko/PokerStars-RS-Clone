@@ -3,13 +3,13 @@ import store from './store/store';
 import { addMessage } from './store/chatSlice';
 import { IMessage } from './store/chatSlice';
 import { ICard, IUser } from './types/interfaces';
-import { playerSeat, checkAction, restartDeal } from './store/gameplaySlice';
-import { IGameplay, IPlayer } from './types/gameInterfaces';
+import { userSeat, checkAction, restartDeal } from './store/gameplaySlice';
+import { IGameplay } from './types/gameInterfaces';
 
 interface ServerToClientEvents {
   ['new message']: (data: IMessage) => void;
   ['game:seatPlayer']: (data: IUser[]) => void;
-  ['game:checkAction']: (data: { id: string }) => void;
+  ['game:checkAction']: (data: { _id: string }) => void;
   ['game:restartDeal']: (deck: ICard[]) => void;
   test: (id: number) => void;
 }
@@ -17,7 +17,7 @@ interface ServerToClientEvents {
 interface ClientToServerEvents {
   send: (data: IMessage) => void;
   ['game:seatPlayer']: (data: IUser) => void;
-  ['game:checkAction']: (data: { id: string }) => void;
+  ['game:checkAction']: (data: { _id: string }) => void;
   ['game:restartDeal']: (deck: ICard[]) => void;
   updateGameplay: (data: IGameplay) => void;
 }
@@ -31,7 +31,7 @@ socket.on('new message', (data) => {
 
 socket.on('game:seatPlayer', (data) => {
   console.log('seat from server');
-  store.dispatch(playerSeat(data));
+  store.dispatch(userSeat(data));
 });
 socket.on('game:checkAction', (data) => {
   store.dispatch(checkAction(data));
