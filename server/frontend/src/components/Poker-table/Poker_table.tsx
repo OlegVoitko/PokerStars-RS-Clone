@@ -8,28 +8,19 @@ import { useAppDispatch, useAppSelector } from '../../hooks/hook';
 import { shuffle } from '../../utils/gameHelper';
 import { ICard, IUser, IGameplay } from '../../types/interfaces';
 import {
-  checkAction,
   checkActionFetch,
   restartDealFetch,
   betActionThunk,
+  callActionThunk,
   foldActionThunk,
 } from '../../store/gameplaySlice';
 
 const Poker_table = (): JSX.Element => {
   const dispatch = useAppDispatch();
-  const {
-    usersInDeal,
-    isDeal,
-    wait,
-    board,
-    currentUser,
-    showCards,
-    stage,
-    betToCall,
-    bank,
-    userOptions,
-  } = useAppSelector((state: { gameplay: IGameplay }) => state.gameplay);
-  const _id = useAppSelector((state) => state.user.user?._id) as string;
+  const { usersInDeal, isDeal, wait, currentUser, showCards, stage, betToCall, bank, userOptions } =
+    useAppSelector((state: { gameplay: IGameplay }) => state.gameplay);
+  const user = useAppSelector((state) => state.user.user) as IUser;
+  const { _id, gameState } = user;
 
   const renderPlayer = (users: IUser[]) =>
     users.map((u, i) => (
@@ -61,9 +52,16 @@ const Poker_table = (): JSX.Element => {
   const handleCheck = () => {
     dispatch(checkActionFetch({ _id }));
   };
+
   const handleBet = () => {
     console.log('bet');
     dispatch(betActionThunk({ _id, betSize: 10 }));
+  };
+
+  const handleCall = () => {
+    console.log('call');
+    const callSize = betToCall - gameState.bet;
+    dispatch(callActionThunk({ _id, callSize }));
   };
 
   const handleFold = () => {
@@ -98,6 +96,11 @@ const Poker_table = (): JSX.Element => {
                   {userOptions.includes('fold') && (
                     <button className='action__buttons__fold' onClick={handleFold}>
                       Fold
+                    </button>
+                  )}
+                  {!!betToCall && (
+                    <button className='action__buttons__Call' onClick={handleCall}>
+                      Call
                     </button>
                   )}
                   <button className='action__buttons__Call'>Call</button>

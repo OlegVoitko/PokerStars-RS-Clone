@@ -97,16 +97,19 @@ const run = async () => {
     socket.on('game:seatUser', (user) => {
       console.log('seat');
       state.users.push(user);
-      io.emit('game:seatUser', state.users);
-      if (state.users.length === 2) {
-        state.users = [];
-      }
+      io.emit('game:seatUser', user);
+      // if (state.users.length === 2) {
+      //   state.users = [];
+      // }
     });
     socket.on('game:checkAction', (data) => {
       io.emit('game:checkAction', data);
     });
     socket.on('game:betAction', (data) => {
       io.emit('game:betAction', data);
+    });
+    socket.on('game:callAction', (data) => {
+      io.emit('game:callAction', data);
     });
     socket.on('game:foldAction', (data) => {
       io.emit('game:foldAction', data);
