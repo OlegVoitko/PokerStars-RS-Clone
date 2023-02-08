@@ -1,6 +1,7 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk, createAction } from '@reduxjs/toolkit';
 import { IUser, INewUser, IUserState, IUserGamestate } from '../types/interfaces';
 import { START_BANKROLL } from '../utils/constants';
+import { betAction, callAction } from './gameplaySlice';
 
 const initialState: IUserState = {
   user: null,
@@ -101,29 +102,37 @@ const userSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(registerUserThunk.pending, (state, action) => {
+    builder.addCase(registerUserThunk.pending, (state) => {
       state.status = 'loading';
       state.error = null;
     });
-    builder.addCase(registerUserThunk.fulfilled, (state, action) => {
+    builder.addCase(registerUserThunk.fulfilled, (state) => {
       state.status = 'fulfilled';
       state.error = null;
     });
-    builder.addCase(registerUserThunk.rejected, (state, action) => {
+    builder.addCase(registerUserThunk.rejected, (state) => {
       state.status = 'rejected';
       state.error = 'User already Exist';
     });
-    builder.addCase(loginUserThunk.pending, (state, action) => {
+    builder.addCase(loginUserThunk.pending, (state) => {
       state.status = 'loading';
       state.error = null;
     });
-    builder.addCase(loginUserThunk.fulfilled, (state, action) => {
+    builder.addCase(loginUserThunk.fulfilled, (state) => {
       state.status = 'fulfilled';
       state.error = null;
     });
-    builder.addCase(loginUserThunk.rejected, (state, action) => {
+    builder.addCase(loginUserThunk.rejected, (state) => {
       state.status = 'rejected';
       state.error = 'Invalid login or password';
+    });
+    builder.addCase(callAction, (state, action) => {
+      const { callSize } = action.payload;
+      if (state.user) state.user.gameState.bet += callSize;
+    });
+    builder.addCase(betAction, (state, action) => {
+      const { betSize } = action.payload;
+      if (state.user) state.user.gameState.bet += betSize;
     });
   },
 });
