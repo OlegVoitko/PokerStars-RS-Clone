@@ -103,15 +103,19 @@ const gameplaySlice = createSlice({
       state.userOptions = ['fold', 'call', 'raise'];
     },
     foldAction: (state, { payload }: { payload: { _id: string } }) => {
+      state.usersCompleteAction += 1;
+      if (state.usersCompleteAction === state.usersCount) {
+        state.stage += 1;
+      }
       const currentUser = state.usersInDeal.find(({ _id }) => _id === payload._id) as IUser;
       currentUser.gameState.action = 'fold';
       const nextUser =
         state.activePosition + 1 > state.usersCount - 1 ? 0 : state.activePosition + 1;
       state.currentUser = state.usersInDeal[nextUser];
-      state.wait.push(currentUser);
-      state.usersInDeal.filter((u) => u._id !== payload._id);
+      state.usersInDeal = state.usersInDeal.filter((u) => u._id !== payload._id);
+      //TODO add win message + restart game
       state.usersInDeal.length === 1
-        ? console.log(`winner is ${state.usersInDeal[0].nickname}`)
+        ? console.log(`winner is ${state.usersInDeal[0]._id}`)
         : console.log(`continue game`);
     },
     restartDeal: (state, { payload: deck }: { payload: ICard[] }) => {
