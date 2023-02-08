@@ -5,28 +5,24 @@ import CustomizedSlider from './Slider_table';
 import Sound from './SoundOnOff';
 import SeatBtn from './SeatBtn';
 import { useAppDispatch, useAppSelector } from '../../hooks/hook';
-import { IPlayer } from './gameLogic/gameLogic';
-import { ICard, shuffle } from '../Cards/Card';
-import {
-  IGameplay,
-  checkAction,
-  checkActionFetch,
-  restartDealFetch,
-} from '../../store/gameplaySlice';
+import { shuffle } from '../../utils/gameHelper';
+import { ICard, IUser, IGameplay } from '../../types/interfaces';
+import { checkAction, checkActionFetch, restartDealFetch } from '../../store/gameplaySlice';
 
 const Poker_table = (): JSX.Element => {
   const dispatch = useAppDispatch();
-  const { playersInDeal, isDeal, wait, board, currentPlayer, showCards, stage } = useAppSelector(
+  const { usersInDeal, isDeal, wait, board, currentUser, showCards, stage } = useAppSelector(
     (state: { gameplay: IGameplay }) => state.gameplay
   );
-  const id = useAppSelector((state) => state.player.player?._id) as string;
+  const _id = useAppSelector((state) => state.user.user?._id) as string;
 
-  const renderPlayer = (players: IPlayer[]) =>
-    players.map((p, i) => (
+  const renderPlayer = (users: IUser[]) =>
+    users.map((u, i) => (
       <div className='player' key={i}>
-        Stack: {p.stack}
+        Stack: {u.gameState.stack}
         <br />
-        hand: {`${p.hand[0].cardFace}${p.hand[0].suit} ${p.hand[1].cardFace}${p.hand[1].suit}`}
+        hand:{' '}
+        {`${u.gameState.hand[0].cardFace}${u.gameState.hand[0].suit} ${u.gameState.hand[1].cardFace}${u.gameState.hand[1].suit}`}
       </div>
     ));
 
@@ -48,7 +44,7 @@ const Poker_table = (): JSX.Element => {
   }, [dispatch, stage, wait]);
 
   const handleCheck = () => {
-    dispatch(checkActionFetch({ id }));
+    dispatch(checkActionFetch({ _id }));
   };
 
   return (
@@ -72,7 +68,7 @@ const Poker_table = (): JSX.Element => {
             <SeatBtn />
           </div>
           <div className='action__bar'>
-            {currentPlayer?.id === id && (
+            {currentUser?._id === _id && (
               <div>
                 <div className='action__buttons'>
                   <button className='action__buttons__fold'>Fold</button>
@@ -91,7 +87,7 @@ const Poker_table = (): JSX.Element => {
               <Chat />
             </section>
           </div>
-          <div className='players-in-deal'>{renderPlayer(playersInDeal)}</div>
+          <div className='players-in-deal'>{renderPlayer(usersInDeal)}</div>
         </div>
       </div>
     </div>

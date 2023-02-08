@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import './Auth.scss';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks/hook';
-import { registerPlayerThunk } from '../../store/playerSlice';
+import { registerUserThunk } from '../../store/userSlice';
 
 export interface IFormInput {
   nickname: string;
@@ -12,9 +12,11 @@ export interface IFormInput {
 }
 
 const Auth = (): JSX.Element => {
-  const { error, player, status } = useAppSelector((state) => state.player);
+  const { error, user, status } = useAppSelector((state) => state.user);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+
+  useEffect(() => {}, [user]);
 
   const {
     register,
@@ -26,7 +28,7 @@ const Auth = (): JSX.Element => {
 
   // const onRegisterSubmit: SubmitHandler<IFormInput> = async (data) => {
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
-    await dispatch(registerPlayerThunk(data));
+    await dispatch(registerUserThunk(data));
   };
 
   const { t } = useTranslation();

@@ -1,5 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit';
-import playerReducer from './playerSlice';
+import userReducer from './userSlice';
 import chatReduser from './chatSlice';
 import gameplayReduser from './gameplaySlice';
 // import { gameplayApi } from '../services/gameplayApi';
@@ -7,7 +7,7 @@ import gameplayReduser from './gameplaySlice';
 const store = configureStore({
   reducer: {
     // [gameplayApi.reducerPath]: gameplayApi.reducer,
-    player: playerReducer,
+    user: userReducer,
     chat: chatReduser,
     gameplay: gameplayReduser,
   },

@@ -9,10 +9,9 @@ interface IChatForm {
   text: string;
 }
 
-const nickname = 'Joe';
-
 const Chat: FC = (): JSX.Element => {
   const { messages } = useAppSelector((state) => state.chat);
+  const nickname = useAppSelector((state) => state.user.user?.nickname) as string;
   const dispatch = useAppDispatch();
 
   const {

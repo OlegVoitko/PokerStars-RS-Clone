@@ -13,7 +13,7 @@ const port = process.env.PORT || 8000;
 
 const state = {
   messages: [],
-  players: [],
+  users: [],
 };
 
 const run = async () => {
@@ -81,7 +81,7 @@ const run = async () => {
       io.emit('new message', data);
     });
 
-    const testplayers = [
+    const testusers = [
       {
         id: 1,
         hand: [],
@@ -94,12 +94,12 @@ const run = async () => {
       },
     ];
     //game
-    socket.on('game:seatPlayer', (player) => {
+    socket.on('game:seatUser', (user) => {
       console.log('seat');
-      state.players.push(player);
-      io.emit('game:seatPlayer', state.players);
-      if (state.players.length === 2) {
-        state.players = [];
+      state.users.push(user);
+      io.emit('game:seatUser', state.users);
+      if (state.users.length === 2) {
+        state.users = [];
       }
     });
     socket.on('game:checkAction', (data) => {
