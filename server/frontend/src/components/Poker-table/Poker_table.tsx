@@ -12,6 +12,7 @@ import {
   checkActionFetch,
   restartDealFetch,
   betActionThunk,
+  foldActionThunk,
 } from '../../store/gameplaySlice';
 
 const Poker_table = (): JSX.Element => {
@@ -65,6 +66,11 @@ const Poker_table = (): JSX.Element => {
     dispatch(betActionThunk({ _id, betSize: 10 }));
   };
 
+  const handleFold = () => {
+    console.log('fold');
+    dispatch(foldActionThunk({ _id }));
+  };
+
   return (
     <div className='poker-table__wrapper'>
       <div className='poker__background'>
@@ -89,7 +95,11 @@ const Poker_table = (): JSX.Element => {
             {currentUser?._id === _id && (
               <div>
                 <div className='action__buttons'>
-                  <button className='action__buttons__fold'>Fold</button>
+                  {userOptions.includes('fold') && (
+                    <button className='action__buttons__fold' onClick={handleFold}>
+                      Fold
+                    </button>
+                  )}
                   <button className='action__buttons__Call'>Call</button>
                   {userOptions.includes('check') && (
                     <button className='action__buttons__Call' onClick={handleCheck}>

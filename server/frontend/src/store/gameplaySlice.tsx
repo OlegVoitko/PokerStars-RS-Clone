@@ -39,6 +39,15 @@ export const betActionThunk = createAsyncThunk(
     return data;
   }
 );
+
+export const foldActionThunk = createAsyncThunk(
+  'game/foldAction',
+  async (data: { _id: string }) => {
+    socket.emit('game:foldAction', data);
+    return data;
+  }
+);
+
 export const restartDealFetch = createAsyncThunk('game/restartDeal', async (deck: ICard[]) => {
   socket.emit('game:restartDeal', deck);
   return deck;
@@ -93,6 +102,18 @@ const gameplaySlice = createSlice({
       state.usersCompleteAction = 1;
       state.userOptions = ['fold', 'call', 'raise'];
     },
+    foldAction: (state, { payload }: { payload: { _id: string } }) => {
+      const currentUser = state.usersInDeal.find(({ _id }) => _id === payload._id) as IUser;
+      currentUser.gameState.action = 'fold';
+      const nextUser =
+        state.activePosition + 1 > state.usersCount - 1 ? 0 : state.activePosition + 1;
+      state.currentUser = state.usersInDeal[nextUser];
+      state.wait.push(currentUser);
+      state.usersInDeal.filter((u) => u._id !== payload._id);
+      state.usersInDeal.length === 1
+        ? console.log(`winner is ${state.usersInDeal[0].nickname}`)
+        : console.log(`continue game`);
+    },
     restartDeal: (state, { payload: deck }: { payload: ICard[] }) => {
       state.isDeal = true;
       state.usersCount += state.wait.length;
@@ -109,6 +130,6 @@ const gameplaySlice = createSlice({
   },
 });
 
-export const { userSeat, checkAction, restartDeal, betAction } = gameplaySlice.actions;
+export const { userSeat, checkAction, restartDeal, betAction, foldAction } = gameplaySlice.actions;
 
 export default gameplaySlice.reducer;
