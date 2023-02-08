@@ -105,6 +105,9 @@ const run = async () => {
     socket.on('game:checkAction', (data) => {
       io.emit('game:checkAction', data);
     });
+    socket.on('game:betAction', (data) => {
+      io.emit('game:betAction', data);
+    });
     socket.on('game:restartDeal', (deck) => {
       io.emit('game:restartDeal', deck);
     });

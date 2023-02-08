@@ -2,7 +2,6 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { socket } from '../socket';
 import { ICard, IUser, IGameplay } from '../types/interfaces';
 import { deal } from '../utils/gameHelper';
-// import { deal } from '../components/Poker-table/gameLogic/gameLogic';
 
 const initialState: IGameplay = {
   stage: 0,
@@ -14,6 +13,9 @@ const initialState: IGameplay = {
   currentUser: null,
   board: [],
   showCards: [],
+  bank: 0,
+  betToCall: 0,
+  userOptions: ['fold', 'call', 'check', 'rais'],
   wait: [],
   loading: 'idle',
 };
@@ -27,6 +29,13 @@ export const checkActionFetch = createAsyncThunk(
   'game/checkAction',
   async (data: { _id: string }) => {
     socket.emit('game:checkAction', data);
+    return data;
+  }
+);
+export const betActionThunk = createAsyncThunk(
+  'game/checkAction',
+  async (data: { _id: string; betSize: number }) => {
+    socket.emit('game:betAction', data);
     return data;
   }
 );
@@ -71,6 +80,19 @@ const gameplaySlice = createSlice({
       state.currentUser = state.usersInDeal[nextUser];
       state.activePosition = nextUser;
     },
+    betAction: (state, { payload }: { payload: { _id: string; betSize: number } }) => {
+      console.log(payload);
+      const currentUser = state.usersInDeal.find(({ _id }) => _id === payload._id) as IUser;
+      currentUser.gameState.action = 'raise';
+      const nextUser =
+        state.activePosition + 1 > state.usersCount - 1 ? 0 : state.activePosition + 1;
+      state.currentUser = state.usersInDeal[nextUser];
+      state.activePosition = nextUser;
+      state.bank += payload.betSize;
+      state.betToCall = payload.betSize;
+      state.usersCompleteAction = 1;
+      state.userOptions = ['fold', 'call', 'raise'];
+    },
     restartDeal: (state, { payload: deck }: { payload: ICard[] }) => {
       state.isDeal = true;
       state.usersCount += state.wait.length;
@@ -87,6 +109,6 @@ const gameplaySlice = createSlice({
   },
 });
 
-export const { userSeat, checkAction, restartDeal } = gameplaySlice.actions;
+export const { userSeat, checkAction, restartDeal, betAction } = gameplaySlice.actions;
 
 export default gameplaySlice.reducer;

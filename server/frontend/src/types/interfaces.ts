@@ -36,6 +36,7 @@ export interface IUserState {
   error: string | null;
 }
 
+
 export interface IGameplay {
   stage: number;
   usersCount: number;
@@ -46,6 +47,9 @@ export interface IGameplay {
   currentUser: IUser | null;
   board: ICard[];
   showCards: ICard[];
+  bank: number;
+  betToCall: number;
+  userOptions: string[]; 
   wait: IUser[];
   loading: 'idle' | 'pending' | 'succeeded' | 'failed';
 }

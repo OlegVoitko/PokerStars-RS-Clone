@@ -7,13 +7,27 @@ import SeatBtn from './SeatBtn';
 import { useAppDispatch, useAppSelector } from '../../hooks/hook';
 import { shuffle } from '../../utils/gameHelper';
 import { ICard, IUser, IGameplay } from '../../types/interfaces';
-import { checkAction, checkActionFetch, restartDealFetch } from '../../store/gameplaySlice';
+import {
+  checkAction,
+  checkActionFetch,
+  restartDealFetch,
+  betActionThunk,
+} from '../../store/gameplaySlice';
 
 const Poker_table = (): JSX.Element => {
   const dispatch = useAppDispatch();
-  const { usersInDeal, isDeal, wait, board, currentUser, showCards, stage } = useAppSelector(
-    (state: { gameplay: IGameplay }) => state.gameplay
-  );
+  const {
+    usersInDeal,
+    isDeal,
+    wait,
+    board,
+    currentUser,
+    showCards,
+    stage,
+    betToCall,
+    bank,
+    userOptions,
+  } = useAppSelector((state: { gameplay: IGameplay }) => state.gameplay);
   const _id = useAppSelector((state) => state.user.user?._id) as string;
 
   const renderPlayer = (users: IUser[]) =>
@@ -46,6 +60,10 @@ const Poker_table = (): JSX.Element => {
   const handleCheck = () => {
     dispatch(checkActionFetch({ _id }));
   };
+  const handleBet = () => {
+    console.log('bet');
+    dispatch(betActionThunk({ _id, betSize: 10 }));
+  };
 
   return (
     <div className='poker-table__wrapper'>
@@ -62,7 +80,7 @@ const Poker_table = (): JSX.Element => {
           <div className='card__container'>{renderCards(showCards)}</div>
           <div className='bank__container'>
             <img src={require('../../assets/chip-bank.png')} alt='chip bank' />
-            <h4>12345</h4>
+            <h4>{bank}$</h4>
           </div>
           <div className='poker-table__seat-btn action__buttons'>
             <SeatBtn />
@@ -73,10 +91,14 @@ const Poker_table = (): JSX.Element => {
                 <div className='action__buttons'>
                   <button className='action__buttons__fold'>Fold</button>
                   <button className='action__buttons__Call'>Call</button>
-                  <button className='action__buttons__Call' onClick={handleCheck}>
-                    Check
+                  {userOptions.includes('check') && (
+                    <button className='action__buttons__Call' onClick={handleCheck}>
+                      Check
+                    </button>
+                  )}
+                  <button className='action__buttons__RaiseTo' onClick={handleBet}>
+                    Raise To
                   </button>
-                  <button className='action__buttons__RaiseTo'>Raise To</button>
                 </div>
                 <div className='action__bar__slider'>
                   <CustomizedSlider />

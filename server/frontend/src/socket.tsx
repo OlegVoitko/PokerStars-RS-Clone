@@ -3,12 +3,13 @@ import store from './store/store';
 import { addMessage } from './store/chatSlice';
 import { IMessage } from './store/chatSlice';
 import { ICard, IUser, IGameplay } from './types/interfaces';
-import { userSeat, checkAction, restartDeal } from './store/gameplaySlice';
+import { userSeat, checkAction, restartDeal, betAction } from './store/gameplaySlice';
 
 interface ServerToClientEvents {
   ['new message']: (data: IMessage) => void;
   ['game:seatUser']: (data: IUser[]) => void;
   ['game:checkAction']: (data: { _id: string }) => void;
+  ['game:betAction']: (data: { _id: string; betSize: number }) => void;
   ['game:restartDeal']: (deck: ICard[]) => void;
   test: (id: number) => void;
 }
@@ -17,6 +18,7 @@ interface ClientToServerEvents {
   send: (data: IMessage) => void;
   ['game:seatUser']: (data: IUser) => void;
   ['game:checkAction']: (data: { _id: string }) => void;
+  ['game:betAction']: (deck: { _id: string; betSize: number }) => void;
   ['game:restartDeal']: (deck: ICard[]) => void;
   updateGameplay: (data: IGameplay) => void;
 }
@@ -34,6 +36,9 @@ socket.on('game:seatUser', (data) => {
 });
 socket.on('game:checkAction', (data) => {
   store.dispatch(checkAction(data));
+});
+socket.on('game:betAction', (data) => {
+  store.dispatch(betAction(data));
 });
 socket.on('game:restartDeal', (deck) => {
   store.dispatch(restartDeal(deck));
