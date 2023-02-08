@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Chat from '../Chat/Chat';
 import './Poker_table.scss';
 import CustomizedSlider from './Slider_table';
@@ -21,6 +21,7 @@ const Poker_table = (): JSX.Element => {
     useAppSelector((state: { gameplay: IGameplay }) => state.gameplay);
   const user = useAppSelector((state) => state.user.user) as IUser;
   const { _id, gameState } = user;
+  const [currentValue, setCurrentValue] = useState(20);
 
   const renderPlayer = (users: IUser[]) =>
     users.map((u, i) => (
@@ -55,7 +56,8 @@ const Poker_table = (): JSX.Element => {
 
   const handleBet = () => {
     console.log('bet');
-    dispatch(betActionThunk({ _id, betSize: 10 }));
+    console.log('currentValue', currentValue);
+    dispatch(betActionThunk({ _id, betSize: currentValue }));
   };
 
   const handleCall = () => {
@@ -114,7 +116,7 @@ const Poker_table = (): JSX.Element => {
                   </button>
                 </div>
                 <div className='action__bar__slider'>
-                  <CustomizedSlider />
+                  <CustomizedSlider currentValue={currentValue} setCurrentValue={setCurrentValue} />
                 </div>
               </div>
             )}
