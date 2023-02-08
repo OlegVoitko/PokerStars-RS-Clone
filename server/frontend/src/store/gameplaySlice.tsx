@@ -65,11 +65,7 @@ const gameplaySlice = createSlice({
       }
 
       const currentUser = state.usersInDeal.find(({ _id }) => _id === payload._id) as IUser;
-
-      if (currentUser?.gameState?.action) {
-        currentUser.gameState.action = 'check';
-      }
-      // currentUser.gameState!.action = 'check';
+      currentUser.gameState.action = 'check';
       const nextUser =
         state.activePosition + 1 > state.usersCount - 1 ? 0 : state.activePosition + 1;
       state.currentUser = state.usersInDeal[nextUser];
@@ -84,11 +80,7 @@ const gameplaySlice = createSlice({
       state.showCards = [];
       state.usersInDeal.push(...state.wait);
       const hands = deal(state.usersInDeal.length, deck.slice(5));
-      state.usersInDeal.forEach((u, i) => {
-        if (u.gameState) {
-          u.gameState.hand = hands[i];
-        }
-      }); //here is the same problem - Object is possibly 'null'.ts(2531)
+      state.usersInDeal.forEach((u, i) => (u.gameState.hand = hands[i])); //here is the same problem - Object is possibly 'null'.ts(2531)
       state.wait = [];
       state.currentUser = state.usersInDeal[0];
     },

@@ -18,7 +18,7 @@ export interface IUser {
   _id: string;
   __v?: number;
   bankroll: number;
-  gameState: IUserGamestate | null;
+  gameState: IUserGamestate;
 }
 
 export interface INewUser {

@@ -19,12 +19,10 @@ const Poker_table = (): JSX.Element => {
   const renderPlayer = (users: IUser[]) =>
     users.map((u, i) => (
       <div className='player' key={i}>
-        Stack: {u.gameState && u.gameState.stack}
+        Stack: {u.gameState.stack}
         <br />
         hand:{' '}
-        {`${u.gameState && u.gameState.hand[0].cardFace}${
-          u.gameState && u.gameState.hand[0].suit
-        } ${u.gameState && u.gameState.hand[1].cardFace}${u.gameState && u.gameState.hand[1].suit}`}
+        {`${u.gameState.hand[0].cardFace}${u.gameState.hand[0].suit} ${u.gameState.hand[1].cardFace}${u.gameState.hand[1].suit}`}
       </div>
     ));
 
