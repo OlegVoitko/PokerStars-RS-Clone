@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Chat from '../Chat/Chat';
 import './Poker_table.scss';
 import CustomizedSlider from './Slider_table';
@@ -47,6 +47,11 @@ const Poker_table = (): JSX.Element => {
     dispatch(checkActionFetch({ _id }));
   };
 
+  const [currentValue, setCurrentValue] = useState(20);
+  const handleBet = () => {
+    console.log('Rase To: ', currentValue);
+  };
+
   return (
     <div className='poker-table__wrapper'>
       <div className='poker__background'>
@@ -76,10 +81,12 @@ const Poker_table = (): JSX.Element => {
                   <button className='action__buttons__Call' onClick={handleCheck}>
                     Check
                   </button>
-                  <button className='action__buttons__RaiseTo'>Raise To</button>
+                  <button className='action__buttons__RaiseTo' onClick={handleBet}>
+                    Raise To
+                  </button>
                 </div>
                 <div className='action__bar__slider'>
-                  <CustomizedSlider />
+                  <CustomizedSlider currentValue={currentValue} setCurrentValue={setCurrentValue} />
                 </div>
               </div>
             )}
