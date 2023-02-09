@@ -40,6 +40,12 @@ const toNextStage = (state: IGameplay) => {
       state.showCards = [{ cardFace: 'SHOWDOWN', value: 0, suit: '' }];
       break;
     }
+    case 100: {
+      state.bank = 0;
+      state.betToCall = 0;
+      state.showCards = [{ cardFace: 'EXTRA EXIT', value: 0, suit: '' }];
+      break;
+    }
     default:
       console.log('something went wrong');
   }
@@ -120,15 +126,16 @@ const gameplaySlice = createSlice({
       state.userOptions = ['fold', 'call', 'raise'];
     },
     foldAction: (state, { payload }: { payload: { _id: string } }) => {
-      state.usersCompleteAction += 1;
-      // state.usersCount -= 1;
-      // state.usersInDeal = state.usersInDeal.filter((u) => u._id !== payload._id);
+      // state.usersCompleteAction += 1;
+
       if (state.usersCompleteAction === state.usersCount) {
         state.stage += 1;
         state.usersCompleteAction = 0;
         state.activePosition = 0;
         state.currentUser = state.usersInDeal[0];
         state.usersInDeal.forEach((u) => (u.gameState.bet = 0));
+        state.usersCount -= 1;
+        state.usersInDeal = state.usersInDeal.filter((u) => u._id !== payload._id);
         toNextStage(state);
         return;
       }
@@ -140,9 +147,11 @@ const gameplaySlice = createSlice({
       state.usersCount -= 1;
       state.usersInDeal = state.usersInDeal.filter((u) => u._id !== payload._id);
       //TODO add win message + restart game
-      state.usersInDeal.length === 1
-        ? console.log(`winner is ${state.usersInDeal[0]._id}`)
-        : console.log(`continue game`);
+      if (state.usersInDeal.length === 1) {
+        console.log(`winner is ${state.usersInDeal[0]._id}`);
+        state.stage = 100;
+        toNextStage(state);
+      }
     },
     callAction: (state, { payload }: { payload: { _id: string; callSize: number } }) => {
       const { _id, callSize } = payload;
@@ -172,7 +181,7 @@ const gameplaySlice = createSlice({
       state.showCards = [];
       state.usersInDeal.push(...state.wait);
       const hands = deal(state.usersInDeal.length, deck.slice(5));
-      state.usersInDeal.forEach((u, i) => (u.gameState.hand = hands[i])); //here is the same problem - Object is possibly 'null'.ts(2531)
+      state.usersInDeal.forEach((u, i) => (u.gameState.hand = hands[i]));
       state.wait = [];
       state.currentUser = state.usersInDeal[0];
     },
