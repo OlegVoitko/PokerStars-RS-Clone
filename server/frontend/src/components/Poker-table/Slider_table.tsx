@@ -1,4 +1,5 @@
 import React, { FC } from 'react';
+// import React, {ChangeEvent, FC} from 'react';
 import Slider from '@mui/material/Slider';
 import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';

@@ -7,14 +7,21 @@ import SeatBtn from './SeatBtn';
 import { useAppDispatch, useAppSelector } from '../../hooks/hook';
 import { shuffle } from '../../utils/gameHelper';
 import { ICard, IUser, IGameplay } from '../../types/interfaces';
-import { checkAction, checkActionFetch, restartDealFetch } from '../../store/gameplaySlice';
+import {
+  checkActionFetch,
+  restartDealFetch,
+  betActionThunk,
+  callActionThunk,
+  foldActionThunk,
+} from '../../store/gameplaySlice';
 
 const Poker_table = (): JSX.Element => {
   const dispatch = useAppDispatch();
-  const { usersInDeal, isDeal, wait, board, currentUser, showCards, stage } = useAppSelector(
-    (state: { gameplay: IGameplay }) => state.gameplay
-  );
-  const _id = useAppSelector((state) => state.user.user?._id) as string;
+  const { usersInDeal, isDeal, wait, currentUser, showCards, stage, betToCall, bank, userOptions } =
+    useAppSelector((state: { gameplay: IGameplay }) => state.gameplay);
+  const user = useAppSelector((state) => state.user.user) as IUser;
+  const { _id, gameState } = user;
+  const [currentValue, setCurrentValue] = useState(20);
 
   const renderPlayer = (users: IUser[]) =>
     users.map((u, i) => (
@@ -35,7 +42,7 @@ const Poker_table = (): JSX.Element => {
   };
 
   useEffect(() => {
-    if (stage === 4 || (!isDeal && wait.length === 2)) {
+    if (stage === 4 || stage === 100 || (!isDeal && wait.length === 2)) {
       setTimeout(() => {
         const deck = shuffle();
         dispatch(restartDealFetch(deck));
@@ -47,9 +54,21 @@ const Poker_table = (): JSX.Element => {
     dispatch(checkActionFetch({ _id }));
   };
 
-  const [currentValue, setCurrentValue] = useState(20);
   const handleBet = () => {
-    console.log('Rase To: ', currentValue);
+    console.log('bet');
+    console.log('currentValue', currentValue);
+    dispatch(betActionThunk({ _id, betSize: currentValue }));
+  };
+
+  const handleCall = () => {
+    console.log('call');
+    const callSize = betToCall - gameState.bet;
+    dispatch(callActionThunk({ _id, callSize }));
+  };
+
+  const handleFold = () => {
+    console.log('fold');
+    dispatch(foldActionThunk({ _id }));
   };
 
   return (
@@ -67,7 +86,7 @@ const Poker_table = (): JSX.Element => {
           <div className='card__container'>{renderCards(showCards)}</div>
           <div className='bank__container'>
             <img src={require('../../assets/chip-bank.png')} alt='chip bank' />
-            <h4>12345</h4>
+            <h4>{bank}$</h4>
           </div>
           <div className='poker-table__seat-btn action__buttons'>
             <SeatBtn />
@@ -76,11 +95,22 @@ const Poker_table = (): JSX.Element => {
             {currentUser?._id === _id && (
               <div>
                 <div className='action__buttons'>
-                  <button className='action__buttons__fold'>Fold</button>
+                  {userOptions.includes('fold') && (
+                    <button className='action__buttons__fold' onClick={handleFold}>
+                      Fold
+                    </button>
+                  )}
+                  {!!betToCall && (
+                    <button className='action__buttons__Call' onClick={handleCall}>
+                      Call
+                    </button>
+                  )}
                   <button className='action__buttons__Call'>Call</button>
-                  <button className='action__buttons__Call' onClick={handleCheck}>
-                    Check
-                  </button>
+                  {userOptions.includes('check') && (
+                    <button className='action__buttons__Call' onClick={handleCheck}>
+                      Check
+                    </button>
+                  )}
                   <button className='action__buttons__RaiseTo' onClick={handleBet}>
                     Raise To
                   </button>
