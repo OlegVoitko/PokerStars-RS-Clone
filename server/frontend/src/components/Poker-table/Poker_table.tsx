@@ -42,7 +42,7 @@ const Poker_table = (): JSX.Element => {
   };
 
   useEffect(() => {
-    if (stage === 4 || (!isDeal && wait.length === 2)) {
+    if (stage === 4 || stage === 100 || (!isDeal && wait.length === 2)) {
       setTimeout(() => {
         const deck = shuffle();
         dispatch(restartDealFetch(deck));

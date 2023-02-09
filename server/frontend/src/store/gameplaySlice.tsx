@@ -126,9 +126,8 @@ const gameplaySlice = createSlice({
       state.userOptions = ['fold', 'call', 'raise'];
     },
     foldAction: (state, { payload }: { payload: { _id: string } }) => {
-      // state.usersCompleteAction += 1;
-
-      if (state.usersCompleteAction === state.usersCount) {
+      const currentUser = state.usersInDeal.find(({ _id }) => _id === payload._id) as IUser;
+      if (state.usersCompleteAction === state.usersCount - 1) {
         state.stage += 1;
         state.usersCompleteAction = 0;
         state.activePosition = 0;
@@ -136,11 +135,13 @@ const gameplaySlice = createSlice({
         state.usersInDeal.forEach((u) => (u.gameState.bet = 0));
         state.usersCount -= 1;
         state.usersInDeal = state.usersInDeal.filter((u) => u._id !== payload._id);
+        state.wait.push(currentUser);
         toNextStage(state);
         return;
       }
-      const currentUser = state.usersInDeal.find(({ _id }) => _id === payload._id) as IUser;
+      // const currentUser = state.usersInDeal.find(({ _id }) => _id === payload._id) as IUser;
       currentUser.gameState.action = 'fold';
+      state.wait.push(currentUser);
       const nextUser =
         state.activePosition + 1 > state.usersCount - 1 ? 0 : state.activePosition + 1;
       state.currentUser = state.usersInDeal[nextUser];
@@ -174,7 +175,8 @@ const gameplaySlice = createSlice({
     },
     restartDeal: (state, { payload: deck }: { payload: ICard[] }) => {
       state.isDeal = true;
-      state.usersCount += state.wait.length;
+      // state.usersCount += state.wait.length;
+      state.usersCount = state.usersInDeal.length;
       state.board = deck.slice(0, 5);
       state.stage = 0;
       state.activePosition = 0;
