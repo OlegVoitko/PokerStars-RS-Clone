@@ -176,12 +176,12 @@ const gameplaySlice = createSlice({
     restartDeal: (state, { payload: deck }: { payload: ICard[] }) => {
       state.isDeal = true;
       // state.usersCount += state.wait.length;
-      state.usersCount = state.usersInDeal.length;
       state.board = deck.slice(0, 5);
       state.stage = 0;
       state.activePosition = 0;
       state.showCards = [];
       state.usersInDeal.push(...state.wait);
+      state.usersCount = state.usersInDeal.length;
       const hands = deal(state.usersInDeal.length, deck.slice(5));
       state.usersInDeal.forEach((u, i) => (u.gameState.hand = hands[i]));
       state.wait = [];
