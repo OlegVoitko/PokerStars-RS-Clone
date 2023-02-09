@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import Slider from '@mui/material/Slider';
 import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
@@ -42,7 +42,12 @@ const PrettoSlider = styled(Slider)({
   },
 });
 
-export default function CustomizedSlider() {
+interface CustomizedSlider {
+  currentValue: number;
+  setCurrentValue: React.Dispatch<React.SetStateAction<number>>;
+}
+
+const CustomizedSlider: FC<CustomizedSlider> = ({ currentValue, setCurrentValue }) => {
   return (
     <Box sx={{ width: 320 }}>
       <PrettoSlider
@@ -50,7 +55,13 @@ export default function CustomizedSlider() {
         aria-label='pretto slider'
         defaultValue={20}
         step={10}
+        value={currentValue}
+        min={10}
+        max={300}
+        onChange={(_, x) => setCurrentValue(x as number)}
       />
     </Box>
   );
-}
+};
+
+export default CustomizedSlider;
