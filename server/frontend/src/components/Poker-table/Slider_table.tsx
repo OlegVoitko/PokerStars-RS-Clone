@@ -58,7 +58,7 @@ const CustomizedSlider: FC<CustomizedSlider> = ({ currentValue, setCurrentValue 
         value={currentValue}
         min={10}
         max={300}
-        onChange={(e) => setCurrentValue(e.target?.value)}
+        onChange={(_, x) => setCurrentValue(x as number)}
       />
     </Box>
   );
