@@ -85,19 +85,22 @@ const Poker_table = (): JSX.Element => {
   return (
     <div className='poker-table__wrapper'>
       <div className='poker__background'>
-        <div className='poker-table__container'>
+        <div className='poker-table__container gradient-border' id='box'>
           <div className='additional-features'>
             <Sound />
           </div>
-          <img
-            className='poker-table__table-image'
-            src={require('../../assets/poker_table.jpg')}
-            alt='poker table'
-          />
-          <div className='card__container'>{renderCards(showCards)}</div>
-          <div className='bank__container'>
-            <img src={require('../../assets/chip-bank.png')} alt='chip bank' />
-            <h4>{bank}$</h4>
+          <div className='poker__container'>
+            <img
+              className='poker-table__table-image'
+              src={require('../../assets/poker_table.jpg')}
+              alt='poker table'
+            />
+            <div className='card__container'>{renderCards(showCards)}</div>
+            <div className='bank__container'>
+              <img src={require('../../assets/chip-bank.png')} alt='chip bank' />
+              <h4>{bank}$</h4>
+            </div>
+            <div className='players-in-deal'>{renderPlayer(usersInDeal)}</div>
           </div>
           <div className='poker-table__seat-btn action__buttons'>
             <SeatBtn />
@@ -132,7 +135,6 @@ const Poker_table = (): JSX.Element => {
               <Chat />
             </section>
           </div>
-          <div className='players-in-deal'>{renderPlayer(usersInDeal)}</div>
         </div>
       </div>
     </div>

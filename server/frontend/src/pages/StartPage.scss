@@ -1,7 +1,7 @@
 @import '../index';
 
 .start-page-container {
-  background: no-repeat url('../assets/images/background_start-page.jpg') ;
+  background: no-repeat url('../assets/images/background_start_page1.jpg') ;
   background-size: cover;
   height: 100vh;
   width: 100%;
@@ -9,8 +9,8 @@
 
 .app-title span {
   font-size: 15rem;
-  text-shadow: 4px 3px 2px $color-text, 3px 3px 2px $color-text;
-  color: $color-title;
+	text-shadow: 4px 3px 2px #00eaff, 3px 3px 2px #02f1ff;
+  color: #0d1012;  
   height: 846px;
   position: absolute;
   width: 214px;
