@@ -15,6 +15,7 @@ import {
   foldActionThunk,
 } from '../../store/gameplaySlice';
 import SeatOutBtn from './SeatOutBtn';
+import { BLIND_SIZE } from '../../utils/constants';
 
 const Poker_table = (): JSX.Element => {
   const [isShowSeat, setIsShowSeat] = useState(true);
@@ -82,6 +83,9 @@ const Poker_table = (): JSX.Element => {
     dispatch(foldActionThunk({ _id }));
   };
   const togleSeatBtn = () => setIsShowSeat(!isShowSeat);
+
+  const minBet = currentBet - user.gameState.bet + BLIND_SIZE;
+  const maxBet = user.gameState.stack - user.gameState.bet;
   return (
     <div className='poker-table__wrapper'>
       <div className='poker__background'>
@@ -134,7 +138,12 @@ const Poker_table = (): JSX.Element => {
                   </button>
                 </div>
                 <div className='action__bar__slider'>
-                  <CustomizedSlider currentValue={currentValue} setCurrentValue={setCurrentValue} />
+                  <CustomizedSlider
+                    currentValue={currentValue}
+                    setCurrentValue={setCurrentValue}
+                    minValue={minBet}
+                    maxValue={maxBet}
+                  />
                 </div>
               </div>
             )}
