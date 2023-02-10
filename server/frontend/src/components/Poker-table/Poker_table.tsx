@@ -14,8 +14,10 @@ import {
   callActionThunk,
   foldActionThunk,
 } from '../../store/gameplaySlice';
+import SeatOutBtn from './SeatOutBtn';
 
 const Poker_table = (): JSX.Element => {
+  const [isShowSeat, setIsShowSeat] = useState(true);
   const dispatch = useAppDispatch();
   const {
     usersInDeal,
@@ -79,7 +81,7 @@ const Poker_table = (): JSX.Element => {
     console.log('fold', _id);
     dispatch(foldActionThunk({ _id }));
   };
-
+  const togleSeatBtn = () => setIsShowSeat(!isShowSeat);
   return (
     <div className='poker-table__wrapper'>
       <div className='poker__background'>
@@ -100,9 +102,16 @@ const Poker_table = (): JSX.Element => {
             </div>
             <div className='players-in-deal'>{renderPlayer(usersInDeal)}</div>
           </div>
-          <div className='poker-table__seat-btn action__buttons'>
-            <SeatBtn />
-          </div>
+          {isShowSeat && (
+            <div className='poker-table__seat-btn action__buttons'>
+              <SeatBtn togleSeatBtn={togleSeatBtn} />
+            </div>
+          )}
+          {!isShowSeat && (
+            <div className='poker-table__seat-btn action__buttons'>
+              <SeatOutBtn togleSeatBtn={togleSeatBtn} />
+            </div>
+          )}
           <div className='action__bar'>
             {currentUser?._id === _id && (
               <div>
