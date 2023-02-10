@@ -1,4 +1,5 @@
 export const START_BANKROLL = 10000;
+export const BLIND_SIZE = 10;
 export const CARD_DECK = {
   totalNumCards: 52,
   suits: ['Heart', 'Spade', 'Club', 'Diamond'],
