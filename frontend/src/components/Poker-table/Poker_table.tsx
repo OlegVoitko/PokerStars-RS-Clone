@@ -22,6 +22,7 @@ const Poker_table = (): JSX.Element => {
   const dispatch = useAppDispatch();
   const {
     usersInDeal,
+    usersAtTable,
     isDeal,
     waitToSeat,
     currentUser,
@@ -54,7 +55,12 @@ const Poker_table = (): JSX.Element => {
   };
   useEffect(() => {
     // if (stage === 4 || stage === 100 || (!isDeal && wait.length === 2) || ) {
-    if ((!isDeal && waitToSeat.length === 2) || stage === 4 || stage === 100) {
+    if (
+      (!isDeal && waitToSeat.length === 2) ||
+      stage === 4 ||
+      (stage === 100 && usersAtTable.length > 1) ||
+      (waitToSeat.length > 0 && usersAtTable.length === 1)
+    ) {
       setTimeout(() => {
         console.log('start');
         const deck = shuffle();

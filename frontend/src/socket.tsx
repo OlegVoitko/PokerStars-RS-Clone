@@ -5,6 +5,7 @@ import { IMessage } from './store/chatSlice';
 import { ICard, IUser, IGameplay } from './types/interfaces';
 import {
   userSeat,
+  userSeatOut,
   checkAction,
   restartDeal,
   betAction,
@@ -15,6 +16,7 @@ import {
 interface ServerToClientEvents {
   ['new message']: (data: IMessage) => void;
   ['game:seatUser']: (data: IUser) => void;
+  ['game:seatOutUser']: (data: IUser) => void;
   ['game:checkAction']: () => void;
   ['game:betAction']: (data: { _id: string; betSize: number }) => void;
   ['game:callAction']: (data: { _id: string }) => void;
@@ -26,6 +28,7 @@ interface ServerToClientEvents {
 interface ClientToServerEvents {
   send: (data: IMessage) => void;
   ['game:seatUser']: (data: IUser) => void;
+  ['game:seatOutUser']: (data: IUser) => void;
   ['game:checkAction']: () => void;
   ['game:betAction']: (deck: { _id: string; betSize: number }) => void;
   ['game:callAction']: (data: { _id: string }) => void;
@@ -44,6 +47,9 @@ socket.on('new message', (data) => {
 socket.on('game:seatUser', (data) => {
   console.log('seat from server');
   store.dispatch(userSeat(data));
+});
+socket.on('game:seatOutUser', (data) => {
+  store.dispatch(userSeatOut(data));
 });
 socket.on('game:checkAction', () => {
   store.dispatch(checkAction());

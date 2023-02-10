@@ -1,7 +1,7 @@
 // import { useAddPlayerMutation } from '../../services/gameplayApi';
 import React, { FC, useState, useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks/hook';
-import { seatUser } from '../../store/gameplaySlice';
+import { seatUserThunk } from '../../store/gameplaySlice';
 import { IUser } from '../../types/interfaces';
 
 interface ISeatBtnProps {
@@ -21,7 +21,7 @@ const SeatBtn = (props: ISeatBtnProps) => {
 
   const handleSeat = (user: IUser): void => {
     togleSeatBtn();
-    dispatch(seatUser(user));
+    dispatch(seatUserThunk(user));
   };
 
   return (

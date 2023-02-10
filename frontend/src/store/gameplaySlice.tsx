@@ -50,8 +50,13 @@ const toNextStage = (state: IGameplay) => {
   }
 };
 
-export const seatUser = createAsyncThunk('game/seatUser', async (user: IUser) => {
+export const seatUserThunk = createAsyncThunk('game/seatUser', async (user: IUser) => {
   socket.emit('game:seatUser', user);
+  return user;
+});
+
+export const seatOutUserThunk = createAsyncThunk('game/seatOutUser', async (user: IUser) => {
+  socket.emit('game:seatOutUser', user);
   return user;
 });
 
@@ -94,6 +99,44 @@ const gameplaySlice = createSlice({
   reducers: {
     userSeat: (state, { payload }: { payload: IUser }) => {
       state.waitToSeat.push(payload);
+    },
+    userSeatOut: (state, { payload }: { payload: IUser }) => {
+      const userInDeal = state.usersInDeal.find((user) => user._id === payload._id);
+      const userInWaitToSeat = state.waitToSeat.find((user) => user._id === payload._id);
+      if (userInWaitToSeat) {
+        state.waitToSeat = state.waitToSeat.filter((user) => user._id !== payload._id);
+        return;
+      }
+      if (!userInDeal) {
+        state.usersAtTable = state.usersAtTable.filter((user) => user._id !== payload._id);
+        return;
+      }
+      state.usersAtTable = state.usersAtTable.filter((user) => user._id !== payload._id);
+      state.usersInDeal = state.usersAtTable;
+      if (state.usersAtTable.length === 0) {
+        state.isDeal = false;
+      }
+      if (state.usersCount === 2) {
+        state.currentUser = null;
+        state.stage = 100;
+        toNextStage(state);
+        //TODO add win message + restart game
+        return;
+      }
+      state.usersCount -= 1;
+      if (state.usersCompleteAction === state.usersCount) {
+        state.stage += 1;
+        state.usersCompleteAction = 0;
+        state.activePosition = 0;
+        state.currentUser = state.usersInDeal[0];
+        state.usersInDeal.forEach((u) => (u.gameState.bet = 0));
+        toNextStage(state);
+        return;
+      }
+
+      const newActivePosition = state.activePosition > state.usersCount ? 0 : state.activePosition;
+      state.currentUser = state.usersInDeal[newActivePosition];
+      state.activePosition = newActivePosition;
     },
     checkAction: (state) => {
       state.usersCompleteAction += 1;
@@ -188,7 +231,14 @@ const gameplaySlice = createSlice({
   },
 });
 
-export const { userSeat, checkAction, restartDeal, betAction, callAction, foldAction } =
-  gameplaySlice.actions;
+export const {
+  userSeat,
+  userSeatOut,
+  checkAction,
+  restartDeal,
+  betAction,
+  callAction,
+  foldAction,
+} = gameplaySlice.actions;
 
 export default gameplaySlice.reducer;
