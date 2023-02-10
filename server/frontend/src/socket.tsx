@@ -15,7 +15,7 @@ import {
 interface ServerToClientEvents {
   ['new message']: (data: IMessage) => void;
   ['game:seatUser']: (data: IUser) => void;
-  ['game:checkAction']: (data: { _id: string }) => void;
+  ['game:checkAction']: () => void;
   ['game:betAction']: (data: { _id: string; betSize: number }) => void;
   ['game:callAction']: (data: { _id: string }) => void;
   ['game:foldAction']: (data: { _id: string }) => void;
@@ -26,7 +26,7 @@ interface ServerToClientEvents {
 interface ClientToServerEvents {
   send: (data: IMessage) => void;
   ['game:seatUser']: (data: IUser) => void;
-  ['game:checkAction']: (data: { _id: string }) => void;
+  ['game:checkAction']: () => void;
   ['game:betAction']: (deck: { _id: string; betSize: number }) => void;
   ['game:callAction']: (data: { _id: string }) => void;
   ['game:foldAction']: (data: { _id: string }) => void;
@@ -45,8 +45,8 @@ socket.on('game:seatUser', (data) => {
   console.log('seat from server');
   store.dispatch(userSeat(data));
 });
-socket.on('game:checkAction', (data) => {
-  store.dispatch(checkAction(data));
+socket.on('game:checkAction', () => {
+  store.dispatch(checkAction());
 });
 socket.on('game:betAction', (data) => {
   store.dispatch(betAction(data));

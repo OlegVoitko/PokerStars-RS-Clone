@@ -55,13 +55,10 @@ export const seatUser = createAsyncThunk('game/seatUser', async (user: IUser) =>
   return user;
 });
 
-export const checkActionFetch = createAsyncThunk(
-  'game/checkAction',
-  async (data: { _id: string }) => {
-    socket.emit('game:checkAction', data);
-    return data;
-  }
-);
+export const checkActionFetch = createAsyncThunk('game/checkAction', async () => {
+  socket.emit('game:checkAction');
+});
+
 export const betActionThunk = createAsyncThunk(
   'game/checkAction',
   async (data: { _id: string; betSize: number }) => {

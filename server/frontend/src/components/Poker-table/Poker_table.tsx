@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Chat from '../Chat/Chat';
 import './Poker_table.scss';
 import CustomizedSlider from './Slider_table';
@@ -18,7 +18,6 @@ import {
 const Poker_table = (): JSX.Element => {
   const dispatch = useAppDispatch();
   const {
-    usersCount,
     usersInDeal,
     isDeal,
     waitToSeat,
@@ -30,7 +29,7 @@ const Poker_table = (): JSX.Element => {
     userOptions,
   } = useAppSelector((state: { gameplay: IGameplay }) => state.gameplay);
   const user = useAppSelector((state) => state.user.user) as IUser;
-  const { _id, gameState } = user;
+  const { _id } = user;
   const [currentValue, setCurrentValue] = useState(20);
 
   const renderPlayer = (users: IUser[]) =>
@@ -62,7 +61,7 @@ const Poker_table = (): JSX.Element => {
   }, [dispatch, stage, waitToSeat]);
 
   const handleCheck = () => {
-    dispatch(checkActionFetch({ _id }));
+    dispatch(checkActionFetch());
   };
 
   const handleBet = () => {
@@ -73,7 +72,6 @@ const Poker_table = (): JSX.Element => {
 
   const handleCall = () => {
     console.log('call');
-    // const callSize = betToCall - gameState.bet;
     dispatch(callActionThunk({ _id }));
   };
 
