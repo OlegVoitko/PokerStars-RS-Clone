@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useState } from 'react';
 import Chat from '../Chat/Chat';
 import './Poker_table.scss';
 import CustomizedSlider from './Slider_table';
@@ -17,8 +17,18 @@ import {
 
 const Poker_table = (): JSX.Element => {
   const dispatch = useAppDispatch();
-  const { usersInDeal, isDeal, wait, currentUser, showCards, stage, betToCall, bank, userOptions } =
-    useAppSelector((state: { gameplay: IGameplay }) => state.gameplay);
+  const {
+    usersCount,
+    usersInDeal,
+    isDeal,
+    waitToSeat,
+    currentUser,
+    showCards,
+    stage,
+    currentBet,
+    bank,
+    userOptions,
+  } = useAppSelector((state: { gameplay: IGameplay }) => state.gameplay);
   const user = useAppSelector((state) => state.user.user) as IUser;
   const { _id, gameState } = user;
   const [currentValue, setCurrentValue] = useState(20);
@@ -40,15 +50,16 @@ const Poker_table = (): JSX.Element => {
       </div>
     ));
   };
-
   useEffect(() => {
-    if (stage === 4 || stage === 100 || (!isDeal && wait.length === 2)) {
+    // if (stage === 4 || stage === 100 || (!isDeal && wait.length === 2) || ) {
+    if ((!isDeal && waitToSeat.length === 2) || stage === 4 || stage === 100) {
       setTimeout(() => {
+        console.log('start');
         const deck = shuffle();
         dispatch(restartDealFetch(deck));
       }, 3000);
     }
-  }, [dispatch, stage, wait]);
+  }, [dispatch, stage, waitToSeat]);
 
   const handleCheck = () => {
     dispatch(checkActionFetch({ _id }));
@@ -62,12 +73,12 @@ const Poker_table = (): JSX.Element => {
 
   const handleCall = () => {
     console.log('call');
-    const callSize = betToCall - gameState.bet;
-    dispatch(callActionThunk({ _id, callSize }));
+    // const callSize = betToCall - gameState.bet;
+    dispatch(callActionThunk({ _id }));
   };
 
   const handleFold = () => {
-    console.log('fold');
+    console.log('fold', _id);
     dispatch(foldActionThunk({ _id }));
   };
 
@@ -95,17 +106,14 @@ const Poker_table = (): JSX.Element => {
             {currentUser?._id === _id && (
               <div>
                 <div className='action__buttons'>
-                  {userOptions.includes('fold') && (
-                    <button className='action__buttons__fold' onClick={handleFold}>
-                      Fold
-                    </button>
-                  )}
-                  {!!betToCall && (
+                  <button className='action__buttons__fold' onClick={handleFold}>
+                    Fold
+                  </button>
+                  {!!currentBet && (
                     <button className='action__buttons__Call' onClick={handleCall}>
                       Call
                     </button>
                   )}
-                  <button className='action__buttons__Call'>Call</button>
                   {userOptions.includes('check') && (
                     <button className='action__buttons__Call' onClick={handleCheck}>
                       Check

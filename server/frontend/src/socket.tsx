@@ -17,7 +17,7 @@ interface ServerToClientEvents {
   ['game:seatUser']: (data: IUser) => void;
   ['game:checkAction']: (data: { _id: string }) => void;
   ['game:betAction']: (data: { _id: string; betSize: number }) => void;
-  ['game:callAction']: (data: { _id: string; callSize: number }) => void;
+  ['game:callAction']: (data: { _id: string }) => void;
   ['game:foldAction']: (data: { _id: string }) => void;
   ['game:restartDeal']: (deck: ICard[]) => void;
   test: (id: number) => void;
@@ -28,7 +28,7 @@ interface ClientToServerEvents {
   ['game:seatUser']: (data: IUser) => void;
   ['game:checkAction']: (data: { _id: string }) => void;
   ['game:betAction']: (deck: { _id: string; betSize: number }) => void;
-  ['game:callAction']: (data: { _id: string; callSize: number }) => void;
+  ['game:callAction']: (data: { _id: string }) => void;
   ['game:foldAction']: (data: { _id: string }) => void;
   ['game:restartDeal']: (deck: ICard[]) => void;
   updateGameplay: (data: IGameplay) => void;

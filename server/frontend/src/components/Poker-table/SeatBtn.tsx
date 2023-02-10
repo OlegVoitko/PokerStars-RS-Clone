@@ -6,16 +6,16 @@ import { IUser } from '../../types/interfaces';
 
 const SeatBtn = () => {
   const user = useAppSelector((state) => state.user.user);
-  const { wait } = useAppSelector((state) => state.gameplay);
+  const { waitToSeat } = useAppSelector((state) => state.gameplay);
   const dispatch = useAppDispatch();
 
   const [disabled, setDisabled] = useState(false);
 
-  useEffect(() => {
-    if (user && wait.filter((u) => u._id === user._id).length > 0) {
-      setDisabled((disabled) => !disabled);
-    }
-  }, [wait]);
+  // useEffect(() => {
+  //   if (user && waitToSeat.filter((u) => u._id === user._id).length > 0) {
+  //     setDisabled((disabled) => !disabled);
+  //   }
+  // }, [waitToSeat]);
 
   const handleSeat = (user: IUser): void => {
     dispatch(seatUser(user));
