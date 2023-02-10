@@ -1,17 +1,26 @@
+.tableroom__table {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	margin-right: -50%;
+	transform: translate(-50%, -50%);
+	padding: 10px 20px;
+}
+
 .poker-table__wrapper {
   width: 100%;
   height: 100%;
-  position: absolute;
-  background-color: black;
+  // position: absolute;
 }
 
 .poker-table__container {
   max-width: 1280px;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  margin-right: -50%;
-  transform: translate(-50%, -50%);
+	margin: auto;
+  // position: absolute;
+  // top: 50%;
+  // left: 50%;
+  // margin-right: -50%;
+  // transform: translate(-50%, -50%);
 }
 
 .poker-table__table-image {
@@ -51,6 +60,10 @@
   }
 }
 
+.additional-features {
+	padding: 7px;
+}
+
 .action__bar {
   display: flex;
   align-items: center;
@@ -66,7 +79,7 @@
     position: relative;
     display: inline-block;
     font-family: Arial, Helvetica, FreeSans, 'Liberation Sans', 'Nimbus Sans L', sans-serif;
-    font-size: 1.5em;
+    font-size: 1em;
     font-weight: 700;
     color: rgb(245, 245, 245);
     text-shadow: 0 -1px rgba(0, 0, 0, 0.1);
@@ -119,4 +132,60 @@
   margin: 10px;
   border: 2px solid red;
   color: #ffffff;
+}
+
+@media (max-width: 1270px) {
+
+}
+
+#box {
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  color: white;
+  font-family: 'Raleway';
+  font-size: 2.5rem;
+}
+.gradient-border {
+  --borderWidth: 3px;
+  background: black;
+  position: relative;
+  border-radius: var(--borderWidth);
+}
+.gradient-border:after {
+  content: '';
+  position: absolute;
+  top: calc(-1 * var(--borderWidth));
+  left: calc(-1 * var(--borderWidth));
+  height: calc(100% + var(--borderWidth) * 2);
+  width: calc(100% + var(--borderWidth) * 2);
+  background: linear-gradient(60deg, #f79533, #f37055, #ef4e7b, #a166ab, #5073b8, #1098ad, #07b39b, #6fba82);
+  border-radius: calc(2 * var(--borderWidth));
+  z-index: -1;
+  animation: animatedgradient 3s ease alternate infinite;
+  background-size: 300% 300%;
+}
+
+
+@keyframes animatedgradient {
+	0% {
+		background-position: 0% 50%;
+	}
+	50% {
+		background-position: 100% 50%;
+	}
+	100% {
+		background-position: 0% 50%;
+	}
+}
+
+.players-in-deal {
+	position: absolute;
+  justify-content: center;
+  top: 55%;
+  left: 40%;
+  display: flex;
+  width: 20%;
+  height: 10%;
 }
