@@ -17,10 +17,19 @@ import {
 
 const Poker_table = (): JSX.Element => {
   const dispatch = useAppDispatch();
-  const { usersInDeal, isDeal, wait, currentUser, showCards, stage, betToCall, bank, userOptions } =
-    useAppSelector((state: { gameplay: IGameplay }) => state.gameplay);
+  const {
+    usersInDeal,
+    isDeal,
+    waitToSeat,
+    currentUser,
+    showCards,
+    stage,
+    currentBet,
+    bank,
+    userOptions,
+  } = useAppSelector((state: { gameplay: IGameplay }) => state.gameplay);
   const user = useAppSelector((state) => state.user.user) as IUser;
-  const { _id, gameState } = user;
+  const { _id } = user;
   const [currentValue, setCurrentValue] = useState(20);
 
   const renderPlayer = (users: IUser[]) =>
@@ -40,18 +49,19 @@ const Poker_table = (): JSX.Element => {
       </div>
     ));
   };
-
   useEffect(() => {
-    if (stage === 4 || stage === 100 || (!isDeal && wait.length === 2)) {
+    // if (stage === 4 || stage === 100 || (!isDeal && wait.length === 2) || ) {
+    if ((!isDeal && waitToSeat.length === 2) || stage === 4 || stage === 100) {
       setTimeout(() => {
+        console.log('start');
         const deck = shuffle();
         dispatch(restartDealFetch(deck));
       }, 3000);
     }
-  }, [dispatch, stage, wait]);
+  }, [dispatch, stage, waitToSeat]);
 
   const handleCheck = () => {
-    dispatch(checkActionFetch({ _id }));
+    dispatch(checkActionFetch());
   };
 
   const handleBet = () => {
@@ -62,31 +72,33 @@ const Poker_table = (): JSX.Element => {
 
   const handleCall = () => {
     console.log('call');
-    const callSize = betToCall - gameState.bet;
-    dispatch(callActionThunk({ _id, callSize }));
+    dispatch(callActionThunk({ _id }));
   };
 
   const handleFold = () => {
-    console.log('fold');
+    console.log('fold', _id);
     dispatch(foldActionThunk({ _id }));
   };
 
   return (
     <div className='poker-table__wrapper'>
       <div className='poker__background'>
-        <div className='poker-table__container'>
+        <div className='poker-table__container gradient-border' id='box'>
           <div className='additional-features'>
             <Sound />
           </div>
-          <img
-            className='poker-table__table-image'
-            src={require('../../assets/poker_table.jpg')}
-            alt='poker table'
-          />
-          <div className='card__container'>{renderCards(showCards)}</div>
-          <div className='bank__container'>
-            <img src={require('../../assets/chip-bank.png')} alt='chip bank' />
-            <h4>{bank}$</h4>
+          <div className='poker__container'>
+            <img
+              className='poker-table__table-image'
+              src={require('../../assets/poker_table.jpg')}
+              alt='poker table'
+            />
+            <div className='card__container'>{renderCards(showCards)}</div>
+            <div className='bank__container'>
+              <img src={require('../../assets/chip-bank.png')} alt='chip bank' />
+              <h4>{bank}$</h4>
+            </div>
+            <div className='players-in-deal'>{renderPlayer(usersInDeal)}</div>
           </div>
           <div className='poker-table__seat-btn action__buttons'>
             <SeatBtn />
@@ -95,17 +107,14 @@ const Poker_table = (): JSX.Element => {
             {currentUser?._id === _id && (
               <div>
                 <div className='action__buttons'>
-                  {userOptions.includes('fold') && (
-                    <button className='action__buttons__fold' onClick={handleFold}>
-                      Fold
-                    </button>
-                  )}
-                  {!!betToCall && (
+                  <button className='action__buttons__fold' onClick={handleFold}>
+                    Fold
+                  </button>
+                  {!!currentBet && (
                     <button className='action__buttons__Call' onClick={handleCall}>
                       Call
                     </button>
                   )}
-                  <button className='action__buttons__Call'>Call</button>
                   {userOptions.includes('check') && (
                     <button className='action__buttons__Call' onClick={handleCheck}>
                       Check
@@ -124,7 +133,6 @@ const Poker_table = (): JSX.Element => {
               <Chat />
             </section>
           </div>
-          <div className='players-in-deal'>{renderPlayer(usersInDeal)}</div>
         </div>
       </div>
     </div>

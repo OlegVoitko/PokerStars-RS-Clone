@@ -57,7 +57,7 @@ button::-moz-focus-inner {
 
 //=====COLORS
 $color-background: #141513;
-$color-text: #bbbbb7;
+$color-text: #00eaff;
 $color-text_success: #3d8623;
 $color-text_inactive: #636360;
 $color-table: #113811;
@@ -66,7 +66,7 @@ $color-button_hover: #222428;
 $color-button_active: #1c3334;
 $color-button_exit: #f5060670;
 $color-nicks: #99791a;
-$color-title: #de7113;
+$color-title: #0d1012;
 $color-numbers: #2093a7;
 $color-block-form: #00000050;
 
@@ -78,7 +78,8 @@ html {
 }
 
 body {
-  background-color: $color-background;
+  // background-color: $color-background;
+	background-image: url('../public/bakcpng-1.png');
   font-family: Verdana, Geneva, Tahoma, sans-serif;
   height: 100%;
   display: flex;

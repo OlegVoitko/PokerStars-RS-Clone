@@ -43,13 +43,14 @@ export interface IGameplay {
   activePosition: number;
   isDeal: boolean;
   usersInDeal: IUser[];
+  usersAtTable: IUser[];
   currentUser: IUser | null;
   board: ICard[];
   showCards: ICard[];
   bank: number;
-  betToCall: number;
+  currentBet: number;
   userOptions: string[];
-  wait: IUser[];
+  waitToSeat: IUser[];
   loading: 'idle' | 'pending' | 'succeeded' | 'failed';
 }
 
