@@ -103,12 +103,12 @@ const gameplaySlice = createSlice({
     userSeatOut: (state, { payload }: { payload: IUser }) => {
       const userInDeal = state.usersInDeal.find((user) => user._id === payload._id);
       const userInWaitToSeat = state.waitToSeat.find((user) => user._id === payload._id);
-      if (!userInDeal) {
-        state.usersAtTable = state.usersAtTable.filter((user) => user._id !== payload._id);
-        return;
-      }
       if (userInWaitToSeat) {
         state.waitToSeat = state.waitToSeat.filter((user) => user._id !== payload._id);
+        return;
+      }
+      if (!userInDeal) {
+        state.usersAtTable = state.usersAtTable.filter((user) => user._id !== payload._id);
         return;
       }
       state.usersAtTable = state.usersAtTable.filter((user) => user._id !== payload._id);
