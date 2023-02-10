@@ -4,33 +4,27 @@ import { useAppDispatch, useAppSelector } from '../../hooks/hook';
 import { seatUser } from '../../store/gameplaySlice';
 import { IUser } from '../../types/interfaces';
 
-interface ISeatBtnProps {
+interface ISeatOutBtnProps {
   togleSeatBtn: () => void;
 }
 
-const SeatBtn = (props: ISeatBtnProps) => {
+const SeatOutBtn = (props: ISeatOutBtnProps) => {
   const { togleSeatBtn } = props;
   const user = useAppSelector((state) => state.user.user);
   const dispatch = useAppDispatch();
 
-  // useEffect(() => {
-  //   if (user && waitToSeat.filter((u) => u._id === user._id).length > 0) {
-  //     setDisabled((disabled) => !disabled);
-  //   }
-  // }, [waitToSeat]);
-
-  const handleSeat = (user: IUser): void => {
+  const handleSeatOut = () => {
     togleSeatBtn();
-    dispatch(seatUser(user));
+    console.log('seatOut'); // TODO SeatOut
   };
 
   return (
     user && (
-      <button className='seat-btn' onClick={() => handleSeat(user)}>
-        Seat
+      <button className='seat-btn' onClick={() => handleSeatOut()}>
+        SeatOut
       </button>
     )
   );
 };
 
-export default SeatBtn;
+export default SeatOutBtn;
