@@ -185,12 +185,12 @@ const gameplaySlice = createSlice({
       const hands = deal(state.usersInDeal.length, deck.slice(5));
       state.usersInDeal.forEach((u, i) => (u.gameState.hand = hands[i]));
       state.usersInDeal.forEach((user) => {
-        const { bestCombination, bestFiveCards, combinationRating } = findBestCombination(
+        const { bestCombination, restBestCards, combinationRating } = findBestCombination(
           state.board,
           user.gameState.hand
         );
         user.gameState.bestCombination = bestCombination;
-        user.gameState.bestFiveCards = bestFiveCards;
+        user.gameState.restBestCards = restBestCards;
         user.gameState.combinationRating = combinationRating;
       });
       state.wait = [];

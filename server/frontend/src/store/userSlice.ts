@@ -38,7 +38,7 @@ export const registerUserThunk = createAsyncThunk(
           bet: 0,
           action: '',
           bestCombination: [],
-          bestFiveCards: [],
+          restBestCards: [],
           combinationRating: 0,
         },
       };
@@ -80,7 +80,7 @@ export const loginUserThunk = createAsyncThunk(
           bet: 0,
           action: '',
           bestCombination: [],
-          bestFiveCards: [],
+          restBestCards: [],
           combinationRating: 0,
         },
       };

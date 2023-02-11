@@ -1,4 +1,4 @@
-import { ICard } from '../types/interfaces';
+import { ICard, IUser } from '../types/interfaces';
 import { CARD_DECK, POKER_COMBINATIONS } from '../utils/constants';
 
 interface IValueMap {
@@ -75,9 +75,9 @@ export const deal = (count: number, deck: ICard[]) => {
 export const findBestCombination = (
   board: ICard[],
   hand: ICard[]
-): { bestFiveCards: ICard[]; bestCombination: ICard[]; combinationRating: number } => {
+): { restBestCards: ICard[]; bestCombination: ICard[]; combinationRating: number } => {
   const bestCombination: ICard[] = [];
-  const bestFiveCards: ICard[] = [];
+  const restBestCards: ICard[] = [];
   let combinationRating = 0;
   const concatCards = [...board, ...hand];
   const sortCardsByValue = concatCards.sort((a, b) => (a.value > b.value ? 1 : -1));
@@ -104,8 +104,8 @@ export const findBestCombination = (
         combinationRating =
           i === 0 ? POKER_COMBINATIONS.ROYAL_FLUSH : POKER_COMBINATIONS.STRAIGHT_FLUSH;
         bestCombination.push(...fiveCardsBySuit[0][1].slice(2 - i, 7 - i));
-        bestFiveCards.push(...bestCombination);
-        return { bestCombination, bestFiveCards, combinationRating };
+        restBestCards.push(...bestCombination);
+        return { bestCombination, restBestCards, combinationRating };
       }
     }
   }
@@ -119,8 +119,8 @@ export const findBestCombination = (
     const lastBestCard = sortCardsByValue
       .filter((obj) => obj.cardFace !== fourCardsByValue[0][0])
       .pop();
-    lastBestCard && bestFiveCards.push(lastBestCard);
-    return { bestCombination, bestFiveCards, combinationRating };
+    lastBestCard && restBestCards.push(lastBestCard);
+    return { bestCombination, restBestCards, combinationRating };
   }
 
   //FullHouse
@@ -130,46 +130,42 @@ export const findBestCombination = (
   const twoCardsByValue = Object.entries(combineCardsByValue).filter((obj) => obj[1].length >= 2);
   if (threeCardsByValue.length && twoCardsByValue.length) {
     if (threeCardsByValue.length === 1 && twoCardsByValue.length > 1) {
-      console.log('im in cicle threeCards && twoCards');
       const TC = twoCardsByValue.filter((obj) => obj[0] !== threeCardsByValue[0][0]);
       bestCombination.push(...threeCardsByValue[0][1], ...TC[TC.length - 1][1].slice(0, 2));
       combinationRating = POKER_COMBINATIONS.FULL_HOUSE;
-      return { bestCombination, bestFiveCards, combinationRating };
+      return { bestCombination, restBestCards, combinationRating };
     }
     if (twoCardsByValue.length === 1 && threeCardsByValue.length > 1) {
       const TC = threeCardsByValue.filter((obj) => obj[0] !== twoCardsByValue[0][0]);
       bestCombination.push(...twoCardsByValue[0][1], ...TC[0][1]);
       combinationRating = POKER_COMBINATIONS.FULL_HOUSE;
-      return { bestCombination, bestFiveCards, combinationRating };
+      return { bestCombination, restBestCards, combinationRating };
     }
     if (twoCardsByValue.length > 1 && threeCardsByValue.length > 1) {
       const bestThree = threeCardsByValue[threeCardsByValue.length - 1];
       const bestTwo = twoCardsByValue.filter((obj) => obj[0] !== bestThree[0][0]);
       bestCombination.push(...bestThree[1], ...bestTwo[bestTwo.length - 1][1].slice(0, 2));
       combinationRating = POKER_COMBINATIONS.FULL_HOUSE;
-      return { bestCombination, bestFiveCards, combinationRating };
+      return { bestCombination, restBestCards, combinationRating };
     }
   }
 
   //flush
   if (fiveCardsBySuit.length) {
-    console.log('fiveCardsBySuit CYCLE');
-    console.log('fiveCardsBySuit', fiveCardsBySuit);
     combinationRating = POKER_COMBINATIONS.FLUSH;
     bestCombination.push(...fiveCardsBySuit[0][1].slice(-5));
-    return { bestCombination, bestFiveCards, combinationRating };
+    return { bestCombination, restBestCards, combinationRating };
   }
 
   // street
   //TODO Street `A2345`
   if (Object.keys(combineCardsByValue).length >= 5) {
     const cardValues = sortCardsByValue.map((c) => c.value).sort((a, b) => b - a);
-    console.log('STREET cardValues', cardValues);
     for (let i = 0; i < 3; i++) {
       if (cardValues[i] - cardValues[i + 4] === 4) {
         combinationRating = POKER_COMBINATIONS.STRAIGHT;
         bestCombination.push(...sortCardsByValue.slice(2 - i, 7 - i));
-        return { bestCombination, bestFiveCards, combinationRating };
+        return { bestCombination, restBestCards, combinationRating };
       }
     }
   }
@@ -181,9 +177,9 @@ export const findBestCombination = (
     const lastBestCards = sortCardsByValue
       .filter((obj) => obj.cardFace !== bestThree[0][0])
       .slice(-2);
-    bestFiveCards.push(...lastBestCards);
+    restBestCards.push(...lastBestCards);
     combinationRating = POKER_COMBINATIONS.THREE_KIND;
-    return { bestCombination, bestFiveCards, combinationRating };
+    return { bestCombination, restBestCards, combinationRating };
   }
 
   //two PAIRs
@@ -194,9 +190,9 @@ export const findBestCombination = (
     const lastBestCard = sortCardsByValue
       .filter((obj) => obj.cardFace !== bestTwoNames[0] && obj.cardFace !== bestTwoNames[1])
       .slice(-1);
-    bestFiveCards.push(...lastBestCard);
+    restBestCards.push(...lastBestCard);
     combinationRating = POKER_COMBINATIONS.TWO_PAIRS;
-    return { bestCombination, bestFiveCards, combinationRating };
+    return { bestCombination, restBestCards, combinationRating };
   }
 
   //one PAIRs
@@ -205,14 +201,37 @@ export const findBestCombination = (
     const lastBestCards = sortCardsByValue
       .filter((obj) => obj.cardFace !== twoCardsByValue[0][0])
       .slice(-3);
-    bestFiveCards.push(...lastBestCards);
+    restBestCards.push(...lastBestCards);
     combinationRating = POKER_COMBINATIONS.ONE_PAIR;
-    return { bestCombination, bestFiveCards, combinationRating };
+    return { bestCombination, restBestCards, combinationRating };
   }
 
   bestCombination.push(...sortCardsByValue.slice(-1));
-  bestFiveCards.push(...sortCardsByValue.slice(-5, -1));
+  restBestCards.push(...sortCardsByValue.slice(-5, -1));
   combinationRating = POKER_COMBINATIONS.HIGH_CARD;
 
-  return { bestCombination, bestFiveCards, combinationRating };
+  return { bestCombination, restBestCards, combinationRating };
+};
+
+export const getWinner = (users: IUser[]): IUser | IUser[] => {
+  const bestRaitingCombination = Math.max(...users.map((user) => user.gameState.combinationRating));
+  const winners = users.filter(
+    (user) => user.gameState.combinationRating === bestRaitingCombination
+  );
+  if (winners.length === 1) return winners;
+
+  if (
+    bestRaitingCombination === POKER_COMBINATIONS.STRAIGHT_FLUSH ||
+    bestRaitingCombination === POKER_COMBINATIONS.FLUSH ||
+    bestRaitingCombination === POKER_COMBINATIONS.STRAIGHT
+  ) {
+    const bestPlayer = winners.reduce((acc, curr) =>
+      acc.gameState.bestCombination[acc.gameState.bestCombination.length - 1].value >
+      curr.gameState.bestCombination[curr.gameState.bestCombination.length - 1].value
+        ? acc
+        : curr
+    );
+    return bestPlayer;
+  }
+  return winners;
 };

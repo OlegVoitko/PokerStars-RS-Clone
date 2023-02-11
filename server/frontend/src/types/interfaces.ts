@@ -11,7 +11,7 @@ export interface IUserGamestate {
   state: string;
   action: string; //'check' | 'fold' | 'call'
   bestCombination: ICard[];
-  bestFiveCards: ICard[];
+  restBestCards: ICard[];
   combinationRating: number;
 }
 

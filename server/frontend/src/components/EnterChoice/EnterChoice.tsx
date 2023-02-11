@@ -23,7 +23,7 @@ const EnterChoice = (): JSX.Element => {
         bet: 0,
         action: '',
         bestCombination: [],
-        bestFiveCards: [],
+        restBestCards: [],
         combinationRating: 0,
       },
     };
