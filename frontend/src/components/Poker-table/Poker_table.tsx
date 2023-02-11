@@ -34,7 +34,10 @@ const Poker_table = (): JSX.Element => {
   } = useAppSelector((state: { gameplay: IGameplay }) => state.gameplay);
   const user = useAppSelector((state) => state.user.user) as IUser;
   const { _id } = user;
-  const [currentValue, setCurrentValue] = useState(20);
+
+  const [currentValue, setCurrentValue] = useState(BLIND_SIZE);
+  const minBet = currentUser ? currentBet - currentUser.gameState.bet + BLIND_SIZE : 0;
+  const maxBet = currentUser ? currentUser.gameState.stack : 10000;
 
   const renderPlayer = (users: IUser[]) =>
     users.map((u, i) => (
@@ -54,7 +57,7 @@ const Poker_table = (): JSX.Element => {
     ));
   };
   useEffect(() => {
-    // if (stage === 4 || stage === 100 || (!isDeal && wait.length === 2) || ) {
+    setCurrentValue(minBet);
     if (
       (!isDeal && waitToSeat.length === 2) ||
       stage === 4 ||
@@ -62,36 +65,30 @@ const Poker_table = (): JSX.Element => {
       (waitToSeat.length > 0 && usersAtTable.length === 1)
     ) {
       setTimeout(() => {
-        console.log('start');
         const deck = shuffle();
         dispatch(restartDealFetch(deck));
       }, 3000);
     }
-  }, [dispatch, stage, waitToSeat]);
+  }, [dispatch, stage, waitToSeat, currentUser]);
 
   const handleCheck = () => {
     dispatch(checkActionFetch());
   };
 
-  const handleBet = () => {
-    console.log('bet');
-    console.log('currentValue', currentValue);
-    dispatch(betActionThunk({ _id, betSize: currentValue }));
+  const handleBet = ({ _id, betSize }: { _id: string; betSize: number }) => {
+    console.log(betSize);
+    dispatch(betActionThunk({ _id, betSize }));
   };
 
   const handleCall = () => {
-    console.log('call');
     dispatch(callActionThunk({ _id }));
   };
 
   const handleFold = () => {
-    console.log('fold', _id);
     dispatch(foldActionThunk({ _id }));
   };
-  const togleSeatBtn = () => setIsShowSeat(!isShowSeat);
+  const toggleSeatBtn = () => setIsShowSeat(!isShowSeat);
 
-  const minBet = currentBet - user.gameState.bet + BLIND_SIZE;
-  const maxBet = user.gameState.stack - user.gameState.bet;
   return (
     <div className='poker-table__wrapper'>
       <div className='poker__background'>
@@ -114,12 +111,12 @@ const Poker_table = (): JSX.Element => {
           </div>
           {isShowSeat && (
             <div className='poker-table__seat-btn action__buttons'>
-              <SeatBtn togleSeatBtn={togleSeatBtn} />
+              <SeatBtn toggleSeatBtn={toggleSeatBtn} />
             </div>
           )}
           {!isShowSeat && (
             <div className='poker-table__seat-btn action__buttons'>
-              <SeatOutBtn togleSeatBtn={togleSeatBtn} />
+              <SeatOutBtn toggleSeatBtn={toggleSeatBtn} />
             </div>
           )}
           <div className='action__bar'>
@@ -139,9 +136,14 @@ const Poker_table = (): JSX.Element => {
                       Check
                     </button>
                   )}
-                  <button className='action__buttons__RaiseTo' onClick={handleBet}>
-                    Raise To
-                  </button>
+                  {currentValue <= currentUser.gameState.stack && (
+                    <button
+                      className='action__buttons__RaiseTo'
+                      onClick={() => handleBet({ _id, betSize: currentValue })}
+                    >
+                      Raise To
+                    </button>
+                  )}
                 </div>
                 <div className='action__bar__slider'>
                   <CustomizedSlider
