@@ -1,0 +1,17 @@
+.wrapper {
+	overflow: auto;
+  text-align: center;
+	
+  & > ul {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: none;
+    width: fit-content;
+    margin: auto;
+
+    & > li {
+      margin: 5px;
+    }
+  }
+}

@@ -16,6 +16,8 @@ import {
 } from '../../store/gameplaySlice';
 import SeatOutBtn from './SeatOutBtn';
 import { BLIND_SIZE } from '../../utils/constants';
+import '../Cards-style/CardList.scss';
+import { RenderCards } from 'components/Cards-style';
 
 const Poker_table = (): JSX.Element => {
   const [isShowSeat, setIsShowSeat] = useState(true);
@@ -38,20 +40,45 @@ const Poker_table = (): JSX.Element => {
   const renderPlayer = (users: IUser[]) =>
     users.map((u, i) => (
       <div className='player' key={i}>
-        Stack: {u.gameState.stack}
-        <br />
-        hand:{' '}
-        {`${u.gameState.hand[0].cardFace}${u.gameState.hand[0].suit} ${u.gameState.hand[1].cardFace}${u.gameState.hand[1].suit}`}
+        <div className='player-two-cards'>
+          <div className='playing-card1'>
+            {' '}
+            {`${u.gameState.hand[0].cardFace}${u.gameState.hand[0].suit}`}
+          </div>
+          <div className='playing-card2'>
+            {' '}
+            {`${u.gameState.hand[1].cardFace}${u.gameState.hand[1].suit}`}
+          </div>
+        </div>
+        <div className='player-avatar-container'>
+          <img
+            className='player-avatar_img'
+            src={require('../../assets/deadline.png')}
+            alt='Avatar'
+          />
+        </div>
+        <h4 className='player-name'>Oleg</h4>
+        <h4 className='player-stack'>$ {u.gameState.stack}</h4>
       </div>
     ));
 
-  const renderCards = (cards: ICard[]) => {
-    return cards.map((card, i) => (
-      <div key={i}>
-        {card.cardFace} {card.suit}
-      </div>
-    ));
-  };
+  // const renderPlayer = (users: IUser[]) =>
+  //   users.map((u, i) => (
+  //     <div className='player' key={i}>
+  //       Stack: {u.gameState.stack}
+  //       <br />
+  //       hand:{' '}
+  //       {`${u.gameState.hand[0].cardFace}${u.gameState.hand[0].suit} ${u.gameState.hand[1].cardFace}${u.gameState.hand[1].suit}`}
+  //     </div>
+  //   ));
+
+  // const renderCards = (cards: ICard[]) => {
+  //   return cards.map((card, i) => (
+  //     <div key={i}>
+  //       {card.cardFace} {card.suit}
+  //     </div>
+  //   ));
+  // };
   useEffect(() => {
     // if (stage === 4 || stage === 100 || (!isDeal && wait.length === 2) || ) {
     if ((!isDeal && waitToSeat.length === 2) || stage === 4 || stage === 100) {
@@ -99,7 +126,10 @@ const Poker_table = (): JSX.Element => {
               src={require('../../assets/poker_table.jpg')}
               alt='poker table'
             />
-            <div className='card__container'>{renderCards(showCards)}</div>
+            {/* <div className='card__container'>{renderCards(showCards)}</div> */}
+            <div className='card__container'>
+              <RenderCards cards={showCards} />
+            </div>
             <div className='bank__container'>
               <img src={require('../../assets/chip-bank.png')} alt='chip bank' />
               <h4>{bank}$</h4>
