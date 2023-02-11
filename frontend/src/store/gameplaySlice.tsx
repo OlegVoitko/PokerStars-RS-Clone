@@ -42,7 +42,9 @@ const toNextStage = (state: IGameplay) => {
     }
     case 100: {
       const winner = state.usersInDeal[0];
-      winner.gameState.stack += state.currentBet;
+      winner.gameState.stack += state.bank;
+      const winerTable = state.usersAtTable.find((u) => u._id === winner._id) as IUser;
+      winerTable.gameState.stack += state.bank;
       state.currentBet = 0;
       state.showCards = [
         { cardFace: `${winner.nickname} wins the pot ${state.bank}$`, value: 0, suit: '' },
