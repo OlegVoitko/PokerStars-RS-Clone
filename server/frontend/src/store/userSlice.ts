@@ -37,6 +37,9 @@ export const registerUserThunk = createAsyncThunk(
           state: 'wait',
           bet: 0,
           action: '',
+          bestCombination: [],
+          bestFiveCards: [],
+          combinationRating: 0,
         },
       };
       // console.log('createAsyncThunk data', data);
@@ -76,6 +79,9 @@ export const loginUserThunk = createAsyncThunk(
           state: 'wait',
           bet: 0,
           action: '',
+          bestCombination: [],
+          bestFiveCards: [],
+          combinationRating: 0,
         },
       };
       // console.log('loginUserThunk data', data);
