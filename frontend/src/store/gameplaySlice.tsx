@@ -41,8 +41,13 @@ const toNextStage = (state: IGameplay) => {
       break;
     }
     case 100: {
+      const winner = state.usersInDeal[0];
+      winner.gameState.stack += state.currentBet;
       state.currentBet = 0;
-      state.showCards = [{ cardFace: 'EXTRA EXIT', value: 0, suit: '' }];
+      state.showCards = [
+        { cardFace: `${winner.nickname} wins the pot ${state.bank}$`, value: 0, suit: '' },
+      ];
+      state.bank = 0;
       break;
     }
     default:
