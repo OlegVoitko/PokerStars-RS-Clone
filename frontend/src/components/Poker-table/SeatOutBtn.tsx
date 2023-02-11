@@ -5,16 +5,16 @@ import { seatOutUserThunk } from '../../store/gameplaySlice';
 import { IUser } from '../../types/interfaces';
 
 interface ISeatOutBtnProps {
-  togleSeatBtn: () => void;
+  toggleSeatBtn: () => void;
 }
 
 const SeatOutBtn = (props: ISeatOutBtnProps) => {
-  const { togleSeatBtn } = props;
+  const { toggleSeatBtn } = props;
   const user = useAppSelector((state) => state.user.user);
   const dispatch = useAppDispatch();
 
   const handleSeatOut = (user: IUser) => {
-    togleSeatBtn();
+    toggleSeatBtn();
     console.log('seatOut'); // TODO SeatOut
     dispatch(seatOutUserThunk(user));
   };

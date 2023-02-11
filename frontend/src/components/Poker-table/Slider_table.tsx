@@ -62,7 +62,7 @@ const CustomizedSlider: FC<CustomizedSlider> = ({
       <PrettoSlider
         valueLabelDisplay='auto'
         aria-label='pretto slider'
-        defaultValue={BLIND_SIZE}
+        defaultValue={currentValue}
         step={10}
         value={currentValue}
         min={minValue}

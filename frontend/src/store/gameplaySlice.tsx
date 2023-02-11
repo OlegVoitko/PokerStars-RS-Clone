@@ -156,21 +156,28 @@ const gameplaySlice = createSlice({
     },
     betAction: (state, { payload }: { payload: { _id: string; betSize: number } }) => {
       const currentUser = state.usersInDeal.find(({ _id }) => _id === payload._id) as IUser;
-      currentUser.gameState.bet += payload.betSize;
+      const currentUserTable = state.usersAtTable.find(({ _id }) => _id === payload._id) as IUser; // To save stack state after restart deal
+
+      currentUserTable.gameState.stack -= payload.betSize;
+      currentUser.gameState.stack -= payload.betSize;
       const nextUser =
         state.activePosition + 1 > state.usersCount - 1 ? 0 : state.activePosition + 1;
       state.currentUser = state.usersInDeal[nextUser];
       state.activePosition = nextUser;
       state.bank += payload.betSize;
-      state.currentBet = payload.betSize;
+      state.currentBet = payload.betSize + currentUser.gameState.bet;
+      currentUser.gameState.bet += payload.betSize;
       state.usersCompleteAction = 1;
       state.userOptions = ['fold', 'call', 'raise'];
     },
     callAction: (state, { payload }: { payload: { _id: string } }) => {
       const { _id } = payload;
       const currentUser = state.usersInDeal.find((u) => u._id === _id) as IUser;
+      const currentUserTable = state.usersAtTable.find(({ _id }) => _id === payload._id) as IUser; // To save stack state after restart deal
       const callSize = state.currentBet - currentUser.gameState.bet;
       currentUser.gameState.bet += callSize;
+      currentUser.gameState.stack -= callSize;
+      currentUserTable.gameState.stack -= callSize;
       state.bank += callSize;
       state.usersCompleteAction += 1;
       if (state.usersCompleteAction === state.usersCount) {
