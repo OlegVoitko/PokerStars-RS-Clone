@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { Card as ICard } from './interfaces/Poker';
 import { Suit } from '../Cards-style';
 import styled from '@emotion/styled';
+import { ICard } from 'types/interfaces';
 
 const CardWrapper = styled.div`
   background-color: white;
@@ -18,33 +18,20 @@ const CardWrapper = styled.div`
   color: #000;
   user-select: none;
 
-  &[data-suit='diamonds'],
-  &[data-suit='hearts'] {
-    color: red;
-  }
-
-  &:hover {
-    box-shadow: 0 6px 30px rgba(0, 0, 0, 0.12);
-    transform: scale(1.02);
-  }
-  &:active {
-    transform: scale(0.98);
-  }
-
   & .cardInfo {
     position: absolute;
-    font-size: 12px;
+    font-size: 21px;
     font-weight: 600;
     text-align: center;
 
     & img {
-      height: 10px;
-      width: 10px;
+      height: 13px;
+      width: 13px;
     }
 
     &.top {
       top: 1px;
-      left: 30px;
+      left: 4px;
     }
 
     &.bottom {
@@ -54,9 +41,15 @@ const CardWrapper = styled.div`
     }
   }
 
+  .cardSuit {
+    position: absolute;
+    top: 38px;
+    left: 16px;
+  }
+
   & .cardSuit img {
-    height: 16px;
-    width: 16px;
+    height: 27px;
+    width: 27px;
   }
 
   &[data-highlight='true'] {
@@ -73,32 +66,28 @@ interface CardProps {
 }
 
 export const Card: React.FC<CardProps> = ({ card }) => {
-  const title = React.useMemo(() => {
-    if (
-      card.value === 'Jack' ||
-      card.value === 'Queen' ||
-      card.value === 'King' ||
-      card.value === 'Ace'
-    ) {
-      return card.value[0];
-    }
-    return card.value;
-  }, [card.value]);
+  // const title = React.useMemo(() => {
+  //   if (
+  //     card.cardFace === 'Jack' ||
+  //     card.cardFace === 'Queen' ||
+  //     card.cardFace === 'King' ||
+  //     card.cardFace === 'Ace'
+  //   ) {
+  //     return card.cardFace[0];
+  //   }
+  //   return card.cardFace;
+  // }, [card.cardFace]);
 
   return (
     <>
       <CardWrapper>
         <span className='cardInfo top'>
-          <div>{title}</div>
+          <div>{card.cardFace}</div>
           <Suit suit={card.suit} />
         </span>
         <div className='cardSuit'>
           <Suit suit={card.suit} />
         </div>
-        {/* <span className='cardInfo bottom'>
-          <div>{title}</div>
-          <Suit suit={card.suit} />
-        </span> */}
       </CardWrapper>
     </>
   );

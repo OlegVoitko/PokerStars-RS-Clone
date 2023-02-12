@@ -6,7 +6,7 @@ import Sound from './SoundOnOff';
 import SeatBtn from './SeatBtn';
 import { useAppDispatch, useAppSelector } from '../../hooks/hook';
 import { shuffle } from '../../utils/gameHelper';
-import { ICard, IUser, IGameplay } from '../../types/interfaces';
+import { IUser, IGameplay } from '../../types/interfaces';
 import {
   checkActionFetch,
   restartDealFetch,
@@ -16,7 +16,7 @@ import {
 } from '../../store/gameplaySlice';
 import SeatOutBtn from './SeatOutBtn';
 import { BLIND_SIZE } from '../../utils/constants';
-import '../Cards-style/CardList.scss';
+import '../Cards-style/RenderCards.scss';
 import { RenderCards } from 'components/Cards-style';
 
 const Poker_table = (): JSX.Element => {
@@ -79,6 +79,7 @@ const Poker_table = (): JSX.Element => {
   //     </div>
   //   ));
   // };
+
   useEffect(() => {
     // if (stage === 4 || stage === 100 || (!isDeal && wait.length === 2) || ) {
     if ((!isDeal && waitToSeat.length === 2) || stage === 4 || stage === 100) {

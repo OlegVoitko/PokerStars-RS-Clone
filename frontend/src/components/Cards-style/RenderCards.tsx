@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { Card } from '../Cards-style';
-import { Card as ICard } from './interfaces/Poker';
-import './CardList.scss';
+import { Card } from '.';
+import './RenderCards.scss';
+import { ICard } from 'types/interfaces';
 
 interface CardsListProps {
   cards: ICard[];
