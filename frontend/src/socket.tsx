@@ -37,8 +37,9 @@ interface ClientToServerEvents {
   updateGameplay: (data: IGameplay) => void;
 }
 
-export const socket: Socket<ServerToClientEvents, ClientToServerEvents> =
-  io('http://localhost:8000/');
+export const socket: Socket<ServerToClientEvents, ClientToServerEvents> = io(
+  'https://pokerstars-allin-rs-clone.onrender.com/'
+);
 
 socket.on('new message', (data) => {
   store.dispatch(addMessage(data));

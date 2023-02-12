@@ -25,7 +25,7 @@ export const registerUserThunk = createAsyncThunk(
   'userSlice/registerUserThunk',
   async (user: INewUser, { rejectWithValue, dispatch }) => {
     try {
-      const response = await fetch('http://localhost:8000/signup', {
+      const response = await fetch('https://pokerstars-allin-rs-clone.onrender.com/signup', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -61,7 +61,7 @@ export const loginUserThunk = createAsyncThunk(
   'userSlice/loginUserThunk',
   async (user: INewUser, { rejectWithValue, dispatch }) => {
     try {
-      const response = await fetch('http://localhost:8000/signin', {
+      const response = await fetch('https://pokerstars-allin-rs-clone.onrender.com/signin', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
