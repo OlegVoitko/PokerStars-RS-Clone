@@ -736,3 +736,175 @@ export const userFOUR_KIND4 = {
     combinationRating: 8
   }
 };
+
+//comb HIGH_CARD
+export const userHIGH_CARD1 = {
+  _id: 'HIGH_CARD1',
+  nickname: 'Guest',
+  password: '',
+  bankroll: 10000,
+  gameState: {
+    hand: [
+      {
+        cardFace: '6',
+        suit: 'Spade',
+        value: 5
+      },
+      {
+        cardFace: '5',
+        suit: 'Club',
+        value: 4
+      }
+    ],
+    stack: 10000,
+    state: 'wait',
+    bet: 0,
+    action: '',
+    bestCombination: [
+      { cardFace: 'K', suit: 'Diamond', value: 12 }
+    ],
+    restBestCards: [
+      { cardFace: '6', suit: 'Heart', value: 5 },
+      { cardFace: '7', suit: 'Heart', value: 6 },
+      { cardFace: '10', suit: 'Heart', value: 9 },
+      { cardFace: 'J', suit: 'Heart', value: 10 }
+    ],
+    combinationRating: 1
+  }
+};
+export const userHIGH_CARD2 = {
+  _id: 'HIGH_CARD2',
+  nickname: 'Guest',
+  password: '',
+  bankroll: 10000,
+  gameState: {
+    hand: [
+      {
+        cardFace: '6',
+        suit: 'Spade',
+        value: 5
+      },
+      {
+        cardFace: '5',
+        suit: 'Club',
+        value: 4
+      }
+    ],
+    stack: 10000,
+    state: 'wait',
+    bet: 0,
+    action: '',
+    bestCombination: [
+      { cardFace: 'K', suit: 'Diamond', value: 12 }
+    ],
+    restBestCards: [
+      { cardFace: '6', suit: 'Heart', value: 5 },
+      { cardFace: '7', suit: 'Heart', value: 6 },
+      { cardFace: '10', suit: 'Heart', value: 9 },
+      { cardFace: 'J', suit: 'Heart', value: 10 }
+    ],
+    combinationRating: 1
+  }
+};
+export const userHIGH_CARD3 = {
+  _id: 'HIGH_CARD3',
+  nickname: 'Guest',
+  password: '',
+  bankroll: 10000,
+  gameState: {
+    hand: [
+      {
+        cardFace: '6',
+        suit: 'Spade',
+        value: 5
+      },
+      {
+        cardFace: '5',
+        suit: 'Club',
+        value: 4
+      }
+    ],
+    stack: 10000,
+    state: 'wait',
+    bet: 0,
+    action: '',
+    bestCombination: [
+      { cardFace: 'K', suit: 'Diamond', value: 12 }
+    ],
+    restBestCards: [
+      { cardFace: '6', suit: 'Heart', value: 5 },
+      { cardFace: '7', suit: 'Heart', value: 6 },
+      { cardFace: '10', suit: 'Heart', value: 9 },
+      { cardFace: 'J', suit: 'Heart', value: 10 }
+    ],
+    combinationRating: 1
+  }
+};
+export const userHIGH_CARD4 = {
+  _id: 'HIGH_CARD4',
+  nickname: 'Guest',
+  password: '',
+  bankroll: 10000,
+  gameState: {
+    hand: [
+      {
+        cardFace: '6',
+        suit: 'Spade',
+        value: 5
+      },
+      {
+        cardFace: '5',
+        suit: 'Club',
+        value: 4
+      }
+    ],
+    stack: 10000,
+    state: 'wait',
+    bet: 0,
+    action: '',
+    bestCombination: [
+      { cardFace: 'K', suit: 'Diamond', value: 12 }
+    ],
+    restBestCards: [
+      { cardFace: '6', suit: 'Heart', value: 5 },
+      { cardFace: '7', suit: 'Heart', value: 6 },
+      { cardFace: '10', suit: 'Heart', value: 9 },
+      { cardFace: 'Q', suit: 'Heart', value: 11 }
+    ],
+    combinationRating: 1
+  }
+};
+export const userHIGH_CARD5 = {
+  _id: 'HIGH_CARD5',
+  nickname: 'Guest',
+  password: '',
+  bankroll: 10000,
+  gameState: {
+    hand: [
+      {
+        cardFace: '6',
+        suit: 'Spade',
+        value: 5
+      },
+      {
+        cardFace: '5',
+        suit: 'Club',
+        value: 4
+      }
+    ],
+    stack: 10000,
+    state: 'wait',
+    bet: 0,
+    action: '',
+    bestCombination: [
+      { cardFace: 'A', suit: 'Diamond', value: 13 }
+    ],
+    restBestCards: [
+      { cardFace: '6', suit: 'Heart', value: 5 },
+      { cardFace: '7', suit: 'Heart', value: 6 },
+      { cardFace: '10', suit: 'Heart', value: 9 },
+      { cardFace: 'Q', suit: 'Heart', value: 11 }
+    ],
+    combinationRating: 1
+  }
+};

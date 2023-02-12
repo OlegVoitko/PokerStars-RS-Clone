@@ -218,7 +218,15 @@ export const getSortedCardsValuesDesc = (cards: ICard[]): number[] => {
   return cards.map((card) => card.value).sort((a, b) => b - a);
 };
 
-
+export const findBestArrayOfCards = (cards: number[][]): number[] => {
+  const arrayLength = cards[0].length;
+  const bestArr: number[] = [];
+  for (let i = 0; i < arrayLength; i++) {
+    const curNums = cards.map((c) => c[i]);
+    bestArr.push(Math.max(...curNums));
+  }
+  return bestArr;
+};
 
 export const getWinner = (users: IUser[]): IUser | IUser[] => {
   const bestRatingCombination = Math.max(...users.map((user) => user.gameState.combinationRating));
@@ -229,8 +237,6 @@ export const getWinner = (users: IUser[]): IUser | IUser[] => {
   if (winners.length === 1) return winners;
 
   //if best combinations equal (on the deck for ex)
-  // const bestCombinations = winners.map((user) => JSON.stringify(user.gameState.bestCombination));
-  // const restBestCards = winners.map((user) => JSON.stringify(user.gameState.restBestCards));
   const bestCombinations = winners.map((user) =>
     JSON.stringify(getSortedCardsValuesDesc(user.gameState.bestCombination))
   );
@@ -270,5 +276,31 @@ export const getWinner = (users: IUser[]): IUser | IUser[] => {
       return winners.filter((user) => user.gameState.bestCombination[0].value === maxFour);
     }
   }
+
+  //HIGH_CARD
+  if (bestRatingCombination === POKER_COMBINATIONS.HIGH_CARD) {
+    const highCardValue = winners.map((user) => user.gameState.bestCombination[0].value);
+    const maxHighCard = Math.max(...highCardValue);
+    const winnersWithHighCard = winners.filter(
+      (user) => user.gameState.bestCombination[0].value === maxHighCard
+    );
+    if (winnersWithHighCard.length !== 1) {
+      const restCardValues = winnersWithHighCard.map((user) =>
+        getSortedCardsValuesDesc(user.gameState.restBestCards)
+      );
+      const bestCombination = findBestArrayOfCards(restCardValues);
+      const indexesOfWinners = restCardValues.reduce(
+        (acc, cur, index) =>
+          JSON.stringify(cur) === JSON.stringify(bestCombination) ? [...acc, index] : acc,
+        []
+      );
+      const result: IUser[] = [];
+      indexesOfWinners.forEach((i) => result.push(winnersWithHighCard[i]));
+      return result;
+    } else {
+      return winnersWithHighCard;
+    }
+  }
+
   return winners;
 };
