@@ -214,18 +214,18 @@ export const findBestCombination = (
 };
 
 export const getSortedCardsValuesDesc = (cards: ICard[]): number[] => {
-  //[8, 8, 6, 6]
   return cards.map((card) => card.value).sort((a, b) => b - a);
 };
 
-export const findBestArrayOfCards = (cards: number[][]): number[] => {
-  const arrayLength = cards[0].length;
-  const bestArr: number[] = [];
-  for (let i = 0; i < arrayLength; i++) {
-    const curNums = cards.map((c) => c[i]);
-    bestArr.push(Math.max(...curNums));
+export const findBestArrayOfCards = (cards: number[][], length: number, index: number = 0): number[] => {
+  if (cards.length === 1 || index === length) {
+    return cards[0];
+  } else {
+    const bestNums = cards.map((c) => c[index]);
+    const maxVal = Math.max(...bestNums);
+    const newArrCards = cards.filter((arr) => arr[index] === maxVal);
+    return findBestArrayOfCards(newArrCards, length, index += 1);
   }
-  return bestArr;
 };
 
 export const getWinner = (users: IUser[]): IUser | IUser[] => {
@@ -278,29 +278,29 @@ export const getWinner = (users: IUser[]): IUser | IUser[] => {
   }
 
   //HIGH_CARD
-  if (bestRatingCombination === POKER_COMBINATIONS.HIGH_CARD) {
-    const highCardValue = winners.map((user) => user.gameState.bestCombination[0].value);
-    const maxHighCard = Math.max(...highCardValue);
-    const winnersWithHighCard = winners.filter(
-      (user) => user.gameState.bestCombination[0].value === maxHighCard
-    );
-    if (winnersWithHighCard.length !== 1) {
-      const restCardValues = winnersWithHighCard.map((user) =>
-        getSortedCardsValuesDesc(user.gameState.restBestCards)
-      );
-      const bestCombination = findBestArrayOfCards(restCardValues);
-      const indexesOfWinners = restCardValues.reduce(
-        (acc, cur, index) =>
-          JSON.stringify(cur) === JSON.stringify(bestCombination) ? [...acc, index] : acc,
-        []
-      );
-      const result: IUser[] = [];
-      indexesOfWinners.forEach((i) => result.push(winnersWithHighCard[i]));
-      return result;
-    } else {
-      return winnersWithHighCard;
-    }
-  }
+  // if (bestRatingCombination === POKER_COMBINATIONS.HIGH_CARD) {
+  //   const highCardValue = winners.map((user) => user.gameState.bestCombination[0].value);
+  //   const maxHighCard = Math.max(...highCardValue);
+  //   const winnersWithHighCard = winners.filter(
+  //     (user) => user.gameState.bestCombination[0].value === maxHighCard
+  //   );
+  //   if (winnersWithHighCard.length !== 1) {
+  //     const restCardValues = winnersWithHighCard.map((user) =>
+  //       getSortedCardsValuesDesc(user.gameState.restBestCards)
+  //     );
+  //     const bestCombination = findBestArrayOfCards(restCardValues);
+  //     const indexesOfWinners = restCardValues.reduce(
+  //       (acc, cur, index) =>
+  //         JSON.stringify(cur) === JSON.stringify(bestCombination) ? [...acc, index] : acc,
+  //       []
+  //     );
+  //     const result: IUser[] = [];
+  //     indexesOfWinners.forEach((i) => result.push(winnersWithHighCard[i]));
+  //     return result;
+  //   } else {
+  //     return winnersWithHighCard;
+  //   }
+  // }
 
   return winners;
 };

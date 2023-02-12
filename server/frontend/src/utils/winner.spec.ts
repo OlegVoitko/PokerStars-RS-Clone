@@ -1,6 +1,5 @@
-import { getWinner } from './gameHelper';
+import { getWinner, findBestArrayOfCards } from './gameHelper';
 import * as users from './mockWinner';
-import { userHIGH_CARD1 } from './mockWinner';
 
 test('winnerFlush', () => {
   const winner = getWinner([users.userFLUSH, users.userONE_PAIR, users.userFLUSH2]);
@@ -63,4 +62,14 @@ test('equal HIGH_CARD with best MAIN card', () => {
     users.userHIGH_CARD5,
   ]);
   expect(winners).toEqual([users.userHIGH_CARD5]);
+});
+
+test('findBestArrayOfCards', () => {
+  const result = findBestArrayOfCards([[10, 7, 8], [14, 6, 2], [4, 2, 1]], 3, 0);
+  expect(result).toStrictEqual([14, 6, 2]);
+});
+
+test('findBestArrayOfCards', () => {
+  const result = findBestArrayOfCards([[14, 10, 7, 8], [14, 11, 6, 2], [10, 4, 2, 1]], 4, 0);
+  expect(result).toStrictEqual([14, 11, 6, 2]);
 });
