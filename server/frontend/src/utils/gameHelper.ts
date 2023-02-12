@@ -213,17 +213,41 @@ export const findBestCombination = (
   return { bestCombination, restBestCards, combinationRating };
 };
 
+export const getSortedCardsValuesDesc = (cards: ICard[]): number[] => {
+  //[8, 8, 6, 6]
+  return cards.map((card) => card.value).sort((a, b) => b - a);
+};
+
+
+
 export const getWinner = (users: IUser[]): IUser | IUser[] => {
-  const bestRaitingCombination = Math.max(...users.map((user) => user.gameState.combinationRating));
+  const bestRatingCombination = Math.max(...users.map((user) => user.gameState.combinationRating));
+  //if exist 1 best rating
   const winners = users.filter(
-    (user) => user.gameState.combinationRating === bestRaitingCombination
+    (user) => user.gameState.combinationRating === bestRatingCombination
   );
   if (winners.length === 1) return winners;
 
+  //if best combinations equal (on the deck for ex)
+  // const bestCombinations = winners.map((user) => JSON.stringify(user.gameState.bestCombination));
+  // const restBestCards = winners.map((user) => JSON.stringify(user.gameState.restBestCards));
+  const bestCombinations = winners.map((user) =>
+    JSON.stringify(getSortedCardsValuesDesc(user.gameState.bestCombination))
+  );
+  const restBestCards = winners.map((user) =>
+    JSON.stringify(getSortedCardsValuesDesc(user.gameState.restBestCards))
+  );
   if (
-    bestRaitingCombination === POKER_COMBINATIONS.STRAIGHT_FLUSH ||
-    bestRaitingCombination === POKER_COMBINATIONS.FLUSH ||
-    bestRaitingCombination === POKER_COMBINATIONS.STRAIGHT
+    bestCombinations.every((comb) => comb === bestCombinations[0]) &&
+    restBestCards.every((comb) => comb === restBestCards[0])
+  )
+    return winners;
+
+  //combinations where can be only 1 best card in bestCombinations && no restBestCards
+  if (
+    bestRatingCombination === POKER_COMBINATIONS.STRAIGHT_FLUSH ||
+    bestRatingCombination === POKER_COMBINATIONS.FLUSH ||
+    bestRatingCombination === POKER_COMBINATIONS.STRAIGHT
   ) {
     const bestPlayer = winners.reduce((acc, curr) =>
       acc.gameState.bestCombination[acc.gameState.bestCombination.length - 1].value >
@@ -232,6 +256,19 @@ export const getWinner = (users: IUser[]): IUser | IUser[] => {
         : curr
     );
     return bestPlayer;
+  }
+
+  //FOUR_KIND
+  if (bestRatingCombination === POKER_COMBINATIONS.FOUR_KIND) {
+    const fourKindValues = winners.map((user) => user.gameState.bestCombination[0].value);
+    if (Array.from(new Set(fourKindValues)).length === 1) {
+      const restCardValue = winners.map((user) => user.gameState.restBestCards[0].value);
+      const maxRest = Math.max(...restCardValue);
+      return winners.filter((user) => user.gameState.restBestCards[0].value === maxRest);
+    } else {
+      const maxFour = Math.max(...fourKindValues);
+      return winners.filter((user) => user.gameState.bestCombination[0].value === maxFour);
+    }
   }
   return winners;
 };
