@@ -156,9 +156,13 @@ const gameplaySlice = createSlice({
     checkAction: (state) => {
       state.usersCompleteAction += 1;
       if (state.usersCompleteAction === state.usersCount) {
+        let nextUser = 0;
+        while (state.usersInDeal[nextUser].gameState.state === 'ALLIN') {
+          nextUser = nextUser + 1 > state.usersCount - 1 ? 0 : nextUser + 1;
+        }
         state.stage += 1;
-        state.usersCompleteAction = 0;
-        state.activePosition = 0;
+        state.usersCompleteAction = state.usersAllin;
+        state.activePosition = nextUser;
         state.currentUser = state.usersInDeal[0];
         state.usersInDeal.forEach((u) => (u.gameState.bet = 0));
         toNextStage(state);
@@ -215,13 +219,12 @@ const gameplaySlice = createSlice({
         return;
       }
       if (state.usersCompleteAction === state.usersCount) {
-        let nextUser =
-          state.activePosition + 1 > state.usersCount - 1 ? 0 : state.activePosition + 1;
+        let nextUser = 0;
         while (state.usersInDeal[nextUser].gameState.state === 'ALLIN') {
-          nextUser = state.activePosition + 1 > state.usersCount - 1 ? 0 : state.activePosition + 1;
+          nextUser = nextUser + 1 > state.usersCount - 1 ? 0 : nextUser + 1;
         }
         state.stage += 1;
-        state.usersCompleteAction = 0;
+        state.usersCompleteAction = state.usersAllin;
         state.activePosition = nextUser;
         state.currentUser = state.usersInDeal[nextUser];
         state.userOptions = ['fold', 'check', 'call', 'raise'];
@@ -247,8 +250,8 @@ const gameplaySlice = createSlice({
       state.usersCount -= 1;
       if (state.usersCompleteAction === state.usersCount) {
         state.stage += 1;
-        state.usersCompleteAction = 0;
-        state.activePosition = 0;
+        state.usersCompleteAction = state.usersAllin;
+        state.activePosition = 0; // calculate position when all
         state.currentUser = state.usersInDeal[0];
         state.usersInDeal.forEach((u) => (u.gameState.bet = 0));
         toNextStage(state);
