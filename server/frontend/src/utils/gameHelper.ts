@@ -129,26 +129,12 @@ export const findBestCombination = (
     (obj) => obj[1].length === 3
   );
   const twoCardsByValue = Object.entries(combineCardsByValue).filter((obj) => obj[1].length >= 2);
-  if (threeCardsByValue.length && twoCardsByValue.length) {
-    if (threeCardsByValue.length === 1 && twoCardsByValue.length > 1) {
-      const TC = twoCardsByValue.filter((obj) => obj[0] !== threeCardsByValue[0][0]);
-      bestCombination.push(...threeCardsByValue[0][1], ...TC[TC.length - 1][1].slice(0, 2));
-      combinationRating = POKER_COMBINATIONS.FULL_HOUSE;
-      return { bestCombination, restBestCards, combinationRating };
-    }
-    if (twoCardsByValue.length === 1 && threeCardsByValue.length > 1) {
-      const TC = threeCardsByValue.filter((obj) => obj[0] !== twoCardsByValue[0][0]);
-      bestCombination.push(...twoCardsByValue[0][1], ...TC[0][1]);
-      combinationRating = POKER_COMBINATIONS.FULL_HOUSE;
-      return { bestCombination, restBestCards, combinationRating };
-    }
-    if (twoCardsByValue.length > 1 && threeCardsByValue.length > 1) {
-      const bestThree = threeCardsByValue[threeCardsByValue.length - 1];
-      const bestTwo = twoCardsByValue.filter((obj) => obj[0] !== bestThree[0][0]);
-      bestCombination.push(...bestThree[1], ...bestTwo[bestTwo.length - 1][1].slice(0, 2));
-      combinationRating = POKER_COMBINATIONS.FULL_HOUSE;
-      return { bestCombination, restBestCards, combinationRating };
-    }
+  if (threeCardsByValue.length && twoCardsByValue.length > 1) {
+    const bestThree = threeCardsByValue[threeCardsByValue.length - 1];
+    const bestTwo = twoCardsByValue.filter(([key]) => key !== bestThree[0][0]);
+    bestCombination.push(...bestThree[1], ...bestTwo[bestTwo.length - 1][1].slice(0, 2));
+    combinationRating = POKER_COMBINATIONS.FULL_HOUSE;
+    return { bestCombination, restBestCards, combinationRating };
   }
 
   //flush
@@ -279,6 +265,20 @@ export const getWinner = (users: IUser[]): IUser | IUser[] => {
     }
   }
 
+  //FullHouse
+  if (bestRatingCombination === POKER_COMBINATIONS.FULL_HOUSE) {
+    const valuesOfThree = winners.map((user) => user.gameState.bestCombination[0].value);
+    const maxThree = Math.max(...valuesOfThree);
+    const usersWithMaxThree = winners.filter((user) => user.gameState.bestCombination[0].value === maxThree);
+    if (usersWithMaxThree.length !== 1) {
+      const valuesOfTwo = winners.map((user) => user.gameState.bestCombination[4].value);
+      const maxTwo = Math.max(...valuesOfTwo);
+      return usersWithMaxThree.filter((user) => user.gameState.bestCombination[4].value === maxTwo);
+    } else {
+      return usersWithMaxThree;
+    }
+  }
+
   //HIGH_CARD / THREE_KIND / ONE_PAIR
   if (
     bestRatingCombination === POKER_COMBINATIONS.THREE_KIND ||
@@ -316,7 +316,11 @@ export const getWinner = (users: IUser[]): IUser | IUser[] => {
     const bestCombinationValues: number[][] = winners.map((user) =>
       getSortedCardsValuesDesc(user.gameState.bestCombination)
     );
-    const bestCombination = findBestArrayOfCards(bestCombinationValues, bestCombinationValues[0].length, 0);
+    const bestCombination = findBestArrayOfCards(
+      bestCombinationValues,
+      bestCombinationValues[0].length,
+      0
+    );
     const indexesOfWinners = bestCombinationValues.reduce(
       (acc, cur, index) =>
         JSON.stringify(cur) === JSON.stringify(bestCombination) ? [...acc, index] : acc,
@@ -325,7 +329,9 @@ export const getWinner = (users: IUser[]): IUser | IUser[] => {
     const usersWithBestComb: IUser[] = [];
     indexesOfWinners.forEach((i) => usersWithBestComb.push(winners[i]));
     if (usersWithBestComb.length !== 1) {
-      const restCardValues: number[] = usersWithBestComb.map((user) => user.gameState.restBestCards[0].value);
+      const restCardValues: number[] = usersWithBestComb.map(
+        (user) => user.gameState.restBestCards[0].value
+      );
       const maxRest = Math.max(...restCardValues);
       return usersWithBestComb.filter((user) => user.gameState.restBestCards[0].value === maxRest);
     } else {

@@ -436,6 +436,7 @@ export const userONE_PAIR3 = {
 };
 
 //comb FULL_HOUSE
+// AAA 77
 export const userFULL_HOUSE = {
   _id: '1676153771562',
   nickname: 'Guest',
@@ -483,6 +484,168 @@ export const userFULL_HOUSE = {
         cardFace: '7',
         suit: 'Diamond',
         value: 6
+      }
+    ],
+    restBestCards: [],
+    combinationRating: 7
+  }
+};
+//AAA 10 10
+export const userFULL_HOUSE2 = {
+  _id: 'userFULL_HOUSE2',
+  nickname: 'Guest',
+  password: '',
+  bankroll: 10000,
+  gameState: {
+    hand: [
+      {
+        cardFace: 'A',
+        suit: 'Spade',
+        value: 13
+      },
+      {
+        cardFace: 'A',
+        suit: 'Diamond',
+        value: 13
+      }
+    ],
+    stack: 10000,
+    state: 'wait',
+    bet: 0,
+    action: '',
+    bestCombination: [
+      {
+        cardFace: 'A',
+        suit: 'Diamond',
+        value: 13
+      },
+      {
+        cardFace: 'A',
+        suit: 'Spade',
+        value: 13
+      },
+      {
+        cardFace: 'A',
+        suit: 'Heart',
+        value: 13
+      },
+      {
+        cardFace: '10',
+        suit: 'Spade',
+        value: 9
+      },
+      {
+        cardFace: '10',
+        suit: 'Diamond',
+        value: 9
+      }
+    ],
+    restBestCards: [],
+    combinationRating: 7
+  }
+};
+//222 10 10
+export const userFULL_HOUSE3 = {
+  _id: 'userFULL_HOUSE3',
+  nickname: 'Guest',
+  password: '',
+  bankroll: 10000,
+  gameState: {
+    hand: [
+      {
+        cardFace: 'A',
+        suit: 'Spade',
+        value: 13
+      },
+      {
+        cardFace: 'A',
+        suit: 'Diamond',
+        value: 13
+      }
+    ],
+    stack: 10000,
+    state: 'wait',
+    bet: 0,
+    action: '',
+    bestCombination: [
+      {
+        cardFace: '2',
+        suit: 'Diamond',
+        value: 1
+      },
+      {
+        cardFace: '2',
+        suit: 'Spade',
+        value: 1
+      },
+      {
+        cardFace: '2',
+        suit: 'Heart',
+        value: 1
+      },
+      {
+        cardFace: '10',
+        suit: 'Spade',
+        value: 9
+      },
+      {
+        cardFace: '10',
+        suit: 'Diamond',
+        value: 9
+      }
+    ],
+    restBestCards: [],
+    combinationRating: 7
+  }
+};
+//555 Q Q
+export const userFULL_HOUSE4 = {
+  _id: 'userFULL_HOUSE4',
+  nickname: 'Guest',
+  password: '',
+  bankroll: 10000,
+  gameState: {
+    hand: [
+      {
+        cardFace: 'A',
+        suit: 'Spade',
+        value: 13
+      },
+      {
+        cardFace: 'A',
+        suit: 'Diamond',
+        value: 13
+      }
+    ],
+    stack: 10000,
+    state: 'wait',
+    bet: 0,
+    action: '',
+    bestCombination: [
+      {
+        cardFace: '5',
+        suit: 'Diamond',
+        value: 4
+      },
+      {
+        cardFace: '5',
+        suit: 'Spade',
+        value: 4
+      },
+      {
+        cardFace: '5',
+        suit: 'Heart',
+        value: 4
+      },
+      {
+        cardFace: 'Q',
+        suit: 'Spade',
+        value: 11
+      },
+      {
+        cardFace: 'Q',
+        suit: 'Diamond',
+        value: 11
       }
     ],
     restBestCards: [],
@@ -614,7 +777,9 @@ export const userSTRAIGHT2 = {
   }
 };
 
+
 //comb FLUSH
+// 6 8 10 Q K
 export const userFLUSH = {
   _id: '1676282963592',
   nickname: 'Guest',
@@ -668,6 +833,60 @@ export const userFLUSH = {
     combinationRating: 6
   }
 };
+//4 6  7 8 K
+export const userFLUSH2 = {
+  _id: '1676297698254',
+    nickname: 'Guest',
+  password: '',
+  bankroll: 10000,
+  gameState: {
+  hand: [
+    {
+      cardFace: '9',
+      suit: 'Diamond',
+      value: 8
+    },
+    {
+      cardFace: '8',
+      suit: 'Spade',
+      value: 7
+    }
+  ],
+    stack: 10000,
+    state: 'wait',
+    bet: 0,
+    action: '',
+    bestCombination: [
+    {
+      cardFace: '4',
+      suit: 'Spade',
+      value: 3
+    },
+    {
+      cardFace: '6',
+      suit: 'Spade',
+      value: 5
+    },
+    {
+      cardFace: '7',
+      suit: 'Spade',
+      value: 6
+    },
+    {
+      cardFace: '8',
+      suit: 'Spade',
+      value: 7
+    },
+    {
+      cardFace: 'K',
+      suit: 'Spade',
+      value: 12
+    }
+  ],
+    restBestCards: [],
+    combinationRating: 6
+}
+}
 
 //comb FOUR_KIND
 export const userFOUR_KIND = {
@@ -1364,3 +1583,4 @@ export const userTHREE_KIND2 = {
     combinationRating: 4
   }
 };
+

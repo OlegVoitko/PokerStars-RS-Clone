@@ -21,7 +21,20 @@ test('FOUR_KIND', () => {
 });
 
 test('FullHouse', () => {
-  const { combinationRating } = findBestCombination(data.boardFullHouse, data.handFullHouse);
+  const { combinationRating, bestCombination } = findBestCombination(data.boardFullHouse, data.handFullHouse);
+  console.log(bestCombination)
+  expect(combinationRating).toBe(POKER_COMBINATIONS.FULL_HOUSE);
+});
+
+test('FullHouse with two pairs', () => {
+  const { combinationRating, bestCombination } = findBestCombination(data.boardFullHouse2, data.handFullHouse2);
+  console.log(bestCombination)
+  expect(combinationRating).toBe(POKER_COMBINATIONS.FULL_HOUSE);
+});
+
+test('FullHouse with two pairs', () => {
+  const { combinationRating, bestCombination } = findBestCombination(data.boardFullHouse2, data.handFullHouse2);
+  console.log(bestCombination)
   expect(combinationRating).toBe(POKER_COMBINATIONS.FULL_HOUSE);
 });
 
@@ -42,5 +55,10 @@ test('TwoPairs', () => {
 
 test('pair', () => {
   const { combinationRating } = findBestCombination(data.boardPair, data.handPair);
+  expect(combinationRating).toBe(POKER_COMBINATIONS.ONE_PAIR);
+});
+
+test('pair', () => {
+  const { combinationRating } = findBestCombination(data.boardQ, data.handQ);
   expect(combinationRating).toBe(POKER_COMBINATIONS.ONE_PAIR);
 });

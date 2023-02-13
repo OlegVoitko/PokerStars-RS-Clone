@@ -36,7 +36,7 @@ export const handFour = [
   { cardFace: 'K', suit: 'Diamond', value: 12 },
 ];
 
-//MOCK THREE By Value
+//MOCK FullHouse
 export const boardFullHouse = [
   { cardFace: 'K', suit: 'Heart', value: 12 },
   { cardFace: '4', suit: 'Heart', value: 3 },
@@ -45,6 +45,17 @@ export const boardFullHouse = [
   { cardFace: '5', suit: 'Diamond', value: 4 },
 ];
 export const handFullHouse = [
+  { cardFace: '5', suit: 'Club', value: 4 },
+  { cardFace: 'K', suit: 'Diamond', value: 12 },
+];
+export const boardFullHouse2 = [
+  { cardFace: 'K', suit: 'Heart', value: 12 },
+  { cardFace: '4', suit: 'Heart', value: 3 },
+  { cardFace: '5', suit: 'Spade', value: 4 },
+  { cardFace: '5', suit: 'Heart', value: 4 },
+  { cardFace: '4', suit: 'Diamond', value: 3 },
+];
+export const handFullHouse2 = [
   { cardFace: '5', suit: 'Club', value: 4 },
   { cardFace: 'K', suit: 'Diamond', value: 12 },
 ];
@@ -100,3 +111,44 @@ export const handPair = [
   { cardFace: '10', suit: 'Heart', value: 9 },
   { cardFace: '5', suit: 'Club', value: 4 },
 ];
+
+export const boardQ = [
+  {
+    cardFace: '3',
+    suit: 'Diamond',
+    value: 2
+  },
+  {
+    cardFace: '4',
+    suit: 'Spade',
+    value: 3
+  },
+  {
+    cardFace: '6',
+    suit: 'Diamond',
+    value: 5
+  },
+  {
+    cardFace: '2',
+    suit: 'Spade',
+    value: 1
+  },
+  {
+    cardFace: '7',
+    suit: 'Spade',
+    value: 6
+  }
+];
+export const handQ = [
+  {
+    cardFace: 'Q',
+    suit: 'Diamond',
+    value: 11
+  },
+  {
+    cardFace: '6',
+    suit: 'Diamond',
+    value: 5
+  }
+];
+
