@@ -309,5 +309,27 @@ export const getWinner = (users: IUser[]): IUser | IUser[] => {
     }
   }
 
+  //TWO_PAIRS
+  if (bestRatingCombination === POKER_COMBINATIONS.TWO_PAIRS) {
+    const bestCombinationValues: number[][] = winners.map((user) =>
+      getSortedCardsValuesDesc(user.gameState.bestCombination)
+    );
+    const bestCombination = findBestArrayOfCards(bestCombinationValues, bestCombinationValues[0].length, 0);
+    const indexesOfWinners = bestCombinationValues.reduce(
+      (acc, cur, index) =>
+        JSON.stringify(cur) === JSON.stringify(bestCombination) ? [...acc, index] : acc,
+      []
+    );
+    const usersWithBestComb: IUser[] = [];
+    indexesOfWinners.forEach((i) => usersWithBestComb.push(winners[i]));
+    if (usersWithBestComb.length !== 1) {
+      const restCardValues: number[] = usersWithBestComb.map((user) => user.gameState.restBestCards[0].value);
+      const maxRest = Math.max(...restCardValues);
+      return usersWithBestComb.filter((user) => user.gameState.restBestCards[0].value === maxRest);
+    } else {
+      return usersWithBestComb;
+    }
+  }
+
   return winners;
 };

@@ -1,5 +1,6 @@
 import { getWinner, findBestArrayOfCards } from './gameHelper';
 import * as users from './mockWinner';
+import {userTWO_PAIRS2} from "./mockWinner";
 
 // test('winnerFlush', () => {
 //   const winner = getWinner([users.userFLUSH, users.userONE_PAIR, users.userFLUSH2]);
@@ -103,6 +104,19 @@ test('findBestArrayOfCards', () => {
   expect(result).toStrictEqual([10, 6]);
 });
 
+test('findBestArrayOfCards', () => {
+  const result = findBestArrayOfCards(
+    [
+      [10, 10, 4, 4],
+      [13, 13, 6, 6],
+      [4, 4, 3, 3],
+    ],
+    4,
+    0
+  );
+  expect(result).toStrictEqual([13, 13, 6, 6]);
+});
+
 test('one pair with equal pairs', () => {
   const winners = getWinner([users.userONE_PAIR, users.userONE_PAIR2, users.userONE_PAIR3]);
   expect(winners).toEqual([users.userONE_PAIR2]);
@@ -116,4 +130,14 @@ test('THREE_KIND with equal best combination', () => {
 test('THREE_KIND with one best combination', () => {
   const winners = getWinner([users.userTHREE_KIND, users.userTHREE_KIND1, users.userTHREE_KIND2]);
   expect(winners).toEqual([users.userTHREE_KIND2]);
+});
+
+test('TWO_PAIRS with best MAIN combination', () => {
+  const winners = getWinner([users.userTWO_PAIRS1, users.userTWO_PAIRS2, users.userTWO_PAIRS3]);
+  expect(winners).toEqual([users.userTWO_PAIRS2]);
+});
+
+test('TWO_PAIRS with best REST card', () => {
+  const winners = getWinner([users.userTWO_PAIRS1, users.userTWO_PAIRS4, users.userTWO_PAIRS3]);
+  expect(winners).toEqual([users.userTWO_PAIRS1]);
 });
