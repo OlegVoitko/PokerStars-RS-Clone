@@ -18,6 +18,11 @@ const CardWrapper = styled.div`
   color: #000;
   user-select: none;
 
+  &[data-suit='Diamond'],
+  &[data-suit='Heart'] {
+    color: red;
+  }
+
   & .cardInfo {
     position: absolute;
     font-size: 21px;
@@ -52,10 +57,6 @@ const CardWrapper = styled.div`
     width: 27px;
   }
 
-  &[data-highlight='true'] {
-    box-shadow: 0 0 1px 3px rgb(255, 8, 75);
-  }
-
   display: flex;
   align-items: center;
   justify-content: center;
@@ -66,21 +67,9 @@ interface CardProps {
 }
 
 export const Card: React.FC<CardProps> = ({ card }) => {
-  // const title = React.useMemo(() => {
-  //   if (
-  //     card.cardFace === 'Jack' ||
-  //     card.cardFace === 'Queen' ||
-  //     card.cardFace === 'King' ||
-  //     card.cardFace === 'Ace'
-  //   ) {
-  //     return card.cardFace[0];
-  //   }
-  //   return card.cardFace;
-  // }, [card.cardFace]);
-
   return (
     <>
-      <CardWrapper>
+      <CardWrapper data-suit={card.suit}>
         <span className='cardInfo top'>
           <div>{card.cardFace}</div>
           <Suit suit={card.suit} />
