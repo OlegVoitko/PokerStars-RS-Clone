@@ -100,7 +100,8 @@ export const findBestCombination = (
   if (fiveCardsBySuit.length) {
     const cardValues = fiveCardsBySuit[0][1].map((c) => c.value).sort((a, b) => b - a);
     for (let i = 0; i <= cardValues.length - 5; i++) {
-      if (cardValues[i] - cardValues[i + 4] === 4) {
+      const sliceOfCards = Array.from(new Set(cardValues.slice(i, i + 5)));
+      if (sliceOfCards.length === 5 && cardValues[i] - cardValues[i + 4] === 4) {
         combinationRating =
           i === 0 ? POKER_COMBINATIONS.ROYAL_FLUSH : POKER_COMBINATIONS.STRAIGHT_FLUSH;
         bestCombination.push(...fiveCardsBySuit[0][1].slice(2 - i, 7 - i));
@@ -162,7 +163,8 @@ export const findBestCombination = (
   if (Object.keys(combineCardsByValue).length >= 5) {
     const cardValues = sortCardsByValue.map((c) => c.value).sort((a, b) => b - a);
     for (let i = 0; i < 3; i++) {
-      if (cardValues[i] - cardValues[i + 4] === 4) {
+      const sliceOfCards = Array.from(new Set(cardValues.slice(i, i + 5)));
+      if (sliceOfCards.length === 5 && cardValues[i] - cardValues[i + 4] === 4) {
         combinationRating = POKER_COMBINATIONS.STRAIGHT;
         bestCombination.push(...sortCardsByValue.slice(2 - i, 7 - i));
         return { bestCombination, restBestCards, combinationRating };
