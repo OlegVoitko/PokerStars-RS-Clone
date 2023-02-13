@@ -18,6 +18,7 @@ import SeatOutBtn from './SeatOutBtn';
 import { BLIND_SIZE } from '../../utils/constants';
 import '../Cards-style/RenderCards.scss';
 import { RenderCards } from 'components/Cards-style';
+import { RenderPlayer } from 'components/Cards-style/PlayerCards';
 
 const Poker_table = (): JSX.Element => {
   const [isShowSeat, setIsShowSeat] = useState(true);
@@ -37,30 +38,30 @@ const Poker_table = (): JSX.Element => {
   const { _id } = user;
   const [currentValue, setCurrentValue] = useState(20);
 
-  const renderPlayer = (users: IUser[]) =>
-    users.map((u, i) => (
-      <div className='player' key={i}>
-        <div className='player-two-cards'>
-          <div className='playing-card1'>
-            {' '}
-            {`${u.gameState.hand[0].cardFace}${u.gameState.hand[0].suit}`}
-          </div>
-          <div className='playing-card2'>
-            {' '}
-            {`${u.gameState.hand[1].cardFace}${u.gameState.hand[1].suit}`}
-          </div>
-        </div>
-        <div className='player-avatar-container'>
-          <img
-            className='player-avatar_img'
-            src={require('../../assets/deadline.png')}
-            alt='Avatar'
-          />
-        </div>
-        <h4 className='player-name'>Oleg</h4>
-        <h4 className='player-stack'>$ {u.gameState.stack}</h4>
-      </div>
-    ));
+  // const renderPlayer = (users: IUser[]) =>
+  //   users.map((u, i) => (
+  //     <div className='player' key={i}>
+  //       <div className='player-two-cards'>
+  //         <div className='playing-card1'>
+  //           {' '}
+  //           {`${u.gameState.hand[0].cardFace}${u.gameState.hand[0].suit}`}
+  //         </div>
+  //         <div className='playing-card2'>
+  //           {' '}
+  //           {`${u.gameState.hand[1].cardFace}${u.gameState.hand[1].suit}`}
+  //         </div>
+  //       </div>
+  //       <div className='player-avatar-container'>
+  //         <img
+  //           className='player-avatar_img'
+  //           src={require('../../assets/deadline.png')}
+  //           alt='Avatar'
+  //         />
+  //       </div>
+  //       <h4 className='player-name'>Oleg</h4>
+  //       <h4 className='player-stack'>$ {u.gameState.stack}</h4>
+  //     </div>
+  //   ));
 
   // const renderPlayer = (users: IUser[]) =>
   //   users.map((u, i) => (
@@ -135,7 +136,9 @@ const Poker_table = (): JSX.Element => {
               <img src={require('../../assets/chip-bank.png')} alt='chip bank' />
               <h4>{bank}$</h4>
             </div>
-            <div className='players-in-deal'>{renderPlayer(usersInDeal)}</div>
+            <div className='players-in-deal'>
+              <RenderPlayer users={usersInDeal} />
+            </div>
           </div>
           {isShowSeat && (
             <div className='poker-table__seat-btn action__buttons'>

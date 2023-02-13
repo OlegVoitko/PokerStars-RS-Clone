@@ -173,7 +173,7 @@
 }
 
 .players-in-deal {
-	position: absolute;
+	// position: absolute;
   justify-content: center;
   top: 55%;
   left: 40%;
@@ -187,15 +187,15 @@
 }
 
 .playing-card1, .playing-card2 {
-	display: flex;
-	justify-content: center;
-	background-color: #dfb2b2;
-	font-size: 13px;
-	height: 50px;
-	width: 35px;
+	// display: flex;
+	// justify-content: center;
+	// background-color: #dfb2b2;
+	// font-size: 13px;
+	// height: 50px;
+	// width: 35px;
 	margin: 0 2px;
-	border: 1px solid gray;
-	border-radius: 5px;
+	// border: 1px solid gray;
+	// border-radius: 5px;
 }
 
 .player-name {	
@@ -214,9 +214,9 @@
 
 .player-avatar-container {
 	width: 75px;
-	height: 75px;
+	height: 82px;
 	border: 2px solid;
-	margin: 10px 0px;
+	margin: 10px auto;
   background-color: #302e2bb5;
 }
 
@@ -225,7 +225,9 @@
 }
 
 .player-stack {
-	font-size: 20px;
+	font-size: 12px;
+	display: flex;
+  justify-content: center;
 }
 
 .p0 {
@@ -239,18 +241,24 @@
 	position: absolute;
   justify-content: center;
   top: 53%;
-  left: 36%;
+  left: 33%;
 }
 
 .p2 {
 	position: absolute;
   justify-content: center;
-  top: 49%;
-  left: 26%;
+  top: 43%;
+  left: 20%;
 }
 .p3 {
 	position: absolute;
   justify-content: center;
-  top: 53%;
+  top: 43%;
   left: 71%;
+}
+.p4 {
+	position: absolute;
+  justify-content: center;
+  top: 53%;
+  left: 59%;
 }
