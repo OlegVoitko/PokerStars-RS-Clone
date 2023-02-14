@@ -1,7 +1,7 @@
 @import './../../index';
 
 .form__title {
-  color: $color-title;
+  color: white;
   margin-bottom: 30px;
 }
 
@@ -18,9 +18,9 @@
 }
 
 .form__error-msg {
-  color: $color-button_exit;
+  color: white;
   font-weight: bold;
-  font-size: 2rem;
+  font-size: 1.3rem;
 }
 
 .auth-form__input {

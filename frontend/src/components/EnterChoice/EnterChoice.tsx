@@ -22,6 +22,9 @@ const EnterChoice = (): JSX.Element => {
         state: 'wait',
         bet: 0,
         action: '',
+        bestCombination: [],
+        restBestCards: [],
+        combinationRating: 0,
       },
     };
     dispatch(registerUser(guest));

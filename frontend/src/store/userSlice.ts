@@ -15,6 +15,9 @@ const initialState: IUserState = {
       state: 'wait',
       bet: 0,
       action: '',
+      bestCombination: [],
+      restBestCards: [],
+      combinationRating: 0,
     },
   },
   status: null,
@@ -48,6 +51,9 @@ export const registerUserThunk = createAsyncThunk(
           state: 'wait',
           bet: 0,
           action: '',
+          bestCombination: [],
+          restBestCards: [],
+          combinationRating: 0,
         },
       };
       dispatch(registerUser(userData));
@@ -84,6 +90,9 @@ export const loginUserThunk = createAsyncThunk(
           state: 'wait',
           bet: 0,
           action: '',
+          bestCombination: [],
+          restBestCards: [],
+          combinationRating: 0,
         },
       };
       // console.log('loginUserThunk data', data);

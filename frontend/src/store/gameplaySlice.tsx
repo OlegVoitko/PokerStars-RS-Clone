@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { socket } from '../socket';
 import { ICard, IUser, IGameplay } from '../types/interfaces';
-import { deal } from '../utils/gameHelper';
+import { deal, findBestCombination } from '../utils/gameHelper';
 
 const initialState: IGameplay = {
   stage: 0,
@@ -279,9 +279,20 @@ const gameplaySlice = createSlice({
       state.usersInDeal = state.usersAtTable;
       state.usersCount = state.usersInDeal.length;
       const hands = deal(state.usersInDeal.length, deck.slice(5));
+
       state.usersInDeal.forEach((u, i) => {
         u.gameState.hand = hands[i];
         u.gameState.state = 'ACTIVE';
+      });
+
+      state.usersInDeal.forEach((user) => {
+        const { bestCombination, restBestCards, combinationRating } = findBestCombination(
+          state.board,
+          user.gameState.hand
+        );
+        user.gameState.bestCombination = bestCombination;
+        user.gameState.restBestCards = restBestCards;
+        user.gameState.combinationRating = combinationRating;
       });
       state.waitToSeat = [];
       state.currentUser = state.usersInDeal[0];
