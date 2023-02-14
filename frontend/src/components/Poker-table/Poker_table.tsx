@@ -6,7 +6,7 @@ import Sound from './SoundOnOff';
 import SeatBtn from './SeatBtn';
 import { useAppDispatch, useAppSelector } from '../../hooks/hook';
 import { shuffle, getWinner } from '../../utils/gameHelper';
-import { ICard, IUser, IGameplay } from '../../types/interfaces';
+import { IUser, IGameplay } from '../../types/interfaces';
 import {
   checkActionFetch,
   restartDealFetch,
@@ -16,6 +16,9 @@ import {
 } from '../../store/gameplaySlice';
 import SeatOutBtn from './SeatOutBtn';
 import { BLIND_SIZE } from '../../utils/constants';
+import '../Cards-style/RenderCards.scss';
+import { RenderCards } from 'components/Cards-style';
+import { RenderPlayer } from 'components/Cards-style/PlayerCards';
 
 const Poker_table = (): JSX.Element => {
   const [isShowSeat, setIsShowSeat] = useState(true);
@@ -39,23 +42,6 @@ const Poker_table = (): JSX.Element => {
   const minBet = currentUser ? currentBet - currentUser.gameState.bet + BLIND_SIZE : 0;
   const maxBet = currentUser ? currentUser.gameState.stack : 10000;
 
-  const renderPlayer = (users: IUser[]) =>
-    users.map((u, i) => (
-      <div className='player' key={i}>
-        Stack: {u.gameState.stack}
-        <br />
-        hand:{' '}
-        {`${u.gameState.hand[0].cardFace}${u.gameState.hand[0].suit} ${u.gameState.hand[1].cardFace}${u.gameState.hand[1].suit}`}
-      </div>
-    ));
-
-  const renderCards = (cards: ICard[]) => {
-    return cards.map((card, i) => (
-      <div key={i}>
-        {card.cardFace} {card.suit}
-      </div>
-    ));
-  };
   useEffect(() => {
     setCurrentValue(minBet);
     if (
@@ -106,12 +92,16 @@ const Poker_table = (): JSX.Element => {
               src={require('../../assets/poker_table.jpg')}
               alt='poker table'
             />
-            <div className='card__container'>{renderCards(showCards)}</div>
+            <div className='card__container'>
+              <RenderCards cards={showCards} />
+            </div>
             <div className='bank__container'>
               <img src={require('../../assets/chip-bank.png')} alt='chip bank' />
               <h4>{bank}$</h4>
             </div>
-            <div className='players-in-deal'>{renderPlayer(usersInDeal)}</div>
+            <div className='players-in-deal'>
+              <RenderPlayer users={usersInDeal} />
+            </div>
           </div>
           {isShowSeat && (
             <div className='poker-table__seat-btn action__buttons'>
