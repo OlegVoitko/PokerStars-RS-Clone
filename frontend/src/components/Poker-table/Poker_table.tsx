@@ -5,7 +5,7 @@ import CustomizedSlider from './Slider_table';
 import Sound from './SoundOnOff';
 import SeatBtn from './SeatBtn';
 import { useAppDispatch, useAppSelector } from '../../hooks/hook';
-import { shuffle } from '../../utils/gameHelper';
+import { shuffle, getWinner } from '../../utils/gameHelper';
 import { ICard, IUser, IGameplay } from '../../types/interfaces';
 import {
   checkActionFetch,
@@ -64,6 +64,10 @@ const Poker_table = (): JSX.Element => {
       (stage === 100 && usersAtTable.length > 1) ||
       (waitToSeat.length > 0 && usersAtTable.length === 1)
     ) {
+      if (stage === 4) {
+        const winner = getWinner(usersInDeal);
+        console.log('winner', winner);
+      }
       setTimeout(() => {
         const deck = shuffle();
         dispatch(restartDealFetch(deck));

@@ -10,6 +10,9 @@ export interface IUserGamestate {
   bet: number;
   state: string;
   action: string; //'check' | 'fold' | 'call'
+  bestCombination: ICard[];
+  restBestCards: ICard[];
+  combinationRating: number;
 }
 
 export interface IUser {
