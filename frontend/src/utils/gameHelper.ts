@@ -94,7 +94,6 @@ export const findBestCombination = (
   }, {} as { [suit: string]: ICard[] });
 
   //RoyalFlush, StraightFlush, Flush
-  //TODO StraightFlush `A2345`
   const fiveCardsBySuit = Object.entries(combineCardsBySuit).filter((obj) => obj[1].length >= 5);
 
   if (fiveCardsBySuit.length) {
@@ -145,7 +144,6 @@ export const findBestCombination = (
   }
 
   // street
-  //TODO Street `A2345`
   if (Object.keys(combineCardsByValue).length >= 5) {
     const cardValues = sortCardsByValue.map((c) => c.value).sort((a, b) => b - a);
     for (let i = 0; i < 3; i++) {
@@ -269,7 +267,9 @@ export const getWinner = (users: IUser[]): IUser | IUser[] => {
   if (bestRatingCombination === POKER_COMBINATIONS.FULL_HOUSE) {
     const valuesOfThree = winners.map((user) => user.gameState.bestCombination[0].value);
     const maxThree = Math.max(...valuesOfThree);
-    const usersWithMaxThree = winners.filter((user) => user.gameState.bestCombination[0].value === maxThree);
+    const usersWithMaxThree = winners.filter(
+      (user) => user.gameState.bestCombination[0].value === maxThree
+    );
     if (usersWithMaxThree.length !== 1) {
       const valuesOfTwo = winners.map((user) => user.gameState.bestCombination[4].value);
       const maxTwo = Math.max(...valuesOfTwo);
