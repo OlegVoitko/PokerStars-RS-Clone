@@ -1,26 +1,27 @@
 // import { useAddPlayerMutation } from '../../services/gameplayApi';
 import React, { FC, useState, useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks/hook';
-import { seatUser } from '../../store/gameplaySlice';
+import { seatOutUserThunk } from '../../store/gameplaySlice';
 import { IUser } from '../../types/interfaces';
 
 interface ISeatOutBtnProps {
-  togleSeatBtn: () => void;
+  toggleSeatBtn: () => void;
 }
 
 const SeatOutBtn = (props: ISeatOutBtnProps) => {
-  const { togleSeatBtn } = props;
+  const { toggleSeatBtn } = props;
   const user = useAppSelector((state) => state.user.user);
   const dispatch = useAppDispatch();
 
-  const handleSeatOut = () => {
-    togleSeatBtn();
+  const handleSeatOut = (user: IUser) => {
+    toggleSeatBtn();
     console.log('seatOut'); // TODO SeatOut
+    dispatch(seatOutUserThunk(user));
   };
 
   return (
     user && (
-      <button className='seat-btn' onClick={() => handleSeatOut()}>
+      <button className='seat-btn' onClick={() => handleSeatOut(user)}>
         SeatOut
       </button>
     )

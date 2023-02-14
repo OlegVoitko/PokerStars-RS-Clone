@@ -81,26 +81,14 @@ const run = async () => {
       io.emit('new message', data);
     });
 
-    const testusers = [
-      {
-        id: 1,
-        hand: [],
-        stack: 1000,
-      },
-      {
-        id: 2,
-        hand: [],
-        stack: 2000,
-      },
-    ];
     //game
     socket.on('game:seatUser', (user) => {
       console.log('seat');
       state.users.push(user);
       io.emit('game:seatUser', user);
-      // if (state.users.length === 2) {
-      //   state.users = [];
-      // }
+    });
+    socket.on('game:seatOutUser', (user) => {
+      io.emit('game:seatOutUser', user);
     });
     socket.on('game:checkAction', (data) => {
       io.emit('game:checkAction', data);
