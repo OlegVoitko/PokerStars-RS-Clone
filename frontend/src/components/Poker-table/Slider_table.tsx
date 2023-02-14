@@ -3,6 +3,7 @@ import React, { FC } from 'react';
 import Slider from '@mui/material/Slider';
 import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
+import { BLIND_SIZE } from '../../utils/constants';
 
 const PrettoSlider = styled(Slider)({
   color: '#F02F17',
@@ -45,20 +46,27 @@ const PrettoSlider = styled(Slider)({
 
 interface CustomizedSlider {
   currentValue: number;
+  minValue: number;
+  maxValue: number;
   setCurrentValue: React.Dispatch<React.SetStateAction<number>>;
 }
 
-const CustomizedSlider: FC<CustomizedSlider> = ({ currentValue, setCurrentValue }) => {
+const CustomizedSlider: FC<CustomizedSlider> = ({
+  currentValue,
+  setCurrentValue,
+  minValue,
+  maxValue,
+}) => {
   return (
     <Box sx={{ width: 320 }}>
       <PrettoSlider
         valueLabelDisplay='auto'
         aria-label='pretto slider'
-        defaultValue={20}
+        defaultValue={currentValue}
         step={10}
         value={currentValue}
-        min={10}
-        max={300}
+        min={minValue}
+        max={maxValue}
         onChange={(_, x) => setCurrentValue(x as number)}
       />
     </Box>

@@ -1,6 +1,6 @@
 import { getWinner, findBestArrayOfCards } from './gameHelper';
 import * as users from './mockWinner';
-import {user3TWO_PAIRS, userFLUSH2, userTHREE_KIND, userTWO_PAIRS2} from "./mockWinner";
+import { user3TWO_PAIRS, userFLUSH2, userTHREE_KIND, userTWO_PAIRS2 } from './mockWinner';
 
 // test('winnerFlush', () => {
 //   const winner = getWinner([users.userFLUSH, users.userONE_PAIR, users.userFLUSH2]);
@@ -153,6 +153,12 @@ test('FULL_House with different THREE card', () => {
 });
 
 test('different combinations', () => {
-  const winners = getWinner([users.userTWO_PAIRS4, users.userFULL_HOUSE4, users.userTHREE_KIND, users.userFLUSH2, users.userSTRAIGHT2]);
+  const winners = getWinner([
+    users.userTWO_PAIRS4,
+    users.userFULL_HOUSE4,
+    users.userTHREE_KIND,
+    users.userFLUSH2,
+    users.userSTRAIGHT2,
+  ]);
   expect(winners).toEqual([users.userFULL_HOUSE4]);
 });

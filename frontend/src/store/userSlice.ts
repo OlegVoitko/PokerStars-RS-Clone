@@ -1,10 +1,25 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { IUser, INewUser, IUserState, IUserGamestate } from '../types/interfaces';
 import { START_BANKROLL } from '../utils/constants';
-import { betAction, callAction } from './gameplaySlice';
 
 const initialState: IUserState = {
-  user: null,
+  // user: null,
+  user: {
+    _id: String(Date.now()),
+    nickname: 'Guest',
+    password: '',
+    bankroll: START_BANKROLL,
+    gameState: {
+      hand: [],
+      stack: START_BANKROLL,
+      state: 'wait',
+      bet: 0,
+      action: '',
+      bestCombination: [],
+      restBestCards: [],
+      combinationRating: 0,
+    },
+  },
   status: null,
   error: null,
 };
@@ -21,7 +36,6 @@ export const registerUserThunk = createAsyncThunk(
         },
         body: JSON.stringify(user),
       });
-      // console.log('createAsyncThunk response', response);
       if (!response.ok) {
         throw new Error('sth went wrong');
       }
@@ -42,10 +56,8 @@ export const registerUserThunk = createAsyncThunk(
           combinationRating: 0,
         },
       };
-      // console.log('createAsyncThunk data', data);
       dispatch(registerUser(userData));
     } catch (error) {
-      // console.log('createAsyncThunk error', error);
       return rejectWithValue(error);
     }
   }
@@ -63,7 +75,6 @@ export const loginUserThunk = createAsyncThunk(
         },
         body: JSON.stringify(user),
       });
-      // console.log('loginUserThunk response', response);
       if (!response.ok) {
         throw new Error('loginUserThunk sth went wrong');
       }
@@ -104,7 +115,6 @@ const userSlice = createSlice({
       if (state.user) {
         state.user.gameState = payload;
       }
-      // state.user && state.user.gameState = payload;
     },
   },
   extraReducers: (builder) => {
@@ -131,14 +141,6 @@ const userSlice = createSlice({
     builder.addCase(loginUserThunk.rejected, (state) => {
       state.status = 'rejected';
       state.error = 'Invalid login or password';
-    });
-    builder.addCase(callAction, (state, action) => {
-      const { callSize } = action.payload;
-      if (state.user) state.user.gameState.bet += callSize;
-    });
-    builder.addCase(betAction, (state, action) => {
-      const { betSize } = action.payload;
-      if (state.user) state.user.gameState.bet += betSize;
     });
   },
 });

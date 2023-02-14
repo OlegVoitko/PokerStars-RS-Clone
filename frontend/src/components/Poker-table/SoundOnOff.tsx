@@ -21,7 +21,7 @@ class Sound extends Component {
 
   render() {
     return (
-      <div>
+      <div className='poker__header'>
         {/* <p>{this.state.isPlaying ? 'Song is Playing' : 'Song is Paused'}</p> */}
         <button className='background__button' onClick={this.playPause}>
           Play | Pause

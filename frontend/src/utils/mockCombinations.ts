@@ -1,3 +1,4 @@
+/* eslint-disable */
 export const boardNothing = [
   { cardFace: 'K', suit: 'Diamond', value: 12 },
   { cardFace: 'J', suit: 'Heart', value: 10 },
