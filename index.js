@@ -84,6 +84,7 @@ const run = async () => {
       io.emit('game:seatUser', user);
     });
     socket.on('game:seatOutUser', (user) => {
+      state.users = state.users.filter((u) => u._id !== user._id);
       io.emit('game:seatOutUser', user);
     });
     socket.on('game:checkAction', (data) => {

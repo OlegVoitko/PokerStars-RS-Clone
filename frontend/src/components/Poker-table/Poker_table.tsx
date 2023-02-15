@@ -49,8 +49,8 @@ const Poker_table = (): JSX.Element => {
     if (
       (!isDeal && waitToSeat.length === 2) ||
       stage === 4 ||
-      (stage === 100 && usersAtTable.length > 1) ||
-      (waitToSeat.length > 0 && usersAtTable.length === 1)
+      (stage === 100 && usersAtTable.length > 2) ||
+      (waitToSeat.length > 1 && usersAtTable.length === 1)
     ) {
       if (stage === 4) {
         const winners = getWinner(usersInDeal);
