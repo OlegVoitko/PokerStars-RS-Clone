@@ -1,7 +1,8 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { IRestartDeal, socket } from '../socket';
 import { ICard, IUser, IGameplay } from '../types/interfaces';
-import { deal, findBestCombination } from '../utils/gameHelper';
+import { deal, findBestCombination, getWinner } from '../utils/gameHelper';
+import { current } from '@reduxjs/toolkit';
 
 const initialState: IGameplay = {
   stage: 0,
@@ -37,7 +38,18 @@ const toNextStage = (state: IGameplay) => {
       break;
     case 4: {
       state.currentBet = 0;
-      state.showCards = [{ cardFace: 'SHOWDOWN', value: 0, suit: '' }];
+      const winners = getWinner(current(state.usersAtTable));
+      if (winners.length === 1) {
+        const winnerTable = state.usersAtTable.find((u) => u._id === winners[0]._id) as IUser;
+        winnerTable.gameState.stack += state.bank;
+      } else {
+        const winIDs = winners.map((w) => w._id);
+        state.usersAtTable.forEach((u) => {
+          if (winIDs.includes(u._id)) {
+            u.gameState.stack += state.bank / winIDs.length;
+          }
+        });
+      }
       break;
     }
     case 100: {

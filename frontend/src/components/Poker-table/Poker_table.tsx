@@ -19,6 +19,8 @@ import { BLIND_SIZE } from '../../utils/constants';
 import '../Cards-style/RenderCards.scss';
 import { RenderCards } from 'components/Cards-style';
 import { RenderPlayer } from 'components/Cards-style/PlayerCards';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Poker_table = (): JSX.Element => {
   const [isShowSeat, setIsShowSeat] = useState(true);
@@ -51,13 +53,24 @@ const Poker_table = (): JSX.Element => {
       (waitToSeat.length > 0 && usersAtTable.length === 1)
     ) {
       if (stage === 4) {
-        const winner = getWinner(usersInDeal);
-        console.log('winner', winner);
+        const winners = getWinner(usersInDeal);
+        toast.success(`${winners.map((w) => w.nickname).join(' & ')} took the pot`);
       }
-      setTimeout(() => {
-        const deck = shuffle();
-        dispatch(restartDealFetch({ deck, usersAtTable }));
-      }, 3000);
+      if (stage === 100) {
+        toast.success(`${usersAtTable[0].nickname} took the pot`);
+      }
+      if (waitToSeat.length && user._id === waitToSeat[0]._id) {
+        toast(`${waitToSeat.map((u) => u.nickname).join(' & ')} join the game`);
+        setTimeout(() => {
+          const deck = shuffle();
+          dispatch(restartDealFetch({ deck, usersAtTable }));
+        }, 3000);
+      } else if (usersAtTable.length && user._id === usersAtTable[0]._id) {
+        setTimeout(() => {
+          const deck = shuffle();
+          dispatch(restartDealFetch({ deck, usersAtTable }));
+        }, 3000);
+      }
     }
   }, [stage, waitToSeat, currentUser]);
 
