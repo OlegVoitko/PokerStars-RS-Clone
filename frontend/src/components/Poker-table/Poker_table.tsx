@@ -19,7 +19,7 @@ import { BLIND_SIZE } from '../../utils/constants';
 import '../Cards-style/RenderCards.scss';
 import { RenderCards } from 'components/Cards-style';
 import { RenderPlayer } from 'components/Cards-style/PlayerCards';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const Poker_table = (): JSX.Element => {
@@ -44,8 +44,6 @@ const Poker_table = (): JSX.Element => {
   const minBet = currentUser ? currentBet - currentUser.gameState.bet + BLIND_SIZE : 0;
   const maxBet = currentUser ? currentUser.gameState.stack : 10000;
 
-  const notify = () => toast('Wow so easy !');
-
   useEffect(() => {
     setCurrentValue(minBet);
     if (
@@ -57,14 +55,12 @@ const Poker_table = (): JSX.Element => {
       if (stage === 4) {
         const winners = getWinner(usersInDeal);
         toast.success(`${winners.map((w) => w.nickname).join(' & ')} took the pot`);
-        console.log('winner', winners);
       }
       if (stage === 100) {
         toast.success(`${usersAtTable[0].nickname} took the pot`);
-        console.log('winner', usersInDeal[0]);
       }
       if (waitToSeat.length && user._id === waitToSeat[0]._id) {
-        toast(`${waitToSeat.map((u) => u.nickname).join(' & ')} are in game`);
+        toast(`${waitToSeat.map((u) => u.nickname).join(' & ')} join the game`);
         setTimeout(() => {
           const deck = shuffle();
           dispatch(restartDealFetch(deck));
@@ -169,7 +165,6 @@ const Poker_table = (): JSX.Element => {
             <section className='tableroom__chat'>
               <Chat />
             </section>
-            <ToastContainer />
           </div>
         </div>
       </div>

@@ -8,6 +8,7 @@ import Auth from './components/Auth/Auth';
 import Header from './components/Header/Header';
 import EnterChoice from './components/EnterChoice/EnterChoice';
 import Login from './components/Login/Login';
+import { ToastContainer } from 'react-toastify';
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
         <Route path='table' element={<TableRoom />} />
         <Route path='player' element={<PlayerRoom />} />
       </Routes>
+      <ToastContainer />
     </>
   );
 }
