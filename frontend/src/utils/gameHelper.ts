@@ -214,7 +214,7 @@ export const findBestArrayOfCards = (cards: number[][], length: number, index = 
   }
 };
 
-export const getWinner = (users: IUser[]): IUser | IUser[] => {
+export const getWinner = (users: IUser[]): IUser[] => {
   const bestRatingCombination = Math.max(...users.map((user) => user.gameState.combinationRating));
   //if exist 1 best rating
   const winners = users.filter(
@@ -247,7 +247,7 @@ export const getWinner = (users: IUser[]): IUser | IUser[] => {
         ? acc
         : curr
     );
-    return bestPlayer;
+    return [bestPlayer];
   }
 
   //FOUR_KIND

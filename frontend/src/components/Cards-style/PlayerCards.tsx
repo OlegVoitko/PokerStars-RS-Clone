@@ -121,7 +121,7 @@ export const RenderPlayer: React.FC<PlayersProps> = ({ users }) => {
               alt='Avatar'
             />
           </div>
-          <h4 className='player-name'>{user.nickname}</h4>
+          <h4 className='player-name'>{u.nickname}</h4>
           <h4 className='player-stack'>$ {u.gameState.stack}</h4>
         </div>
       ))}
