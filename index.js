@@ -69,12 +69,7 @@ const run = async () => {
     res.status(400).send({ error: 'Invalid login or password' });
   });
 
-  let id = 1;
-
   io.on('connection', (socket) => {
-    console.log('a user connected');
-    id++;
-    socket.emit('test', id);
     //chat
     socket.on('send', (data) => {
       state.messages.push(data);
@@ -85,6 +80,7 @@ const run = async () => {
     socket.on('game:seatUser', (user) => {
       console.log('seat');
       state.users.push(user);
+      console.log(state);
       io.emit('game:seatUser', user);
     });
     socket.on('game:seatOutUser', (user) => {
@@ -102,8 +98,23 @@ const run = async () => {
     socket.on('game:foldAction', (data) => {
       io.emit('game:foldAction', data);
     });
-    socket.on('game:restartDeal', (deck) => {
-      io.emit('game:restartDeal', deck);
+    socket.on('game:restartDeal', ({ deck, usersAtTable }) => {
+      // const ids = state.users.map((u) => u._id);
+
+      // usersAtTable.forEach((u) => {
+      //   if (ids.includes(u._id)) {
+      //     state.users = state.users.filter((user) => user.id !== u._id);
+      //     console.log(state.users);
+      //     state.users.push(u); // update user from client
+      //   } else {
+      //     state.users.push(u); // add if new user
+      //   }
+      // });
+      usersAtTable.forEach((u) => {
+        const user = state.users.find((user) => user._id === u._id);
+        user.gameState = u.gameState;
+      });
+      io.emit('game:restartDeal', { deck, usersAtTable: state.users });
     });
   });
 

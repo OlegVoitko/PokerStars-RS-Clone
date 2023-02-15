@@ -56,10 +56,10 @@ const Poker_table = (): JSX.Element => {
       }
       setTimeout(() => {
         const deck = shuffle();
-        dispatch(restartDealFetch(deck));
+        dispatch(restartDealFetch({ deck, usersAtTable }));
       }, 3000);
     }
-  }, [dispatch, stage, waitToSeat, currentUser]);
+  }, [stage, waitToSeat, currentUser]);
 
   const handleCheck = () => {
     dispatch(checkActionFetch());

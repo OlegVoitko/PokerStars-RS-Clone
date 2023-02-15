@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { socket } from '../socket';
+import { IRestartDeal, socket } from '../socket';
 import { ICard, IUser, IGameplay } from '../types/interfaces';
 import { deal, findBestCombination } from '../utils/gameHelper';
 
@@ -95,9 +95,9 @@ export const foldActionThunk = createAsyncThunk(
   }
 );
 
-export const restartDealFetch = createAsyncThunk('game/restartDeal', async (deck: ICard[]) => {
-  socket.emit('game:restartDeal', deck);
-  return deck;
+export const restartDealFetch = createAsyncThunk('game/restartDeal', async (data: IRestartDeal) => {
+  socket.emit('game:restartDeal', data);
+  return data;
 });
 
 const gameplaySlice = createSlice({
@@ -225,7 +225,8 @@ const gameplaySlice = createSlice({
       state.currentUser = state.usersInDeal[newActivePosition];
       state.activePosition = newActivePosition;
     },
-    restartDeal: (state, { payload: deck }: { payload: ICard[] }) => {
+    restartDeal: (state, { payload }: { payload: IRestartDeal }) => {
+      const { deck, usersAtTable } = payload;
       state.isDeal = true;
       state.bank = 0;
       state.board = deck.slice(0, 5);
@@ -234,7 +235,14 @@ const gameplaySlice = createSlice({
       state.usersCompleteAction = 0;
       state.showCards = [];
       state.userOptions = ['fold', 'call', 'check', 'rais'];
-      state.usersAtTable.push(...state.waitToSeat);
+      const ids = usersAtTable.map(({ _id }) => _id);
+      state.waitToSeat.forEach((u) => {
+        if (!ids.includes(u._id)) {
+          usersAtTable.push(u);
+        }
+      });
+
+      state.usersAtTable = usersAtTable;
       state.usersInDeal = state.usersAtTable;
       state.usersCount = state.usersInDeal.length;
       const hands = deal(state.usersInDeal.length, deck.slice(5));
@@ -248,7 +256,7 @@ const gameplaySlice = createSlice({
         user.gameState.restBestCards = restBestCards;
         user.gameState.combinationRating = combinationRating;
       });
-      state.waitToSeat = [];
+      // state.waitToSeat = [];
       state.currentUser = state.usersInDeal[0];
     },
   },
