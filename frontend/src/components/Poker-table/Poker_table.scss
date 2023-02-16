@@ -23,6 +23,10 @@
   // transform: translate(-50%, -50%);
 }
 
+.poker__container {
+	height: 65vh;
+}
+
 .poker-table__table-image {
   width: 100%;
   height: 100%;
@@ -44,7 +48,7 @@
   display: flex;
   justify-content: center;
   position: absolute;
-  top: 44%;
+  top: 27%;
   left: 38%;
   width: 23%;
   height: 6%;
@@ -57,6 +61,7 @@
 
   h4 {
     color: white;
+		font-family: Arial, Helvetica, sans-serif;
   }
 }
 
@@ -186,6 +191,33 @@
 	display: flex;
 }
 
+.player-two-cards__fold {
+	animation: fade-in-out 0.5s;
+	animation-fill-mode: both;
+}
+
+@keyframes fade-in-out {
+	0% {
+		opacity: 1;
+		transform: translateY(0%);
+	}
+	100% {
+		opacity: 0;
+		transform: translateY(-100%)
+	}
+}
+
+@keyframes fade-in-up {
+	0% {
+		opacity: 0;
+		transform: translateY(-100%)
+	}
+	100% {
+		opacity: 1;
+		transform: translateY(0%);
+	}
+}
+
 .playing-card1, .playing-card2 {
 	// display: flex;
 	// justify-content: center;
@@ -201,23 +233,30 @@
 .player-name {	
   display: flex;
   justify-content: center;
-  border-radius: 25px;
-  bottom: -12px;
-  padding: 4px 0;
-  left: 50%;
-  width: 58%;
-  color: whitesmoke;
-  background-color: rgb(112 62 62 / 49%);
+	font-family: Arial, Helvetica, sans-serif;
+  // border-radius: 25px;
+  // bottom: -12px;
+  // padding: 4px 0;
+  // left: 50%;
+  // width: 58%;
+  color: rgb(138, 137, 137);
+  // background-color: rgb(112 62 62 / 49%);
   font-size: 15px;
-	margin: auto;
+	// margin: auto;
 }
 
 .player-avatar-container {
 	width: 75px;
 	height: 82px;
 	border: 2px solid;
+	border-radius: 10px;
 	margin: 10px auto;
   background-color: #302e2bb5;
+
+	&_active {
+		border: 5px solid red;
+		border-radius: 10px;
+	}
 }
 
 .player-avatar_img {
@@ -228,6 +267,7 @@
 	font-size: 12px;
 	display: flex;
   justify-content: center;
+	font-family: Arial, Helvetica, sans-serif;
 }
 
 .p0 {

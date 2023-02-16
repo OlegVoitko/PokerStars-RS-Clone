@@ -1,8 +1,9 @@
 import styled from '@emotion/styled';
 import * as React from 'react';
-import { IUser } from 'types/interfaces';
+import { IGameplay, IUser } from 'types/interfaces';
 import { Suit } from './Suit';
 import { useAppSelector } from '../../hooks/hook';
+
 const CardWrapper = styled.div`
   background-color: white;
   border-radius: 8px;
@@ -85,10 +86,12 @@ const imageAvatarUsers: string[] = [
 
 export const RenderPlayer: React.FC<PlayersProps> = ({ users }) => {
   const user = useAppSelector((state) => state.user.user) as IUser;
+
   return (
     <>
       {users.map((u, i) => (
         <div className={`${'player'} ${'p' + [i]}`} key={i}>
+          <div className='player-bank'>Bet {u.gameState.bet}</div>
           <div className='player-two-cards'>
             <div className='playing-card1'>
               <CardWrapper data-suit={u.gameState.hand[0].suit}>
@@ -114,6 +117,7 @@ export const RenderPlayer: React.FC<PlayersProps> = ({ users }) => {
               </CardWrapper>
             </div>
           </div>
+          {/* <div className='player-avatar-container'> */}
           <div className='player-avatar-container'>
             <img
               className='player-avatar_img'
@@ -121,7 +125,7 @@ export const RenderPlayer: React.FC<PlayersProps> = ({ users }) => {
               alt='Avatar'
             />
           </div>
-          <h4 className='player-name'>{user.nickname}</h4>
+          <h4 className='player-name'>{u.nickname}</h4>
           <h4 className='player-stack'>$ {u.gameState.stack}</h4>
         </div>
       ))}
