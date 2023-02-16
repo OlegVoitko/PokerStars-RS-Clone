@@ -13,6 +13,11 @@ import {
   foldAction,
 } from './store/gameplaySlice';
 
+export interface IRestartDeal {
+  deck: ICard[];
+  usersAtTable: IUser[];
+}
+
 interface ServerToClientEvents {
   ['new message']: (data: IMessage) => void;
   ['game:seatUser']: (data: IUser) => void;
@@ -21,7 +26,7 @@ interface ServerToClientEvents {
   ['game:betAction']: (data: { _id: string; betSize: number }) => void;
   ['game:callAction']: (data: { _id: string }) => void;
   ['game:foldAction']: (data: { _id: string }) => void;
-  ['game:restartDeal']: (deck: ICard[]) => void;
+  ['game:restartDeal']: (data: IRestartDeal) => void;
   test: (id: number) => void;
 }
 
@@ -33,7 +38,7 @@ interface ClientToServerEvents {
   ['game:betAction']: (deck: { _id: string; betSize: number }) => void;
   ['game:callAction']: (data: { _id: string }) => void;
   ['game:foldAction']: (data: { _id: string }) => void;
-  ['game:restartDeal']: (deck: ICard[]) => void;
+  ['game:restartDeal']: (data: IRestartDeal) => void;
   updateGameplay: (data: IGameplay) => void;
 }
 
@@ -63,6 +68,6 @@ socket.on('game:callAction', (data) => {
 socket.on('game:foldAction', (data) => {
   store.dispatch(foldAction(data));
 });
-socket.on('game:restartDeal', (deck) => {
-  store.dispatch(restartDeal(deck));
+socket.on('game:restartDeal', (data) => {
+  store.dispatch(restartDeal(data));
 });

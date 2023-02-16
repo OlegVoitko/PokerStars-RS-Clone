@@ -49,8 +49,8 @@ const Poker_table = (): JSX.Element => {
     if (
       (!isDeal && waitToSeat.length === 2) ||
       stage === 4 ||
-      (stage === 100 && usersAtTable.length > 1) ||
-      (waitToSeat.length > 0 && usersAtTable.length === 1)
+      (stage === 100 && usersAtTable.length > 2) ||
+      (waitToSeat.length > 1 && usersAtTable.length === 1)
     ) {
       if (stage === 4) {
         const winners = getWinner(usersInDeal);
@@ -63,16 +63,16 @@ const Poker_table = (): JSX.Element => {
         toast(`${waitToSeat.map((u) => u.nickname).join(' & ')} join the game`);
         setTimeout(() => {
           const deck = shuffle();
-          dispatch(restartDealFetch(deck));
+          dispatch(restartDealFetch({ deck, usersAtTable }));
         }, 3000);
       } else if (usersAtTable.length && user._id === usersAtTable[0]._id) {
         setTimeout(() => {
           const deck = shuffle();
-          dispatch(restartDealFetch(deck));
+          dispatch(restartDealFetch({ deck, usersAtTable }));
         }, 3000);
       }
     }
-  }, [dispatch, stage, waitToSeat, currentUser]);
+  }, [stage, waitToSeat, currentUser]);
 
   const handleCheck = () => {
     dispatch(checkActionFetch());
