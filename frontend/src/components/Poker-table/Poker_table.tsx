@@ -21,6 +21,7 @@ import { RenderCards } from 'components/Cards-style';
 import { RenderPlayer } from 'components/Cards-style/PlayerCards';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { connectSocket, socket } from 'socket';
 
 const Poker_table = (): JSX.Element => {
   const [isShowSeat, setIsShowSeat] = useState(true);
@@ -45,11 +46,18 @@ const Poker_table = (): JSX.Element => {
   const maxBet = currentUser ? currentUser.gameState.stack : 10000;
 
   useEffect(() => {
+    connectSocket(user);
+    return () => {
+      socket.disconnect();
+    };
+  }, []);
+
+  useEffect(() => {
     setCurrentValue(minBet);
     if (
       (!isDeal && waitToSeat.length === 2) ||
       stage === 4 ||
-      (stage === 100 && usersAtTable.length > 2) ||
+      (stage === 100 && usersAtTable.length > 1) ||
       (waitToSeat.length > 1 && usersAtTable.length === 1)
     ) {
       if (stage === 4) {

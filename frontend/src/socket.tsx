@@ -42,32 +42,39 @@ interface ClientToServerEvents {
   updateGameplay: (data: IGameplay) => void;
 }
 
-export const socket: Socket<ServerToClientEvents, ClientToServerEvents> =
-  io('http://localhost:8000/');
+export let socket: Socket<ServerToClientEvents, ClientToServerEvents>;
 
-socket.on('new message', (data) => {
-  store.dispatch(addMessage(data));
-});
+export const connectSocket = (user: IUser) => {
+  socket = io('http://localhost:8000/', {
+    auth: {
+      user,
+    },
+  });
 
-socket.on('game:seatUser', (data) => {
-  console.log('seat from server');
-  store.dispatch(userSeat(data));
-});
-socket.on('game:seatOutUser', (data) => {
-  store.dispatch(userSeatOut(data));
-});
-socket.on('game:checkAction', () => {
-  store.dispatch(checkAction());
-});
-socket.on('game:betAction', (data) => {
-  store.dispatch(betAction(data));
-});
-socket.on('game:callAction', (data) => {
-  store.dispatch(callAction(data));
-});
-socket.on('game:foldAction', (data) => {
-  store.dispatch(foldAction(data));
-});
-socket.on('game:restartDeal', (data) => {
-  store.dispatch(restartDeal(data));
-});
+  socket.on('new message', (data) => {
+    store.dispatch(addMessage(data));
+  });
+
+  socket.on('game:seatUser', (data) => {
+    console.log('seat from server');
+    store.dispatch(userSeat(data));
+  });
+  socket.on('game:seatOutUser', (data) => {
+    store.dispatch(userSeatOut(data));
+  });
+  socket.on('game:checkAction', () => {
+    store.dispatch(checkAction());
+  });
+  socket.on('game:betAction', (data) => {
+    store.dispatch(betAction(data));
+  });
+  socket.on('game:callAction', (data) => {
+    store.dispatch(callAction(data));
+  });
+  socket.on('game:foldAction', (data) => {
+    store.dispatch(foldAction(data));
+  });
+  socket.on('game:restartDeal', (data) => {
+    store.dispatch(restartDeal(data));
+  });
+};
