@@ -27,7 +27,11 @@ const Chat: FC = (): JSX.Element => {
 
   const renderMessages = (data: IMessage[]) => {
     return data.map(({ text, nickname, date }, i) => (
-      <li key={i}>{`${new Date(date).toString().slice(0, 24)} ${nickname}: ${text}`}</li>
+      <li key={i}>{`${new Date(date)
+        .toLocaleTimeString()
+        .slice(0, -3)
+        .toString()
+        .slice(0, 24)} ${nickname}: ${text}`}</li>
     ));
   };
 

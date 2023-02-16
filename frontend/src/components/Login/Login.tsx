@@ -55,7 +55,7 @@ const Login = (): JSX.Element => {
         {errors.password && errors.password.type === 'minLength' && (
           <span className='form__error-msg'>{t('min_length_rule')}</span>
         )}
-        <input type='submit' value={t('submit')} className='auth-form__input' />
+        <input type='submit' value={t('submit')} className='app-enter-buttons__button' />
       </form>
       <button className='app-enter-buttons__button button__back' onClick={() => navigate('/')}>
         {t('back')}

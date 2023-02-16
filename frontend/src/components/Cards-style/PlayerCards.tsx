@@ -3,7 +3,7 @@ import * as React from 'react';
 import { IGameplay, IUser } from 'types/interfaces';
 import { Suit } from './Suit';
 import { useAppSelector } from '../../hooks/hook';
-
+import './PlayerCard.scss';
 const CardWrapper = styled.div`
   background-color: white;
   border-radius: 8px;
@@ -86,39 +86,50 @@ const imageAvatarUsers: string[] = [
 
 export const RenderPlayer: React.FC<PlayersProps> = ({ users }) => {
   const user = useAppSelector((state) => state.user.user) as IUser;
-
+	const { stage, currentUser } = useAppSelector((state: { gameplay: IGameplay }) => state.gameplay);
   return (
     <>
       {users.map((u, i) => (
         <div className={`${'player'} ${'p' + [i]}`} key={i}>
           <div className='player-bank'>Bet {u.gameState.bet}</div>
           <div className='player-two-cards'>
-            <div className='playing-card1'>
-              <CardWrapper data-suit={u.gameState.hand[0].suit}>
-                <span className='cardInfo top'>
-                  <div>{u.gameState.hand[0].cardFace}</div>
-                  <Suit suit={u.gameState.hand[0].suit} />
-                </span>
-                <div className='cardSuit'>
-                  <Suit suit={u.gameState.hand[0].suit} />
+            {user._id === u._id || stage === 4 ? (
+              <>
+                <div className='playing-card1'>
+                  <CardWrapper data-suit={u.gameState.hand[0].suit}>
+                    <span className='cardInfo top'>
+                      <div>{u.gameState.hand[0].cardFace}</div>
+                      <Suit suit={u.gameState.hand[0].suit} />
+                    </span>
+                    <div className='cardSuit'>
+                      <Suit suit={u.gameState.hand[0].suit} />
+                    </div>
+                  </CardWrapper>
                 </div>
-              </CardWrapper>
-            </div>
-            <div className='playing-card2'>
-              <CardWrapper data-suit={u.gameState.hand[1].suit}>
-                <span className='cardInfo top'>
-                  <div>{u.gameState.hand[1].cardFace}</div>
-                  {/* {user._id === u._id && (<Suit suit={u.gameState.hand[1].suit} />)} */}
-                  <Suit suit={u.gameState.hand[1].suit} />
-                </span>
-                <div className='cardSuit'>
-                  <Suit suit={u.gameState.hand[1].suit} />
+                <div className='playing-card2'>
+                  <CardWrapper data-suit={u.gameState.hand[1].suit}>
+                    <span className='cardInfo top'>
+                      <div>{u.gameState.hand[1].cardFace}</div>
+                      <Suit suit={u.gameState.hand[1].suit} />
+                    </span>
+                    <div className='cardSuit'>
+                      <Suit suit={u.gameState.hand[1].suit} />
+                    </div>
+                  </CardWrapper>
                 </div>
-              </CardWrapper>
-            </div>
+              </>
+            ) : (
+              <>
+                <div className='playing-card1 playing-card_hide'></div>
+                <div className='playing-card2 playing-card_hide'></div>
+              </>
+            )}
           </div>
-          {/* <div className='player-avatar-container'> */}
-          <div className='player-avatar-container'>
+          <div
+            className={`player-avatar-container ${
+              u._id === currentUser?._id && stage !== 4 ? 'player-avatar-container_active' : ''
+            }`}
+          >
             <img
               className='player-avatar_img'
               src={`${require('../../assets/avatar/mentor.png')}`}

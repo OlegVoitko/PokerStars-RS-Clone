@@ -72,8 +72,9 @@
 .action__bar {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   column-gap: 14px;
+  margin: 0px 25px;
 }
 
 .action__buttons {
@@ -175,6 +176,10 @@
 	100% {
 		background-position: 0% 50%;
 	}
+}
+
+.poker-table__seat-btn {
+	margin-left: 24px;
 }
 
 .players-in-deal {
@@ -301,4 +306,9 @@
   justify-content: center;
   top: 53%;
   left: 59%;
+}
+
+.player-avatar-container_active {
+  border: 4px solid red;
+  box-shadow: 3px 2px 5px red, -3px -3px 5px red;
 }
