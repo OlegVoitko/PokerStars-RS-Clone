@@ -8,6 +8,13 @@
 }
 
 .language-option {
-  background: url('../../assets/icons/russia-flag-icon.svg') no-repeat right 5px center;
-  //background-image: url('../assets/icons/russia-flag-icon.svg');
+  width: 4rem;
+  height: 3rem;
+  cursor: pointer;
+  &_ru {
+    background: url('../../assets/icons/russia-flag-icon.svg') no-repeat right 5px center;
+  }
+  &_en {
+    background: url('../../assets/icons/united-kingdom-flag-icon.svg') no-repeat right 5px center;
+  }
 }
