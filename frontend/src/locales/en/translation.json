@@ -1,0 +1,16 @@
+{
+  "nick": "Nickname",
+  "password": "Password",
+  "submit": "Submit",
+  "register": "Register",
+  "login": "Login",
+  "guest": "Enter as Guest",
+  "back": "Back to main page",
+  "table": "Start game",
+  "success": "You are logged in",
+  "Invalid login or password": "Invalid login or password",
+  "User already Exist": "User already Exist",
+  "required_field": "This field is required",
+  "min_length_rule": "Min length 6 symbols",
+  "max_length_rule": "Max length 10 symbols"
+}

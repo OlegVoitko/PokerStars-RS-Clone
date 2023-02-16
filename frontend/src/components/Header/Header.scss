@@ -1,0 +1,13 @@
+.language {
+  position: fixed;
+  right: 2%;
+  top: 2%;
+  height: 3rem;
+  z-index: 5;
+  //background-image: url('../assets/icons/united-kingdom-flag-icon.svg');
+}
+
+.language-option {
+  background: url('../../assets/icons/russia-flag-icon.svg') no-repeat right 5px center;
+  //background-image: url('../assets/icons/russia-flag-icon.svg');
+}
