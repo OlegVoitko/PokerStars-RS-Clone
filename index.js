@@ -70,6 +70,7 @@ const run = async () => {
   });
 
   io.on('connection', (socket) => {
+    console.log(socket.handshake.auth);
     //chat
     socket.on('send', (data) => {
       state.messages.push(data);
@@ -116,6 +117,14 @@ const run = async () => {
         user.gameState = u.gameState;
       });
       io.emit('game:restartDeal', { deck, usersAtTable: state.users });
+    });
+    socket.on('disconnect', () => {
+      console.log('Disconnect: ', socket.handshake.auth);
+      state.users = state.users.filter((u) => u._id !== socket.handshake.auth.user._id);
+
+      io.emit('game:seatOutUser', socket.handshake.auth.user);
+      console.log(state.users);
+      console.log('-----------------');
     });
   });
 
