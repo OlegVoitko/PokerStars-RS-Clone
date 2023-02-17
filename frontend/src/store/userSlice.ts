@@ -1,4 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { connectSocket } from 'socket';
 import { IUser, INewUser, IUserState, IUserGamestate } from '../types/interfaces';
 import { START_BANKROLL } from '../utils/constants';
 
@@ -57,6 +58,7 @@ export const registerUserThunk = createAsyncThunk(
         },
       };
       dispatch(registerUser(userData));
+      connectSocket(userData);
     } catch (error) {
       return rejectWithValue(error);
     }
@@ -97,6 +99,7 @@ export const loginUserThunk = createAsyncThunk(
       };
       // console.log('loginUserThunk data', data);
       dispatch(registerUser(userData));
+      connectSocket(userData);
     } catch (error) {
       // console.log('createAsyncThunk error', error);
       return rejectWithValue(error);

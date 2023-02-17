@@ -5,6 +5,7 @@ import { registerUser } from '../../store/userSlice';
 import { useAppDispatch } from '../../hooks/hook';
 import './EnterChoice.scss';
 import { START_BANKROLL } from '../../utils/constants';
+import { connectSocket } from 'socket';
 
 const EnterChoice = (): JSX.Element => {
   const dispatch = useAppDispatch();
@@ -28,6 +29,7 @@ const EnterChoice = (): JSX.Element => {
       },
     };
     dispatch(registerUser(guest));
+    connectSocket(guest);
     navigate('/table');
   };
 
