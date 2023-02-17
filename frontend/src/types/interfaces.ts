@@ -43,6 +43,7 @@ export interface IGameplay {
   stage: number;
   usersCount: number;
   usersCompleteAction: number;
+  usersAllin: number;
   activePosition: number;
   isDeal: boolean;
   usersInDeal: IUser[];

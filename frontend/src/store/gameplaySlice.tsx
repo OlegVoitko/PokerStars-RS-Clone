@@ -8,6 +8,7 @@ const initialState: IGameplay = {
   stage: 0,
   usersCount: 0,
   usersCompleteAction: 0,
+  usersAllin: 0,
   activePosition: 0,
   isDeal: false,
   usersInDeal: [],
@@ -61,6 +62,13 @@ const toNextStage = (state: IGameplay) => {
       state.showCards = [
         { cardFace: `${winner.nickname} wins the pot ${state.bank}$`, value: 0, suit: '' },
       ];
+      state.bank = 0;
+      break;
+    }
+    case 999: {
+      state.currentBet = 0;
+      // TODO calculate winner
+      state.showCards = [{ cardFace: 'ALLIN', value: 0, suit: '' }];
       state.bank = 0;
       break;
     }
@@ -160,16 +168,22 @@ const gameplaySlice = createSlice({
     checkAction: (state) => {
       state.usersCompleteAction += 1;
       if (state.usersCompleteAction === state.usersCount) {
+        let nextUser = 0;
+        while (state.usersInDeal[nextUser].gameState.state === 'ALLIN') {
+          nextUser = nextUser + 1 > state.usersCount - 1 ? 0 : nextUser + 1;
+        }
         state.stage += 1;
-        state.usersCompleteAction = 0;
-        state.activePosition = 0;
+        state.usersCompleteAction = state.usersAllin;
+        state.activePosition = nextUser;
         state.currentUser = state.usersInDeal[0];
         state.usersInDeal.forEach((u) => (u.gameState.bet = 0));
         toNextStage(state);
         return;
       }
-      const nextUser =
-        state.activePosition + 1 > state.usersCount - 1 ? 0 : state.activePosition + 1;
+      let nextUser = state.activePosition + 1 > state.usersCount - 1 ? 0 : state.activePosition + 1;
+      while (state.usersInDeal[nextUser].gameState.state === 'ALLIN') {
+        nextUser = state.activePosition + 1 > state.usersCount - 1 ? 0 : state.activePosition + 1;
+      }
       state.currentUser = state.usersInDeal[nextUser];
       state.activePosition = nextUser;
     },
@@ -179,8 +193,10 @@ const gameplaySlice = createSlice({
 
       currentUserTable.gameState.stack -= payload.betSize;
       currentUser.gameState.stack -= payload.betSize;
-      const nextUser =
-        state.activePosition + 1 > state.usersCount - 1 ? 0 : state.activePosition + 1;
+      let nextUser = state.activePosition + 1 > state.usersCount - 1 ? 0 : state.activePosition + 1;
+      while (state.usersInDeal[nextUser].gameState.state === 'ALLIN') {
+        nextUser = state.activePosition + 1 > state.usersCount - 1 ? 0 : state.activePosition + 1;
+      }
       state.currentUser = state.usersInDeal[nextUser];
       state.activePosition = nextUser;
       state.bank += payload.betSize;
@@ -188,29 +204,50 @@ const gameplaySlice = createSlice({
       currentUser.gameState.bet += payload.betSize;
       state.usersCompleteAction = 1;
       state.userOptions = ['fold', 'call', 'raise'];
+      if (currentUser.gameState.stack === 0) {
+        currentUser.gameState.state = 'ALLIN';
+        state.usersAllin += 1;
+      }
     },
     callAction: (state, { payload }: { payload: { _id: string } }) => {
       const { _id } = payload;
       const currentUser = state.usersInDeal.find((u) => u._id === _id) as IUser;
       const currentUserTable = state.usersAtTable.find(({ _id }) => _id === payload._id) as IUser; // To save stack state after restart deal
-      const callSize = state.currentBet - currentUser.gameState.bet;
+      let callSize = state.currentBet - currentUser.gameState.bet;
+      if (callSize >= currentUser.gameState.stack) {
+        callSize = currentUser.gameState.stack;
+        currentUser.gameState.state = 'ALLIN';
+        state.usersAllin += 1;
+      }
       currentUser.gameState.bet += callSize;
       currentUser.gameState.stack -= callSize;
       currentUserTable.gameState.stack -= callSize;
       state.bank += callSize;
       state.usersCompleteAction += 1;
+      if (state.usersCount === state.usersAllin) {
+        state.stage = 999;
+        toNextStage(state);
+        // TODO calculate winer
+        return;
+      }
       if (state.usersCompleteAction === state.usersCount) {
+        let nextUser = 0;
+        while (state.usersInDeal[nextUser].gameState.state === 'ALLIN') {
+          nextUser = nextUser + 1 > state.usersCount - 1 ? 0 : nextUser + 1;
+        }
         state.stage += 1;
-        state.usersCompleteAction = 0;
-        state.activePosition = 0;
-        state.currentUser = state.usersInDeal[0];
+        state.usersCompleteAction = state.usersAllin;
+        state.activePosition = nextUser;
+        state.currentUser = state.usersInDeal[nextUser];
         state.userOptions = ['fold', 'check', 'call', 'raise'];
         state.usersInDeal.forEach((u) => (u.gameState.bet = 0));
         toNextStage(state);
         return;
       }
-      const nextUser =
-        state.activePosition + 1 > state.usersCount - 1 ? 0 : state.activePosition + 1;
+      let nextUser = state.activePosition + 1 > state.usersCount - 1 ? 0 : state.activePosition + 1;
+      while (state.usersInDeal[nextUser].gameState.state === 'ALLIN') {
+        nextUser = state.activePosition + 1 > state.usersCount - 1 ? 0 : state.activePosition + 1;
+      }
       state.currentUser = state.usersInDeal[nextUser];
       state.activePosition = nextUser;
     },
@@ -225,17 +262,20 @@ const gameplaySlice = createSlice({
       state.usersCount -= 1;
       if (state.usersCompleteAction === state.usersCount) {
         state.stage += 1;
-        state.usersCompleteAction = 0;
-        state.activePosition = 0;
+        state.usersCompleteAction = state.usersAllin;
+        state.activePosition = 0; // calculate position when all
         state.currentUser = state.usersInDeal[0];
         state.usersInDeal.forEach((u) => (u.gameState.bet = 0));
         toNextStage(state);
         return;
       }
 
-      const newActivePosition = state.activePosition > state.usersCount ? 0 : state.activePosition;
-      state.currentUser = state.usersInDeal[newActivePosition];
-      state.activePosition = newActivePosition;
+      let nextUser = state.activePosition + 1 > state.usersCount - 1 ? 0 : state.activePosition + 1;
+      while (state.usersInDeal[nextUser].gameState.state === 'ALLIN') {
+        nextUser = state.activePosition + 1 > state.usersCount - 1 ? 0 : state.activePosition + 1;
+      }
+      state.currentUser = state.usersInDeal[nextUser];
+      state.activePosition = nextUser;
     },
     restartDeal: (state, { payload }: { payload: IRestartDeal }) => {
       const { deck, usersAtTable } = payload;
@@ -245,6 +285,7 @@ const gameplaySlice = createSlice({
       state.stage = 0;
       state.activePosition = 0;
       state.usersCompleteAction = 0;
+      state.usersAllin = 0;
       state.showCards = [];
       state.userOptions = ['fold', 'call', 'check', 'rais'];
       const ids = usersAtTable.map(({ _id }) => _id);
@@ -258,7 +299,12 @@ const gameplaySlice = createSlice({
       state.usersInDeal = state.usersAtTable;
       state.usersCount = state.usersInDeal.length;
       const hands = deal(state.usersInDeal.length, deck.slice(5));
-      state.usersInDeal.forEach((u, i) => (u.gameState.hand = hands[i]));
+
+      state.usersInDeal.forEach((u, i) => {
+        u.gameState.hand = hands[i];
+        u.gameState.state = 'ACTIVE';
+      });
+
       state.usersInDeal.forEach((user) => {
         const { bestCombination, restBestCards, combinationRating } = findBestCombination(
           state.board,
