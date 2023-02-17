@@ -179,7 +179,7 @@ const gameplaySlice = createSlice({
       }
       let nextUser = state.activePosition + 1 > state.usersCount - 1 ? 0 : state.activePosition + 1;
       while (state.usersInDeal[nextUser].gameState.state === 'ALLIN') {
-        nextUser = state.activePosition + 1 > state.usersCount - 1 ? 0 : state.activePosition + 1;
+        nextUser = nextUser + 1 > state.usersCount - 1 ? 0 : nextUser + 1;
       }
       state.currentUser = state.usersInDeal[nextUser];
       state.activePosition = nextUser;
@@ -222,14 +222,19 @@ const gameplaySlice = createSlice({
       currentUserTable.gameState.stack -= callSize;
       state.bank += callSize;
       state.usersCompleteAction += 1;
+      if (state.usersCount === state.usersAllin) {
+        state.stage = 4;
+        state.showCards = state.board.slice(0, 5);
+        toNextStage(state);
+        return;
+      }
       if (
-        state.usersCompleteAction === state.usersCount &&
+        state.usersCount === state.usersCompleteAction &&
         state.usersCompleteAction - 1 === state.usersAllin
       ) {
         state.stage = 4;
         state.showCards = state.board.slice(0, 5);
         toNextStage(state);
-        // TODO calculate winer
         return;
       }
       if (state.usersCompleteAction === state.usersCount) {
@@ -273,7 +278,7 @@ const gameplaySlice = createSlice({
         return;
       }
 
-      let nextUser = state.activePosition + 1 > state.usersCount - 1 ? 0 : state.activePosition + 1;
+      let nextUser = state.activePosition === state.usersCount ? 0 : state.activePosition;
       while (state.usersInDeal[nextUser].gameState.state === 'ALLIN') {
         nextUser = nextUser + 1 > state.usersCount - 1 ? 0 : nextUser + 1;
       }
