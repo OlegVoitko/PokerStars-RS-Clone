@@ -86,7 +86,10 @@ const imageAvatarUsers: string[] = [
 
 export const RenderPlayer: React.FC<PlayersProps> = ({ users }) => {
   const user = useAppSelector((state) => state.user.user) as IUser;
-  const { stage, currentUser } = useAppSelector((state: { gameplay: IGameplay }) => state.gameplay);
+  const { stage, currentUser, usersInDeal } = useAppSelector(
+    (state: { gameplay: IGameplay }) => state.gameplay
+  );
+  const usersInDealIDS = usersInDeal.map((u) => u._id);
   return (
     <>
       {users.map((u, i) => (
@@ -94,7 +97,11 @@ export const RenderPlayer: React.FC<PlayersProps> = ({ users }) => {
           <div className='player-two-cards'>
             {user._id === u._id || stage === 4 ? (
               <>
-                <div className='playing-card1'>
+                <div
+                  className={`playing-card1 ${
+                    usersInDealIDS.includes(u._id) ? '' : 'retired-player'
+                  }`}
+                >
                   <CardWrapper data-suit={u.gameState.hand[0].suit}>
                     <span className='cardInfo top'>
                       <div>{u.gameState.hand[0].cardFace}</div>
@@ -105,7 +112,11 @@ export const RenderPlayer: React.FC<PlayersProps> = ({ users }) => {
                     </div>
                   </CardWrapper>
                 </div>
-                <div className='playing-card2'>
+                <div
+                  className={`playing-card2 ${
+                    usersInDealIDS.includes(u._id) ? '' : 'retired-player'
+                  }`}
+                >
                   <CardWrapper data-suit={u.gameState.hand[1].suit}>
                     <span className='cardInfo top'>
                       <div>{u.gameState.hand[1].cardFace}</div>
@@ -119,8 +130,16 @@ export const RenderPlayer: React.FC<PlayersProps> = ({ users }) => {
               </>
             ) : (
               <>
-                <div className='playing-card1 playing-card_hide'></div>
-                <div className='playing-card2 playing-card_hide'></div>
+                <div
+                  className={`playing-card1 playing-card_hide ${
+                    usersInDealIDS.includes(u._id) ? '' : 'retired-player'
+                  }`}
+                ></div>
+                <div
+                  className={`playing-card2 playing-card_hide ${
+                    usersInDealIDS.includes(u._id) ? '' : 'retired-player'
+                  }`}
+                ></div>
               </>
             )}
           </div>
