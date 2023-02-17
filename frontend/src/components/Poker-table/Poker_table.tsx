@@ -59,6 +59,7 @@ const Poker_table = (): JSX.Element => {
     if (
       (!isDeal && waitToSeat.length === 2) ||
       stage === 4 ||
+      stage === 999 ||
       (stage === 100 && usersAtTable.length > 1) ||
       (waitToSeat.length > 1 && usersAtTable.length === 1)
     ) {
