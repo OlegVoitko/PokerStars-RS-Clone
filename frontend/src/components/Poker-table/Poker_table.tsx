@@ -28,6 +28,8 @@ const Poker_table = (): JSX.Element => {
   const dispatch = useAppDispatch();
   const {
     usersInDeal,
+    usersCount,
+    usersAllin,
     usersAtTable,
     isDeal,
     waitToSeat,
@@ -57,6 +59,7 @@ const Poker_table = (): JSX.Element => {
     if (
       (!isDeal && waitToSeat.length === 2) ||
       stage === 4 ||
+      stage === 999 ||
       (stage === 100 && usersAtTable.length > 1) ||
       (waitToSeat.length > 1 && usersAtTable.length === 1)
     ) {
@@ -151,7 +154,7 @@ const Poker_table = (): JSX.Element => {
                       Check
                     </button>
                   )}
-                  {currentValue <= currentUser.gameState.stack && (
+                  {currentValue <= currentUser.gameState.stack && usersCount > usersAllin + 1 && (
                     <button
                       className='action__buttons__RaiseTo'
                       onClick={() => handleBet({ _id, betSize: currentValue })}
@@ -160,14 +163,16 @@ const Poker_table = (): JSX.Element => {
                     </button>
                   )}
                 </div>
-                <div className='action__bar__slider'>
-                  <CustomizedSlider
-                    currentValue={currentValue}
-                    setCurrentValue={setCurrentValue}
-                    minValue={minBet}
-                    maxValue={maxBet}
-                  />
-                </div>
+                {currentValue <= currentUser.gameState.stack && usersCount > usersAllin + 1 && (
+                  <div className='action__bar__slider'>
+                    <CustomizedSlider
+                      currentValue={currentValue}
+                      setCurrentValue={setCurrentValue}
+                      minValue={minBet}
+                      maxValue={maxBet}
+                    />
+                  </div>
+                )}
               </div>
             )}
             <section className='tableroom__chat'>
