@@ -101,7 +101,7 @@ const toNextStage = (state: IGameplay) => {
           }
         });
       }
-      state.showCards.push(...state.board.slice(0, 5));
+      state.showCards = state.board;
       // state.showCards = [{ cardFace: 'ALLIN', value: 0, suit: '' }];
       state.bank = 0;
       break;
