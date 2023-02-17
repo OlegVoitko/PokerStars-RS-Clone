@@ -70,9 +70,10 @@
 }
 
 .action__bar {
+	flex-direction: initial;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: end;
   column-gap: 14px;
   margin: 0px 25px;
 }

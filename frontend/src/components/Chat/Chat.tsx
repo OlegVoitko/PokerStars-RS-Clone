@@ -1,5 +1,6 @@
 import React, { FC, useRef, useEffect } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import { useAppSelector, useAppDispatch } from '../../hooks/hook';
 import { IMessage } from '../../store/chatSlice';
 import { sendMessage } from '../../store/chatSlice';
@@ -10,6 +11,7 @@ interface IChatForm {
 }
 
 const Chat: FC = (): JSX.Element => {
+	const { t } = useTranslation();
   const { messages } = useAppSelector((state) => state.chat);
   const nickname = useAppSelector((state) => state.user.user?.nickname) as string;
   const dispatch = useAppDispatch();
@@ -62,7 +64,7 @@ const Chat: FC = (): JSX.Element => {
       <form className='chat__form' onSubmit={handleSubmit(onSubmit)}>
         <input className='chat__input' type='text' {...register('text', { required: true })} />
         <button className='chat__btn' type='submit' disabled={!!errors.text}>
-          Send
+				{t('Send')}
         </button>
       </form>
     </section>

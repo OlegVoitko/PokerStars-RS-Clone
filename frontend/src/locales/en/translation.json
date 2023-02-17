@@ -12,5 +12,12 @@
   "User already Exist": "User already Exist",
   "required_field": "This field is required",
   "min_length_rule": "Min length 6 symbols",
-  "max_length_rule": "Max length 10 symbols"
+  "max_length_rule": "Max length 10 symbols",
+	"fold": "Fold",
+	"call": "Call",
+	"check": "Check",
+	"raise to": "Raise to",
+	"seat": "Seat",
+	"seatOut": "SeatOut",
+	"Send": "Send"
 }

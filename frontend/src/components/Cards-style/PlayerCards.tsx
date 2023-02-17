@@ -86,7 +86,7 @@ const imageAvatarUsers: string[] = [
 
 export const RenderPlayer: React.FC<PlayersProps> = ({ users }) => {
   const user = useAppSelector((state) => state.user.user) as IUser;
-	const { stage, currentUser } = useAppSelector((state: { gameplay: IGameplay }) => state.gameplay);
+  const { stage, currentUser } = useAppSelector((state: { gameplay: IGameplay }) => state.gameplay);
   return (
     <>
       {users.map((u, i) => (

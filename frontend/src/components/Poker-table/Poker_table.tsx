@@ -21,8 +21,10 @@ import { RenderCards } from 'components/Cards-style';
 import { RenderPlayer } from 'components/Cards-style/PlayerCards';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useTranslation } from 'react-i18next';
 
 const Poker_table = (): JSX.Element => {
+  const { t } = useTranslation();
   const [isShowSeat, setIsShowSeat] = useState(true);
   const dispatch = useAppDispatch();
   const {
@@ -131,16 +133,16 @@ const Poker_table = (): JSX.Element => {
               <div>
                 <div className='action__buttons'>
                   <button className='action__buttons__fold' onClick={handleFold}>
-                    Fold
+                    {t('fold')}
                   </button>
                   {!!currentBet && (
                     <button className='action__buttons__Call' onClick={handleCall}>
-                      Call
+                      {t('call')}
                     </button>
                   )}
                   {userOptions.includes('check') && (
                     <button className='action__buttons__Call' onClick={handleCheck}>
-                      Check
+                      {t('check')}
                     </button>
                   )}
                   {currentValue <= currentUser.gameState.stack && (
@@ -148,7 +150,7 @@ const Poker_table = (): JSX.Element => {
                       className='action__buttons__RaiseTo'
                       onClick={() => handleBet({ _id, betSize: currentValue })}
                     >
-                      Raise To
+                      {t('raise to')}
                     </button>
                   )}
                 </div>
