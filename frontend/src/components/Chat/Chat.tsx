@@ -11,7 +11,7 @@ interface IChatForm {
 }
 
 const Chat: FC = (): JSX.Element => {
-	const { t } = useTranslation();
+  const { t } = useTranslation();
   const { messages } = useAppSelector((state) => state.chat);
   const nickname = useAppSelector((state) => state.user.user?.nickname) as string;
   const dispatch = useAppDispatch();
@@ -64,7 +64,7 @@ const Chat: FC = (): JSX.Element => {
       <form className='chat__form' onSubmit={handleSubmit(onSubmit)}>
         <input className='chat__input' type='text' {...register('text', { required: true })} />
         <button className='chat__btn' type='submit' disabled={!!errors.text}>
-				{t('Send')}
+          {t('Send')}
         </button>
       </form>
     </section>

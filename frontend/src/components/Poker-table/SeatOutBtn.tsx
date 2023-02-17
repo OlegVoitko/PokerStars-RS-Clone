@@ -10,7 +10,7 @@ interface ISeatOutBtnProps {
 }
 
 const SeatOutBtn = (props: ISeatOutBtnProps) => {
-	const { t } = useTranslation();
+  const { t } = useTranslation();
   const { toggleSeatBtn } = props;
   const user = useAppSelector((state) => state.user.user);
   const dispatch = useAppDispatch();

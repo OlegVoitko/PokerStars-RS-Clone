@@ -47,12 +47,12 @@ const Poker_table = (): JSX.Element => {
   const minBet = currentUser ? currentBet - currentUser.gameState.bet + BLIND_SIZE : 0;
   const maxBet = currentUser ? currentUser.gameState.stack : 10000;
 
-  useEffect(() => {
-    connectSocket(user);
-    return () => {
-      socket.disconnect();
-    };
-  }, []);
+  // useEffect(() => {
+  //   connectSocket(user);
+  //   return () => {
+  //     socket.disconnect();
+  //   };
+  // }, []);
 
   useEffect(() => {
     setCurrentValue(minBet);
