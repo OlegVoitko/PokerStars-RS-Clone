@@ -3,6 +3,7 @@ import { IRestartDeal, socket } from '../socket';
 import { ICard, IUser, IGameplay } from '../types/interfaces';
 import { deal, findBestCombination, getWinner } from '../utils/gameHelper';
 import { current } from '@reduxjs/toolkit';
+import { BLIND_SIZE, SMALL_BLIND_SIZE } from '../utils/constants';
 
 const initialState: IGameplay = {
   stage: 0,
@@ -21,6 +22,30 @@ const initialState: IGameplay = {
   userOptions: ['fold', 'call', 'check', 'rais'],
   waitToSeat: [],
   loading: 'idle',
+};
+
+const cutBlinds = (state: IGameplay) => {
+  const stateForSB =
+    state.usersInDeal[state.usersInDeal.length - 2].gameState.stack >= SMALL_BLIND_SIZE
+      ? SMALL_BLIND_SIZE
+      : state.usersInDeal[state.usersInDeal.length - 2].gameState.stack;
+  state.usersInDeal[state.usersInDeal.length - 2].gameState.bet += stateForSB;
+  state.usersInDeal[state.usersInDeal.length - 2].gameState.stack -= stateForSB;
+  state.bank += stateForSB;
+  const stateForBB =
+    state.usersInDeal[state.usersInDeal.length - 1].gameState.stack >= BLIND_SIZE
+      ? BLIND_SIZE
+      : state.usersInDeal[state.usersInDeal.length - 1].gameState.stack;
+  state.usersInDeal[state.usersInDeal.length - 1].gameState.bet += stateForBB;
+  state.usersInDeal[state.usersInDeal.length - 1].gameState.stack -= stateForBB;
+  state.bank += stateForBB;
+  state.currentBet = stateForBB;
+  state.userOptions = ['fold', 'call', 'raise'];
+};
+
+const strokeTransition = (state: IGameplay) => {
+  const firstUser = state.usersInDeal.shift();
+  state.usersInDeal.push(firstUser as IUser);
 };
 
 const toNextStage = (state: IGameplay) => {
@@ -64,8 +89,20 @@ const toNextStage = (state: IGameplay) => {
     }
     case 999: {
       state.currentBet = 0;
-      // TODO calculate winner
-      state.showCards = [{ cardFace: 'ALLIN', value: 0, suit: '' }];
+      const winners = getWinner(current(state.usersAtTable));
+      if (winners.length === 1) {
+        const winnerTable = state.usersAtTable.find((u) => u._id === winners[0]._id) as IUser;
+        winnerTable.gameState.stack += state.bank;
+      } else {
+        const winIDs = winners.map((w) => w._id);
+        state.usersAtTable.forEach((u) => {
+          if (winIDs.includes(u._id)) {
+            u.gameState.stack += state.bank / winIDs.length;
+          }
+        });
+      }
+      state.showCards.push(...state.board.slice(0, 5));
+      // state.showCards = [{ cardFace: 'ALLIN', value: 0, suit: '' }];
       state.bank = 0;
       break;
     }
@@ -222,6 +259,12 @@ const gameplaySlice = createSlice({
       currentUserTable.gameState.stack -= callSize;
       state.bank += callSize;
       state.usersCompleteAction += 1;
+      if (state.usersCount === state.usersAllin) {
+        state.stage = 4;
+        state.showCards = state.board.slice(0, 5);
+        toNextStage(state);
+        return;
+      }
       if (
         state.usersCompleteAction === state.usersCount &&
         state.usersCompleteAction - 1 === state.usersAllin
@@ -273,7 +316,7 @@ const gameplaySlice = createSlice({
         return;
       }
 
-      let nextUser = state.activePosition + 1 > state.usersCount - 1 ? 0 : state.activePosition + 1;
+      let nextUser = state.activePosition === state.usersCount ? 0 : state.activePosition;
       while (state.usersInDeal[nextUser].gameState.state === 'ALLIN') {
         nextUser = nextUser + 1 > state.usersCount - 1 ? 0 : nextUser + 1;
       }
@@ -300,6 +343,7 @@ const gameplaySlice = createSlice({
 
       state.usersAtTable = usersAtTable;
       state.usersInDeal = state.usersAtTable;
+      strokeTransition(state);
       state.usersCount = state.usersInDeal.length;
       const hands = deal(state.usersInDeal.length, deck.slice(5));
 
@@ -318,7 +362,9 @@ const gameplaySlice = createSlice({
         user.gameState.combinationRating = combinationRating;
       });
       // state.waitToSeat = [];
+      // strokeTransition(state);
       state.currentUser = state.usersInDeal[0];
+      cutBlinds(state);
     },
   },
 });
