@@ -57,7 +57,7 @@ const Poker_table = (): JSX.Element => {
   useEffect(() => {
     setCurrentValue(minBet);
     if (
-      (!isDeal && waitToSeat.length === 2) ||
+      (!isDeal && waitToSeat.length > 1) ||
       stage === 4 ||
       stage === 999 ||
       (stage === 100 && usersAtTable.length > 1) ||

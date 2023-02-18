@@ -287,14 +287,12 @@ const gameplaySlice = createSlice({
     },
     restartDeal: (state, { payload }: { payload: IRestartDeal }) => {
       const { deck, usersAtTable } = payload;
-      state.isDeal = true;
+
       state.bank = 0;
-      state.board = deck.slice(0, 5);
       state.stage = 0;
       state.activePosition = 0;
       state.usersCompleteAction = 0;
       state.usersAllin = 0;
-      state.showCards = [];
       state.userOptions = ['fold', 'call', 'check', 'rais'];
       const ids = usersAtTable.map(({ _id }) => _id);
       state.waitToSeat.forEach((u) => {
@@ -302,17 +300,24 @@ const gameplaySlice = createSlice({
           usersAtTable.push(u);
         }
       });
-
       state.usersAtTable = usersAtTable;
-      state.usersInDeal = state.usersAtTable;
+      state.usersInDeal = state.usersAtTable.filter((p) => p.gameState.stack > 0);
+      if (state.usersInDeal.length < 2) {
+        state.isDeal = false;
+        state.usersInDeal = [];
+        state.usersCount = 0;
+        state.currentUser = null;
+        return;
+      }
+      state.showCards = [];
+      state.isDeal = true;
+      state.board = deck.slice(0, 5);
       state.usersCount = state.usersInDeal.length;
       const hands = deal(state.usersInDeal.length, deck.slice(5));
-
       state.usersInDeal.forEach((u, i) => {
         u.gameState.hand = hands[i];
         u.gameState.state = 'ACTIVE';
       });
-
       state.usersInDeal.forEach((user) => {
         const { bestCombination, restBestCards, combinationRating } = findBestCombination(
           state.board,
