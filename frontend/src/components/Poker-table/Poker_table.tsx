@@ -68,7 +68,7 @@ const Poker_table = (): JSX.Element => {
         toast.success(`${winners.map((w) => w.nickname).join(' & ')} took the pot`);
       }
       if (stage === 100) {
-        toast.success(`${usersAtTable[0].nickname} took the pot`);
+        toast.success(`${usersInDeal[0].nickname} took the pot`);
       }
       if (waitToSeat.length && user._id === waitToSeat[0]._id) {
         toast(`${waitToSeat.map((u) => u.nickname).join(' & ')} join the game`);
