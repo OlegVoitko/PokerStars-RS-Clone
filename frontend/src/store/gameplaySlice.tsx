@@ -22,30 +22,27 @@ const initialState: IGameplay = {
   userOptions: ['fold', 'call', 'check', 'rais'],
   waitToSeat: [],
   loading: 'idle',
+  indexMB: -1,
 };
 
 const cutBlinds = (state: IGameplay) => {
   const stateForSB =
-    state.usersInDeal[state.usersInDeal.length - 2].gameState.stack >= SMALL_BLIND_SIZE
+    state.usersInDeal[state.indexMB].gameState.stack >= SMALL_BLIND_SIZE
       ? SMALL_BLIND_SIZE
-      : state.usersInDeal[state.usersInDeal.length - 2].gameState.stack;
-  state.usersInDeal[state.usersInDeal.length - 2].gameState.bet += stateForSB;
-  state.usersInDeal[state.usersInDeal.length - 2].gameState.stack -= stateForSB;
+      : state.usersInDeal[state.indexMB].gameState.stack;
+  state.usersInDeal[state.indexMB].gameState.bet += stateForSB;
+  state.usersInDeal[state.indexMB].gameState.stack -= stateForSB;
   state.bank += stateForSB;
+  const indexForBB = state.indexMB + 1 === state.usersCount ? 0 : state.indexMB + 1;
   const stateForBB =
-    state.usersInDeal[state.usersInDeal.length - 1].gameState.stack >= BLIND_SIZE
+    state.usersInDeal[indexForBB].gameState.stack >= BLIND_SIZE
       ? BLIND_SIZE
-      : state.usersInDeal[state.usersInDeal.length - 1].gameState.stack;
-  state.usersInDeal[state.usersInDeal.length - 1].gameState.bet += stateForBB;
-  state.usersInDeal[state.usersInDeal.length - 1].gameState.stack -= stateForBB;
+      : state.usersInDeal[indexForBB].gameState.stack;
+  state.usersInDeal[indexForBB].gameState.bet += stateForBB;
+  state.usersInDeal[indexForBB].gameState.stack -= stateForBB;
   state.bank += stateForBB;
   state.currentBet = stateForBB;
   state.userOptions = ['fold', 'call', 'raise'];
-};
-
-const strokeTransition = (state: IGameplay) => {
-  const firstUser = state.usersInDeal.shift();
-  state.usersInDeal.push(firstUser as IUser);
 };
 
 const toNextStage = (state: IGameplay) => {
@@ -324,6 +321,7 @@ const gameplaySlice = createSlice({
     },
     restartDeal: (state, { payload }: { payload: IRestartDeal }) => {
       const { deck, usersAtTable } = payload;
+      state.indexMB += 1;
       state.isDeal = true;
       state.bank = 0;
       state.board = deck.slice(0, 5);
@@ -342,7 +340,9 @@ const gameplaySlice = createSlice({
 
       state.usersAtTable = usersAtTable;
       state.usersInDeal = state.usersAtTable;
-      strokeTransition(state);
+
+      if (state.usersInDeal[state.indexMB] === undefined) state.indexMB = 0;
+
       state.usersCount = state.usersInDeal.length;
       const hands = deal(state.usersInDeal.length, deck.slice(5));
 
@@ -361,8 +361,12 @@ const gameplaySlice = createSlice({
         user.gameState.combinationRating = combinationRating;
       });
       // state.waitToSeat = [];
-      // strokeTransition(state);
-      state.currentUser = state.usersInDeal[0];
+      state.currentUser =
+        state.indexMB + 2 < state.usersCount
+          ? state.usersInDeal[state.indexMB + 2]
+          : state.indexMB + 2 === state.usersCount
+          ? state.usersInDeal[0]
+          : state.usersInDeal[1];
       cutBlinds(state);
     },
   },
