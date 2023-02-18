@@ -278,7 +278,7 @@ const gameplaySlice = createSlice({
         return;
       }
 
-      let nextUser = state.activePosition + 1 > state.usersCount - 1 ? 0 : state.activePosition + 1;
+      let nextUser = state.activePosition === state.usersCount ? 0 : state.activePosition;
       while (state.usersInDeal[nextUser].gameState.state === 'ALLIN') {
         nextUser = nextUser + 1 > state.usersCount - 1 ? 0 : nextUser + 1;
       }
