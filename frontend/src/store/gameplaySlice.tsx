@@ -22,18 +22,18 @@ const initialState: IGameplay = {
   userOptions: ['fold', 'call', 'check', 'rais'],
   waitToSeat: [],
   loading: 'idle',
-  indexMB: -1,
+  indexOfSB: -1,
 };
 
 const cutBlinds = (state: IGameplay) => {
   const stateForSB =
-    state.usersInDeal[state.indexMB].gameState.stack >= SMALL_BLIND_SIZE
+    state.usersInDeal[state.indexOfSB].gameState.stack >= SMALL_BLIND_SIZE
       ? SMALL_BLIND_SIZE
-      : state.usersInDeal[state.indexMB].gameState.stack;
-  state.usersInDeal[state.indexMB].gameState.bet += stateForSB;
-  state.usersInDeal[state.indexMB].gameState.stack -= stateForSB;
+      : state.usersInDeal[state.indexOfSB].gameState.stack;
+  state.usersInDeal[state.indexOfSB].gameState.bet += stateForSB;
+  state.usersInDeal[state.indexOfSB].gameState.stack -= stateForSB;
   state.bank += stateForSB;
-  const indexForBB = state.indexMB + 1 === state.usersCount ? 0 : state.indexMB + 1;
+  const indexForBB = state.indexOfSB + 1 === state.usersCount ? 0 : state.indexOfSB + 1;
   const stateForBB =
     state.usersInDeal[indexForBB].gameState.stack >= BLIND_SIZE
       ? BLIND_SIZE
@@ -321,7 +321,7 @@ const gameplaySlice = createSlice({
     },
     restartDeal: (state, { payload }: { payload: IRestartDeal }) => {
       const { deck, usersAtTable } = payload;
-      state.indexMB += 1;
+      state.indexOfSB += 1;
       state.isDeal = true;
       state.bank = 0;
       state.board = deck.slice(0, 5);
@@ -341,7 +341,7 @@ const gameplaySlice = createSlice({
       state.usersAtTable = usersAtTable;
       state.usersInDeal = state.usersAtTable;
 
-      if (state.usersInDeal[state.indexMB] === undefined) state.indexMB = 0;
+      if (state.usersInDeal[state.indexOfSB] === undefined) state.indexOfSB = 0;
 
       state.usersCount = state.usersInDeal.length;
       const hands = deal(state.usersInDeal.length, deck.slice(5));
@@ -349,6 +349,7 @@ const gameplaySlice = createSlice({
       state.usersInDeal.forEach((u, i) => {
         u.gameState.hand = hands[i];
         u.gameState.state = 'ACTIVE';
+        u.gameState.bet = 0;
       });
 
       state.usersInDeal.forEach((user) => {
@@ -361,12 +362,9 @@ const gameplaySlice = createSlice({
         user.gameState.combinationRating = combinationRating;
       });
       // state.waitToSeat = [];
-      state.currentUser =
-        state.indexMB + 2 < state.usersCount
-          ? state.usersInDeal[state.indexMB + 2]
-          : state.indexMB + 2 === state.usersCount
-          ? state.usersInDeal[0]
-          : state.usersInDeal[1];
+      const indexOfBB = state.usersInDeal[state.indexOfSB + 1] ? state.indexOfSB + 1 : 0;
+      state.activePosition = state.usersInDeal[indexOfBB + 1] ? indexOfBB + 1 : 0;
+      state.currentUser = state.usersInDeal[state.activePosition];
       cutBlinds(state);
     },
   },
