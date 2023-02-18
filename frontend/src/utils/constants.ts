@@ -1,3 +1,4 @@
+export const TIMER = 100;
 export const START_BANKROLL = 10000;
 export const BLIND_SIZE = 10;
 export const CARD_DECK = {

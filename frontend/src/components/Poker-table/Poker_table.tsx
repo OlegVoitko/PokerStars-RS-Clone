@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Chat from '../Chat/Chat';
 import './Poker_table.scss';
 import CustomizedSlider from './Slider_table';
@@ -15,7 +15,7 @@ import {
   foldActionThunk,
 } from '../../store/gameplaySlice';
 import SeatOutBtn from './SeatOutBtn';
-import { BLIND_SIZE } from '../../utils/constants';
+import { BLIND_SIZE, TIMER } from '../../utils/constants';
 import '../Cards-style/RenderCards.scss';
 import { RenderCards } from 'components/Cards-style';
 import { RenderPlayer } from 'components/Cards-style/PlayerCards';
@@ -25,6 +25,8 @@ import { connectSocket, socket } from 'socket';
 
 const Poker_table = (): JSX.Element => {
   const [isShowSeat, setIsShowSeat] = useState(true);
+  const [timer, setTimer] = useState(TIMER);
+  const timerRef = useRef(TIMER);
   const dispatch = useAppDispatch();
   const {
     usersInDeal,
@@ -53,6 +55,26 @@ const Poker_table = (): JSX.Element => {
       socket.disconnect();
     };
   }, []);
+
+  useEffect(() => {
+    let timerId: NodeJS.Timeout | undefined;
+    if (currentUser && currentUser._id === _id) {
+      timerId = setInterval(() => {
+        if (timerRef.current === 0) {
+          timerRef.current = TIMER;
+          dispatch(foldActionThunk({ _id }));
+          clearTimeout(timerId);
+        } else {
+          timerRef.current -= 1;
+          setTimer(timerRef.current);
+        }
+      }, 1000);
+    }
+    return () => {
+      timerRef.current = TIMER;
+      clearTimeout(timerId);
+    };
+  }, [currentUser]);
 
   useEffect(() => {
     setCurrentValue(minBet);
@@ -90,7 +112,6 @@ const Poker_table = (): JSX.Element => {
   };
 
   const handleBet = ({ _id, betSize }: { _id: string; betSize: number }) => {
-    console.log(betSize);
     dispatch(betActionThunk({ _id, betSize }));
   };
 
@@ -124,7 +145,7 @@ const Poker_table = (): JSX.Element => {
               <h4>{bank}$</h4>
             </div>
             <div className='players-in-deal'>
-              <RenderPlayer users={usersInDeal} />
+              <RenderPlayer timer={timer} users={usersInDeal} />
             </div>
           </div>
           {isShowSeat && (
