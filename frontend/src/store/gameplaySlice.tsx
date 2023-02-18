@@ -49,7 +49,6 @@ const toNextStage = (state: IGameplay) => {
   switch (state.stage) {
     case 1:
       state.showCards.push(...state.board.slice(0, 3));
-      state.usersInDeal.forEach((u) => (u.gameState.bet = 0));
       state.currentBet = 0;
       break;
     case 2:
@@ -351,6 +350,7 @@ const gameplaySlice = createSlice({
       state.usersInDeal.forEach((u, i) => {
         u.gameState.hand = hands[i];
         u.gameState.state = 'ACTIVE';
+        u.gameState.bet = 0;
       });
 
       state.usersInDeal.forEach((user) => {
