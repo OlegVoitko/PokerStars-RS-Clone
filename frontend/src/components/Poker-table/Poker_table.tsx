@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import Chat from '../Chat/Chat';
 import './Poker_table.scss';
 import CustomizedSlider from './Slider_table';
-import Sound from './SoundOnOff';
 import SeatBtn from './SeatBtn';
 import { useAppDispatch, useAppSelector } from '../../hooks/hook';
 import { shuffle, getWinner } from '../../utils/gameHelper';
@@ -23,6 +22,7 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { connectSocket, socket } from 'socket';
 import { useTranslation } from 'react-i18next';
+import SoundOnOff from './SoundOnOff';
 
 const Poker_table = (): JSX.Element => {
   const { t } = useTranslation();
@@ -110,7 +110,7 @@ const Poker_table = (): JSX.Element => {
       <div className='poker__background'>
         <div className='poker-table__container gradient-border' id='box'>
           <div className='additional-features'>
-            <Sound />
+            <SoundOnOff />
           </div>
           <div className='poker__container'>
             <img
