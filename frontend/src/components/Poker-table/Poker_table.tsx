@@ -27,6 +27,7 @@ const Poker_table = (): JSX.Element => {
   const [isShowSeat, setIsShowSeat] = useState(true);
   const dispatch = useAppDispatch();
   const {
+    indexOfSB,
     usersInDeal,
     usersCount,
     usersAllin,
@@ -74,12 +75,12 @@ const Poker_table = (): JSX.Element => {
         toast(`${waitToSeat.map((u) => u.nickname).join(' & ')} join the game`);
         setTimeout(() => {
           const deck = shuffle();
-          dispatch(restartDealFetch({ deck, usersAtTable }));
+          dispatch(restartDealFetch({ deck, usersAtTable, indexOfSB }));
         }, 3000);
       } else if (usersAtTable.length && user._id === usersAtTable[0]._id) {
         setTimeout(() => {
           const deck = shuffle();
-          dispatch(restartDealFetch({ deck, usersAtTable }));
+          dispatch(restartDealFetch({ deck, usersAtTable, indexOfSB }));
         }, 3000);
       }
     }

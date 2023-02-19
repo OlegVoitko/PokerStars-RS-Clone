@@ -320,8 +320,8 @@ const gameplaySlice = createSlice({
       state.activePosition = nextUser;
     },
     restartDeal: (state, { payload }: { payload: IRestartDeal }) => {
-      const { deck, usersAtTable } = payload;
-      state.indexOfSB += 1;
+      const { deck, usersAtTable, indexOfSB } = payload;
+      state.indexOfSB = indexOfSB + 1;
       state.isDeal = true;
       state.bank = 0;
       state.board = deck.slice(0, 5);
@@ -341,7 +341,7 @@ const gameplaySlice = createSlice({
       state.usersAtTable = usersAtTable;
       state.usersInDeal = state.usersAtTable;
 
-      if (state.usersInDeal[state.indexOfSB] === undefined) state.indexOfSB = 0;
+      if (!state.usersInDeal[state.indexOfSB]) state.indexOfSB = 0;
 
       state.usersCount = state.usersInDeal.length;
       const hands = deal(state.usersInDeal.length, deck.slice(5));
