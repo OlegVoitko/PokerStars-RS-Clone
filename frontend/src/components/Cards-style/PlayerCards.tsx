@@ -64,6 +64,7 @@ const CardWrapper = styled.div`
 
 interface PlayersProps {
   users: IUser[];
+  timer: number;
 }
 
 const imageAvatarUsers: string[] = [
@@ -84,7 +85,7 @@ const imageAvatarUsers: string[] = [
 //   return array[randomNum];
 // };
 
-export const RenderPlayer: React.FC<PlayersProps> = ({ users }) => {
+export const RenderPlayer: React.FC<PlayersProps> = ({ users, timer }) => {
   const user = useAppSelector((state) => state.user.user) as IUser;
   const { stage, currentUser, usersInDeal } = useAppSelector(
     (state: { gameplay: IGameplay }) => state.gameplay
@@ -94,6 +95,7 @@ export const RenderPlayer: React.FC<PlayersProps> = ({ users }) => {
     <>
       {users.map((u, i) => (
         <div className={`${'player'} ${'p' + [i]}`} key={i}>
+          {user._id === u._id && <div className='player__timer'>{timer}</div>}
           <div className='player-two-cards'>
             {user._id === u._id || stage === 4 ? (
               <>
