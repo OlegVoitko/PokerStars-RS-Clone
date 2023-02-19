@@ -79,6 +79,7 @@ const toNextStage = (state: IGameplay) => {
     }
     case 100: {
       const winner = state.usersInDeal[0];
+      state.winners = [winner];
       winner.gameState.stack += state.bank;
       const winerTable = state.usersAtTable.find((u) => u._id === winner._id) as IUser;
       winerTable.gameState.stack += state.bank;
@@ -330,6 +331,7 @@ const gameplaySlice = createSlice({
       state.activePosition = 0;
       state.usersCompleteAction = 0;
       state.usersAllin = 0;
+      state.winners = null;
       state.userOptions = ['fold', 'call', 'check', 'rais'];
       const ids = usersAtTable.map(({ _id }) => _id);
       state.waitToSeat.forEach((u) => {

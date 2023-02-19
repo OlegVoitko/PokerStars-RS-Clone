@@ -87,7 +87,7 @@ const imageAvatarUsers: string[] = [
 
 export const RenderPlayer: React.FC<PlayersProps> = ({ users, timer }) => {
   const user = useAppSelector((state) => state.user.user) as IUser;
-  const { stage, currentUser, usersInDeal } = useAppSelector(
+  const { stage, currentUser, usersInDeal, winners } = useAppSelector(
     (state: { gameplay: IGameplay }) => state.gameplay
   );
   const usersInDealIDS = usersInDeal.map((u) => u._id);
@@ -147,8 +147,11 @@ export const RenderPlayer: React.FC<PlayersProps> = ({ users, timer }) => {
           </div>
           <div
             className={`player-avatar-container ${
-              u._id === currentUser?._id && stage !== 4 ? 'player-avatar-container_active' : ''
-            }`}
+              u._id === currentUser?._id && stage !== 4 && stage !== 100 && stage !== 999
+                ? 'player-avatar-container_active'
+                : ''
+            }
+            ${winners?.map((u) => u._id).includes(u._id) ? 'player-avatar-container_winner' : ''}`}
           >
             <img
               className='player-avatar_img'
