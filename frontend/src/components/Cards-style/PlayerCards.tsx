@@ -91,6 +91,10 @@ export const RenderPlayer: React.FC<PlayersProps> = ({ users, timer }) => {
     (state: { gameplay: IGameplay }) => state.gameplay
   );
   const usersInDealIDS = usersInDeal.map((u) => u._id);
+  const winCards = winners
+    ?.map((w) => [...w.gameState.bestCombination, ...w.gameState.restBestCards])
+    .flat()
+    .map((card) => JSON.stringify(card));
   return (
     <>
       {users.map((u, i) => (
@@ -102,7 +106,9 @@ export const RenderPlayer: React.FC<PlayersProps> = ({ users, timer }) => {
                 <div
                   className={`playing-card1 ${
                     usersInDealIDS.includes(u._id) ? '' : 'retired-player'
-                  }`}
+                  }
+                  ${winCards?.includes(JSON.stringify(u.gameState.hand[0])) ? 'win-card' : ''}
+                  `}
                 >
                   <CardWrapper data-suit={u.gameState.hand[0].suit}>
                     <span className='cardInfo top'>
@@ -117,7 +123,9 @@ export const RenderPlayer: React.FC<PlayersProps> = ({ users, timer }) => {
                 <div
                   className={`playing-card2 ${
                     usersInDealIDS.includes(u._id) ? '' : 'retired-player'
-                  }`}
+                  }
+                  ${winCards?.includes(JSON.stringify(u.gameState.hand[0])) ? 'win-card' : ''}
+                  `}
                 >
                   <CardWrapper data-suit={u.gameState.hand[1].suit}>
                     <span className='cardInfo top'>

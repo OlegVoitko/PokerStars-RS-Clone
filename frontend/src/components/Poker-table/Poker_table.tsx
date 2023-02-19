@@ -5,7 +5,7 @@ import CustomizedSlider from './Slider_table';
 import Sound from './SoundOnOff';
 import SeatBtn from './SeatBtn';
 import { useAppDispatch, useAppSelector } from '../../hooks/hook';
-import { shuffle, getWinner } from '../../utils/gameHelper';
+import { shuffle } from '../../utils/gameHelper';
 import { IUser, IGameplay } from '../../types/interfaces';
 import {
   checkActionFetch,
