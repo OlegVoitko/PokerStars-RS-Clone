@@ -17,8 +17,14 @@
   justify-content: center;
 }
 
+
 .player__timer {
   position: absolute;
   top: 133px;
   right: -19px;
 }
+
+.retired-player {
+  opacity: 0.4;
+}
+

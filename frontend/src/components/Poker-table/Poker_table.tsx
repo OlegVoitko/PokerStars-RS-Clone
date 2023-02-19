@@ -29,6 +29,7 @@ const Poker_table = (): JSX.Element => {
   const timerRef = useRef(TIMER);
   const dispatch = useAppDispatch();
   const {
+    indexOfSB,
     usersInDeal,
     usersCount,
     usersAllin,
@@ -79,7 +80,7 @@ const Poker_table = (): JSX.Element => {
   useEffect(() => {
     setCurrentValue(minBet);
     if (
-      (!isDeal && waitToSeat.length === 2) ||
+      (!isDeal && waitToSeat.length > 1) ||
       stage === 4 ||
       stage === 999 ||
       (stage === 100 && usersAtTable.length > 1) ||
@@ -90,18 +91,18 @@ const Poker_table = (): JSX.Element => {
         toast.success(`${winners.map((w) => w.nickname).join(' & ')} took the pot`);
       }
       if (stage === 100) {
-        toast.success(`${usersAtTable[0].nickname} took the pot`);
+        toast.success(`${usersInDeal[0].nickname} took the pot`);
       }
       if (waitToSeat.length && user._id === waitToSeat[0]._id) {
         toast(`${waitToSeat.map((u) => u.nickname).join(' & ')} join the game`);
         setTimeout(() => {
           const deck = shuffle();
-          dispatch(restartDealFetch({ deck, usersAtTable }));
+          dispatch(restartDealFetch({ deck, usersAtTable, indexOfSB }));
         }, 3000);
       } else if (usersAtTable.length && user._id === usersAtTable[0]._id) {
         setTimeout(() => {
           const deck = shuffle();
-          dispatch(restartDealFetch({ deck, usersAtTable }));
+          dispatch(restartDealFetch({ deck, usersAtTable, indexOfSB }));
         }, 3000);
       }
     }

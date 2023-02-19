@@ -16,6 +16,7 @@ import {
 export interface IRestartDeal {
   deck: ICard[];
   usersAtTable: IUser[];
+  indexOfSB: number;
 }
 
 interface ServerToClientEvents {
