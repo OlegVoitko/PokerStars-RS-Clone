@@ -1,5 +1,7 @@
+export const TIMER = 100;
 export const START_BANKROLL = 10000;
-export const BLIND_SIZE = 10;
+export const BLIND_SIZE = 20;
+export const SMALL_BLIND_SIZE = 10;
 export const CARD_DECK = {
   totalNumCards: 52,
   suits: ['Heart', 'Spade', 'Club', 'Diamond'],

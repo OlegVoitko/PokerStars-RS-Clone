@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Chat from '../Chat/Chat';
 import './Poker_table.scss';
 import CustomizedSlider from './Slider_table';
@@ -14,7 +14,7 @@ import {
   foldActionThunk,
 } from '../../store/gameplaySlice';
 import SeatOutBtn from './SeatOutBtn';
-import { BLIND_SIZE } from '../../utils/constants';
+import { BLIND_SIZE, TIMER } from '../../utils/constants';
 import '../Cards-style/RenderCards.scss';
 import { RenderCards } from 'components/Cards-style';
 import { RenderPlayer } from 'components/Cards-style/PlayerCards';
@@ -27,8 +27,11 @@ import SoundOnOff from './SoundOnOff';
 const Poker_table = (): JSX.Element => {
   const { t } = useTranslation();
   const [isShowSeat, setIsShowSeat] = useState(true);
+  const [timer, setTimer] = useState(TIMER);
+  const timerRef = useRef(TIMER);
   const dispatch = useAppDispatch();
   const {
+    indexOfSB,
     usersInDeal,
     usersCount,
     usersAllin,
@@ -57,9 +60,29 @@ const Poker_table = (): JSX.Element => {
   // }, []);
 
   useEffect(() => {
+    let timerId: NodeJS.Timeout | undefined;
+    if (currentUser && currentUser._id === _id) {
+      timerId = setInterval(() => {
+        if (timerRef.current === 0) {
+          timerRef.current = TIMER;
+          dispatch(foldActionThunk({ _id }));
+          clearTimeout(timerId);
+        } else {
+          timerRef.current -= 1;
+          setTimer(timerRef.current);
+        }
+      }, 1000);
+    }
+    return () => {
+      timerRef.current = TIMER;
+      clearTimeout(timerId);
+    };
+  }, [currentUser]);
+
+  useEffect(() => {
     setCurrentValue(minBet);
     if (
-      (!isDeal && waitToSeat.length === 2) ||
+      (!isDeal && waitToSeat.length > 1) ||
       stage === 4 ||
       stage === 999 ||
       (stage === 100 && usersAtTable.length > 1) ||
@@ -70,18 +93,18 @@ const Poker_table = (): JSX.Element => {
         toast.success(`${winners.map((w) => w.nickname).join(' & ')} took the pot`);
       }
       if (stage === 100) {
-        toast.success(`${usersAtTable[0].nickname} took the pot`);
+        toast.success(`${usersInDeal[0].nickname} took the pot`);
       }
       if (waitToSeat.length && user._id === waitToSeat[0]._id) {
         toast(`${waitToSeat.map((u) => u.nickname).join(' & ')} join the game`);
         setTimeout(() => {
           const deck = shuffle();
-          dispatch(restartDealFetch({ deck, usersAtTable }));
+          dispatch(restartDealFetch({ deck, usersAtTable, indexOfSB }));
         }, 3000);
       } else if (usersAtTable.length && user._id === usersAtTable[0]._id) {
         setTimeout(() => {
           const deck = shuffle();
-          dispatch(restartDealFetch({ deck, usersAtTable }));
+          dispatch(restartDealFetch({ deck, usersAtTable, indexOfSB }));
         }, 3000);
       }
     }
@@ -92,7 +115,6 @@ const Poker_table = (): JSX.Element => {
   };
 
   const handleBet = ({ _id, betSize }: { _id: string; betSize: number }) => {
-    console.log(betSize);
     dispatch(betActionThunk({ _id, betSize }));
   };
 
@@ -126,7 +148,7 @@ const Poker_table = (): JSX.Element => {
               <h4>{bank}$</h4>
             </div>
             <div className='players-in-deal'>
-              <RenderPlayer users={usersInDeal} />
+              <RenderPlayer timer={timer} users={usersInDeal} />
             </div>
           </div>
           {isShowSeat && (
