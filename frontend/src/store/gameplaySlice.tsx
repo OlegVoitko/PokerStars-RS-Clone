@@ -3,6 +3,7 @@ import { IRestartDeal, socket } from '../socket';
 import { ICard, IUser, IGameplay } from '../types/interfaces';
 import { deal, findBestCombination, getWinner } from '../utils/gameHelper';
 import { current } from '@reduxjs/toolkit';
+import { BLIND_SIZE, SMALL_BLIND_SIZE } from '../utils/constants';
 
 const initialState: IGameplay = {
   stage: 0,
@@ -21,6 +22,27 @@ const initialState: IGameplay = {
   userOptions: ['fold', 'call', 'check', 'rais'],
   waitToSeat: [],
   loading: 'idle',
+  indexOfSB: -1,
+};
+
+const cutBlinds = (state: IGameplay) => {
+  const stateForSB =
+    state.usersInDeal[state.indexOfSB].gameState.stack >= SMALL_BLIND_SIZE
+      ? SMALL_BLIND_SIZE
+      : state.usersInDeal[state.indexOfSB].gameState.stack;
+  state.usersInDeal[state.indexOfSB].gameState.bet += stateForSB;
+  state.usersInDeal[state.indexOfSB].gameState.stack -= stateForSB;
+  state.bank += stateForSB;
+  const indexForBB = state.indexOfSB + 1 === state.usersCount ? 0 : state.indexOfSB + 1;
+  const stateForBB =
+    state.usersInDeal[indexForBB].gameState.stack >= BLIND_SIZE
+      ? BLIND_SIZE
+      : state.usersInDeal[indexForBB].gameState.stack;
+  state.usersInDeal[indexForBB].gameState.bet += stateForBB;
+  state.usersInDeal[indexForBB].gameState.stack -= stateForBB;
+  state.bank += stateForBB;
+  state.currentBet = stateForBB;
+  state.userOptions = ['fold', 'call', 'raise'];
 };
 
 const toNextStage = (state: IGameplay) => {
@@ -64,8 +86,20 @@ const toNextStage = (state: IGameplay) => {
     }
     case 999: {
       state.currentBet = 0;
-      // TODO calculate winner
-      state.showCards = [{ cardFace: 'ALLIN', value: 0, suit: '' }];
+      const winners = getWinner(current(state.usersAtTable));
+      if (winners.length === 1) {
+        const winnerTable = state.usersAtTable.find((u) => u._id === winners[0]._id) as IUser;
+        winnerTable.gameState.stack += state.bank;
+      } else {
+        const winIDs = winners.map((w) => w._id);
+        state.usersAtTable.forEach((u) => {
+          if (winIDs.includes(u._id)) {
+            u.gameState.stack += state.bank / winIDs.length;
+          }
+        });
+      }
+      state.showCards = state.board;
+      // state.showCards = [{ cardFace: 'ALLIN', value: 0, suit: '' }];
       state.bank = 0;
       break;
     }
@@ -286,7 +320,8 @@ const gameplaySlice = createSlice({
       state.activePosition = nextUser;
     },
     restartDeal: (state, { payload }: { payload: IRestartDeal }) => {
-      const { deck, usersAtTable } = payload;
+      const { deck, usersAtTable, indexOfSB } = payload;
+      state.indexOfSB = indexOfSB + 1;
       state.isDeal = true;
       state.bank = 0;
       state.board = deck.slice(0, 5);
@@ -305,12 +340,16 @@ const gameplaySlice = createSlice({
 
       state.usersAtTable = usersAtTable;
       state.usersInDeal = state.usersAtTable;
+
+      if (!state.usersInDeal[state.indexOfSB]) state.indexOfSB = 0;
+
       state.usersCount = state.usersInDeal.length;
       const hands = deal(state.usersInDeal.length, deck.slice(5));
 
       state.usersInDeal.forEach((u, i) => {
         u.gameState.hand = hands[i];
         u.gameState.state = 'ACTIVE';
+        u.gameState.bet = 0;
       });
 
       state.usersInDeal.forEach((user) => {
@@ -323,7 +362,10 @@ const gameplaySlice = createSlice({
         user.gameState.combinationRating = combinationRating;
       });
       // state.waitToSeat = [];
-      state.currentUser = state.usersInDeal[0];
+      const indexOfBB = state.usersInDeal[state.indexOfSB + 1] ? state.indexOfSB + 1 : 0;
+      state.activePosition = state.usersInDeal[indexOfBB + 1] ? indexOfBB + 1 : 0;
+      state.currentUser = state.usersInDeal[state.activePosition];
+      cutBlinds(state);
     },
   },
 });

@@ -27,6 +27,7 @@ const Poker_table = (): JSX.Element => {
   const [isShowSeat, setIsShowSeat] = useState(true);
   const dispatch = useAppDispatch();
   const {
+    indexOfSB,
     usersInDeal,
     usersCount,
     usersAllin,
@@ -68,18 +69,18 @@ const Poker_table = (): JSX.Element => {
         toast.success(`${winners.map((w) => w.nickname).join(' & ')} took the pot`);
       }
       if (stage === 100) {
-        toast.success(`${usersAtTable[0].nickname} took the pot`);
+        toast.success(`${usersInDeal[0].nickname} took the pot`);
       }
       if (waitToSeat.length && user._id === waitToSeat[0]._id) {
         toast(`${waitToSeat.map((u) => u.nickname).join(' & ')} join the game`);
         setTimeout(() => {
           const deck = shuffle();
-          dispatch(restartDealFetch({ deck, usersAtTable }));
+          dispatch(restartDealFetch({ deck, usersAtTable, indexOfSB }));
         }, 3000);
       } else if (usersAtTable.length && user._id === usersAtTable[0]._id) {
         setTimeout(() => {
           const deck = shuffle();
-          dispatch(restartDealFetch({ deck, usersAtTable }));
+          dispatch(restartDealFetch({ deck, usersAtTable, indexOfSB }));
         }, 3000);
       }
     }
@@ -124,7 +125,7 @@ const Poker_table = (): JSX.Element => {
               <h4>{bank}$</h4>
             </div>
             <div className='players-in-deal'>
-              <RenderPlayer users={usersInDeal} />
+              <RenderPlayer users={usersAtTable} />
             </div>
           </div>
           {isShowSeat && (
