@@ -12,5 +12,17 @@
   "User already Exist": "User already Exist",
   "required_field": "This field is required",
   "min_length_rule": "Min length 6 symbols",
-  "max_length_rule": "Max length 10 symbols"
+  "max_length_rule": "Max length 10 symbols",
+  "joinGame": "join the game",
+  "takePot": "took the pot",
+  "PC_10": "Royal Flush",
+  "PC_9": "Straight Flush",
+  "PC_8": "Four Kind",
+  "PC_7": "Full House",
+  "PC_6": "Flush",
+  "PC_5": "Straight",
+  "PC_4": "Three Kind",
+  "PC_3": "Two Pairs",
+  "PC_2": "One Pair",
+  "PC_1": "High Card"
 }

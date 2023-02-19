@@ -57,6 +57,7 @@ export interface IGameplay {
   waitToSeat: IUser[];
   loading: 'idle' | 'pending' | 'succeeded' | 'failed';
   indexOfSB: number;
+  winners: IUser[] | null;
 }
 
 export interface IHand {

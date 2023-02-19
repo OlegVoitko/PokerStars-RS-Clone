@@ -23,6 +23,7 @@ const initialState: IGameplay = {
   waitToSeat: [],
   loading: 'idle',
   indexOfSB: -1,
+  winners: null,
 };
 
 const cutBlinds = (state: IGameplay) => {
@@ -62,6 +63,7 @@ const toNextStage = (state: IGameplay) => {
     case 4: {
       state.currentBet = 0;
       const winners = getWinner(current(state.usersAtTable));
+      state.winners = winners;
       if (winners.length === 1) {
         const winnerTable = state.usersAtTable.find((u) => u._id === winners[0]._id) as IUser;
         winnerTable.gameState.stack += state.bank;
@@ -87,6 +89,7 @@ const toNextStage = (state: IGameplay) => {
     case 999: {
       state.currentBet = 0;
       const winners = getWinner(current(state.usersAtTable));
+      state.winners = winners;
       if (winners.length === 1) {
         const winnerTable = state.usersAtTable.find((u) => u._id === winners[0]._id) as IUser;
         winnerTable.gameState.stack += state.bank;
