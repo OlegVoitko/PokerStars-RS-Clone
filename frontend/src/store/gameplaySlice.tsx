@@ -322,7 +322,6 @@ const gameplaySlice = createSlice({
     restartDeal: (state, { payload }: { payload: IRestartDeal }) => {
       const { deck, usersAtTable, indexOfSB } = payload;
       state.indexOfSB = indexOfSB + 1;
-      state.isDeal = true;
       state.bank = 0;
       state.stage = 0;
       state.activePosition = 0;
@@ -342,6 +341,7 @@ const gameplaySlice = createSlice({
         state.usersInDeal = [];
         state.usersCount = 0;
         state.currentUser = null;
+        state.indexOfSB = -1;
         return;
       }
       state.showCards = [];
