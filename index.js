@@ -98,23 +98,12 @@ const run = async () => {
     socket.on('game:foldAction', (data) => {
       io.emit('game:foldAction', data);
     });
-    socket.on('game:restartDeal', ({ deck, usersAtTable }) => {
-      // const ids = state.users.map((u) => u._id);
-
-      // usersAtTable.forEach((u) => {
-      //   if (ids.includes(u._id)) {
-      //     state.users = state.users.filter((user) => user.id !== u._id);
-      //     console.log(state.users);
-      //     state.users.push(u); // update user from client
-      //   } else {
-      //     state.users.push(u); // add if new user
-      //   }
-      // });
+    socket.on('game:restartDeal', ({ deck, usersAtTable, indexOfSB }) => {
       usersAtTable.forEach((u) => {
         const user = state.users.find((user) => user._id === u._id);
         user.gameState = u.gameState;
       });
-      io.emit('game:restartDeal', { deck, usersAtTable: state.users });
+      io.emit('game:restartDeal', { deck, usersAtTable: state.users, indexOfSB });
     });
     socket.on('disconnect', () => {
       state.users = state.users.filter((u) => u._id !== socket.handshake.auth.user._id);
