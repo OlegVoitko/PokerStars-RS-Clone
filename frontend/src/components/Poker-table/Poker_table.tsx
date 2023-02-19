@@ -146,7 +146,7 @@ const Poker_table = (): JSX.Element => {
               <h4>{bank}$</h4>
             </div>
             <div className='players-in-deal'>
-              <RenderPlayer timer={timer} users={usersInDeal} />
+              <RenderPlayer timer={timer} users={usersAtTable} />
             </div>
           </div>
           {isShowSeat && (
