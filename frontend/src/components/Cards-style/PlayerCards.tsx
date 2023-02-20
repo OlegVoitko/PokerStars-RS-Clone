@@ -96,7 +96,7 @@ export const RenderPlayer: React.FC<PlayersProps> = ({ users, timer }) => {
       {users.map((u, i) => (
         <div className={`${'player'} ${'p' + [i]}`} key={i}>
           {user._id === u._id && <div className='player__timer'>{timer}</div>}
-					<div className='player-bank'>Bet {u.gameState.bet}</div>
+          <div className='player-bank'>Bet {u.gameState.bet}</div>
           <div className='player-two-cards'>
             {user._id === u._id || stage === 4 ? (
               <>

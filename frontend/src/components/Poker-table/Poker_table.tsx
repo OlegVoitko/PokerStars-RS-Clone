@@ -22,7 +22,7 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { connectSocket, socket } from 'socket';
 import { useTranslation } from 'react-i18next';
-import SoundOnOff from './SoundOnOff';
+import SoundOnOff from './SoundOn';
 
 const Poker_table = (): JSX.Element => {
   const { t } = useTranslation();
@@ -51,6 +51,9 @@ const Poker_table = (): JSX.Element => {
   const [currentValue, setCurrentValue] = useState(BLIND_SIZE);
   const minBet = currentUser ? currentBet - currentUser.gameState.bet + BLIND_SIZE : 0;
   const maxBet = currentUser ? currentUser.gameState.stack : 10000;
+
+	const [isPlaying, setIsPlaying] = useState(false);
+  const audioEl = useRef();
 
   // useEffect(() => {
   //   connectSocket(user);
@@ -127,12 +130,20 @@ const Poker_table = (): JSX.Element => {
   };
   const toggleSeatBtn = () => setIsShowSeat(!isShowSeat);
 
+  useEffect(() => {
+    if (isPlaying) {
+      audioEl.current.play();
+    } else {
+      audioEl.current.pause();
+    }
+  }, [isPlaying]);
+
   return (
     <div className='poker-table__wrapper'>
       <div className='poker__background'>
         <div className='poker-table__container gradient-border' id='box'>
           <div className='additional-features'>
-            <SoundOnOff />
+            <SoundOnOff isPlaying={isPlaying} setIsPlaying={setIsPlaying} audioEl={audioEl} />
           </div>
           <div className='poker__container'>
             <img
