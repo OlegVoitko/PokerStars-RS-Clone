@@ -124,7 +124,7 @@ export const RenderPlayer: React.FC<PlayersProps> = ({ users, timer }) => {
                   className={`playing-card2 ${
                     usersInDealIDS.includes(u._id) ? '' : 'retired-player'
                   }
-                  ${winCards?.includes(JSON.stringify(u.gameState.hand[0])) ? 'win-card' : ''}
+                  ${winCards?.includes(JSON.stringify(u.gameState.hand[1])) ? 'win-card' : ''}
                   `}
                 >
                   <CardWrapper data-suit={u.gameState.hand[1].suit}>
