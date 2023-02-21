@@ -248,7 +248,12 @@ const gameplaySlice = createSlice({
       const currentUser = state.usersInDeal.find((u) => u._id === _id) as IUser;
       const currentUserTable = state.usersAtTable.find(({ _id }) => _id === payload._id) as IUser; // To save stack state after restart deal
       let callSize = state.currentBet - currentUser.gameState.bet;
-      if (callSize >= currentUser.gameState.stack) {
+
+      if (callSize === currentUser.gameState.stack) {
+        currentUser.gameState.state = 'ALLIN';
+        state.usersAllin += 1;
+      }
+      if (callSize > currentUser.gameState.stack) {
         callSize = currentUser.gameState.stack;
         currentUser.gameState.state = 'ALLIN';
         state.usersAllin += 1;
@@ -258,16 +263,20 @@ const gameplaySlice = createSlice({
       currentUserTable.gameState.stack -= callSize;
       state.bank += callSize;
       state.usersCompleteAction += 1;
-      if (state.usersCount === state.usersAllin) {
-        state.stage = 4;
-        state.showCards = state.board.slice(0, 5);
-        toNextStage(state);
-        return;
-      }
       if (
-        state.usersCount === state.usersCompleteAction &&
-        state.usersCompleteAction - 1 === state.usersAllin
+        (state.usersCount === state.usersCompleteAction &&
+          state.usersCompleteAction - 1 === state.usersAllin) ||
+        state.usersAllin === state.usersCount
       ) {
+        const sortedByBet = state.usersInDeal
+          .slice()
+          .sort((a: IUser, b: IUser) => b.gameState.bet - a.gameState.bet);
+
+        const restBank = sortedByBet[0].gameState.bet - sortedByBet[1].gameState.bet;
+        sortedByBet[0].gameState.stack += restBank;
+        const user = state.usersAtTable.find(({ _id }) => _id === sortedByBet[0]._id);
+        if (user) user.gameState.stack += restBank;
+        state.bank -= restBank;
         state.stage = 4;
         state.showCards = state.board.slice(0, 5);
         toNextStage(state);

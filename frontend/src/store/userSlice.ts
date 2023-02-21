@@ -15,6 +15,7 @@ const initialState: IUserState = {
       stack: START_BANKROLL,
       state: 'wait',
       bet: 0,
+      allinSize: null,
       action: '',
       bestCombination: [],
       restBestCards: [],
