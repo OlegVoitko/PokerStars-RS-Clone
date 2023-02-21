@@ -46,6 +46,20 @@ const cutBlinds = (state: IGameplay) => {
   state.userOptions = ['fold', 'call', 'raise'];
 };
 
+const divideBank = (state: IGameplay) => {
+  let candidates = state.usersInDeal;
+  let bank = state.bank;
+  while (bank) {
+    const minBet = Math.min(...candidates.map((w) => w.gameState.bet));
+    const winsU = getWinner(candidates);
+    winsU.forEach((u) => {
+      u.gameState.stack += (minBet * candidates.length) / winsU.length;
+    });
+    bank -= minBet * candidates.length;
+    candidates = candidates.filter((c) => c.gameState.bet !== minBet);
+  }
+};
+
 const toNextStage = (state: IGameplay) => {
   switch (state.stage) {
     case 1:
@@ -94,36 +108,37 @@ const toNextStage = (state: IGameplay) => {
       state.currentBet = 0;
       const winners = getWinner(current(state.usersInDeal));
       state.winners = winners;
-      const minBet = Math.min(...winners.map((w) => w.gameState.bet));
-      const maxBet = Math.max(...winners.map((w) => w.gameState.bet));
-      if (winners.length === 1) {
-        if (winners[0].gameState.bet === maxBet) {
-          const winnerTable = state.usersAtTable.find((u) => u._id === winners[0]._id) as IUser;
-          winnerTable.gameState.stack += state.bank;
-        }
-        if (winners[0].gameState.bet === minBet) {
-          const winnerTable = state.usersInDeal.find((u) => u._id === winners[0]._id) as IUser;
-          winnerTable.gameState.stack += minBet * state.usersInDeal.length;
-          state.usersInDeal.forEach((u) => {
-            u._id !== winners[0]._id ? (u.gameState.stack += u.gameState.bet - minBet) : '';
-          });
-        }
-        const wBet = winners[0].gameState.bet;
-        state.usersInDeal.forEach((u) => {
-          if (u.gameState.stack > wBet) {
-            u.gameState.stack += u.gameState.bet - wBet;
-            state.bank -= u.gameState.stack;
-          }
-        });
-        winners[0].gameState.stack += state.bank;
-      } else {
-        const winIDs = winners.map((w) => w._id);
-        state.usersAtTable.forEach((u) => {
-          if (winIDs.includes(u._id)) {
-            u.gameState.stack += state.bank / winIDs.length;
-          }
-        });
-      }
+      divideBank(state);
+      // const minBet = Math.min(...winners.map((w) => w.gameState.bet));
+      // const maxBet = Math.max(...winners.map((w) => w.gameState.bet));
+      // if (winners.length === 1) {
+      //   if (winners[0].gameState.bet === maxBet) {
+      //     const winnerTable = state.usersAtTable.find((u) => u._id === winners[0]._id) as IUser;
+      //     winnerTable.gameState.stack += state.bank;
+      //   }
+      //   if (winners[0].gameState.bet === minBet) {
+      //     const winnerTable = state.usersInDeal.find((u) => u._id === winners[0]._id) as IUser;
+      //     winnerTable.gameState.stack += minBet * state.usersInDeal.length;
+      //     state.usersInDeal.forEach((u) => {
+      //       u._id !== winners[0]._id ? (u.gameState.stack += u.gameState.bet - minBet) : '';
+      //     });
+      //   }
+      //   const wBet = winners[0].gameState.bet;
+      //   state.usersInDeal.forEach((u) => {
+      //     if (u.gameState.stack > wBet) {
+      //       u.gameState.stack += u.gameState.bet - wBet;
+      //       state.bank -= u.gameState.stack;
+      //     }
+      //   });
+      //   winners[0].gameState.stack += state.bank;
+      // } else {
+      //   const winIDs = winners.map((w) => w._id);
+      //   state.usersAtTable.forEach((u) => {
+      //     if (winIDs.includes(u._id)) {
+      //       u.gameState.stack += state.bank / winIDs.length;
+      //     }
+      //   });
+      // }
       state.showCards = state.board;
       // state.showCards = [{ cardFace: 'ALLIN', value: 0, suit: '' }];
       state.bank = 0;
