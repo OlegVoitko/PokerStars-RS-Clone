@@ -77,9 +77,11 @@ const toNextStage = (state: IGameplay) => {
     }
     case 100: {
       const winner = state.usersInDeal[0];
-      winner.gameState.stack += state.bank;
-      const winerTable = state.usersAtTable.find((u) => u._id === winner._id) as IUser;
-      winerTable.gameState.stack += state.bank;
+      if (winner) {
+        winner.gameState.stack += state.bank;
+        const winerTable = state.usersAtTable.find((u) => u._id === winner._id) as IUser;
+        winerTable.gameState.stack += state.bank;
+      }
       state.currentBet = 0;
       state.bank = 0;
       break;

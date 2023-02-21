@@ -101,7 +101,7 @@ const run = async () => {
     socket.on('game:restartDeal', ({ deck, usersAtTable, indexOfSB }) => {
       usersAtTable.forEach((u) => {
         const user = state.users.find((user) => user._id === u._id);
-        user.gameState = u.gameState;
+        if (user) user.gameState = u.gameState;
       });
       io.emit('game:restartDeal', { deck, usersAtTable: state.users, indexOfSB });
     });
