@@ -90,7 +90,7 @@ const Poker_table = (): JSX.Element => {
         const winners = getWinner(usersInDeal);
         toast.success(`${winners.map((w) => w.nickname).join(' & ')} took the pot`);
       }
-      if (stage === 100) {
+      if (stage === 100 && usersInDeal[0]) {
         toast.success(`${usersInDeal[0].nickname} took the pot`);
       }
       if (waitToSeat.length && user._id === waitToSeat[0]._id) {
@@ -154,7 +154,7 @@ const Poker_table = (): JSX.Element => {
               <SeatBtn toggleSeatBtn={toggleSeatBtn} />
             </div>
           )}
-          {!isShowSeat && (
+          {!isShowSeat && stage !== 100 && (
             <div className='poker-table__seat-btn action__buttons'>
               <SeatOutBtn toggleSeatBtn={toggleSeatBtn} />
             </div>
