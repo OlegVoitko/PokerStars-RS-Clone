@@ -8,6 +8,7 @@ export interface IUserGamestate {
   hand: ICard[];
   stack: number;
   bet: number;
+  roundBets: number;
   state: string;
   action: string; //'check' | 'fold' | 'call'
   bestCombination: ICard[];

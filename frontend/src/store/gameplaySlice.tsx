@@ -32,6 +32,7 @@ const cutBlinds = (state: IGameplay) => {
       ? SMALL_BLIND_SIZE
       : state.usersInDeal[state.indexOfSB].gameState.stack;
   state.usersInDeal[state.indexOfSB].gameState.bet += stateForSB;
+  state.usersInDeal[state.indexOfSB].gameState.roundBets += stateForSB;
   state.usersInDeal[state.indexOfSB].gameState.stack -= stateForSB;
   state.bank += stateForSB;
   const indexForBB = state.indexOfSB + 1 === state.usersCount ? 0 : state.indexOfSB + 1;
@@ -40,6 +41,7 @@ const cutBlinds = (state: IGameplay) => {
       ? BLIND_SIZE
       : state.usersInDeal[indexForBB].gameState.stack;
   state.usersInDeal[indexForBB].gameState.bet += stateForBB;
+  state.usersInDeal[indexForBB].gameState.roundBets += stateForBB;
   state.usersInDeal[indexForBB].gameState.stack -= stateForBB;
   state.bank += stateForBB;
   state.currentBet = stateForBB;
@@ -49,14 +51,18 @@ const cutBlinds = (state: IGameplay) => {
 const divideBank = (state: IGameplay) => {
   let candidates = state.usersInDeal;
   let bank = state.bank;
-  while (bank) {
-    const minBet = Math.min(...candidates.map((w) => w.gameState.bet));
+  while (bank || candidates.length) {
+    const minBet = Math.min(...candidates.map((w) => w.gameState.roundBets));
     const winsU = getWinner(candidates);
+    candidates.forEach((c) => (c.gameState.roundBets -= minBet));
     winsU.forEach((u) => {
-      u.gameState.stack += (minBet * candidates.length) / winsU.length;
+      const userInState = state.usersAtTable.find((us) => us._id === u._id);
+      if (userInState) {
+        userInState.gameState.stack += (minBet * candidates.length) / winsU.length;
+      }
     });
     bank -= minBet * candidates.length;
-    candidates = candidates.filter((c) => c.gameState.bet !== minBet);
+    candidates = candidates.filter((c) => c.gameState.roundBets !== minBet);
   }
 };
 
@@ -92,12 +98,12 @@ const toNextStage = (state: IGameplay) => {
             }
           });
         }
-        break;
-      } else {
-        divideBank(state);
         state.bank = 0;
         break;
       }
+      divideBank(state);
+      state.bank = 0;
+      break;
     }
     case 100: {
       state.currentUser = null;
@@ -282,6 +288,7 @@ const gameplaySlice = createSlice({
       state.bank += payload.betSize;
       state.currentBet = payload.betSize + currentUser.gameState.bet;
       currentUser.gameState.bet += payload.betSize;
+      currentUser.gameState.roundBets += payload.betSize;
 
       state.userOptions = ['fold', 'call', 'raise'];
       if (currentUser.gameState.stack === 0) {
@@ -300,6 +307,7 @@ const gameplaySlice = createSlice({
         state.usersAllin += 1;
       }
       currentUser.gameState.bet += callSize;
+      currentUser.gameState.roundBets += callSize;
       currentUser.gameState.stack -= callSize;
       currentUserTable.gameState.stack -= callSize;
       state.bank += callSize;
@@ -405,6 +413,7 @@ const gameplaySlice = createSlice({
         u.gameState.hand = hands[i];
         u.gameState.state = 'ACTIVE';
         u.gameState.bet = 0;
+        u.gameState.roundBets = 0;
       });
       state.usersInDeal.forEach((user) => {
         const { bestCombination, restBestCards, combinationRating } = findBestCombination(
