@@ -55,7 +55,7 @@ const run = async () => {
     }
     const hashPassword = await bcrypt.hash(password, 6);
     console.log(hashPassword);
-    const newUser = new User({ nickname, password: hashPassword, bankroll: 1000 });
+    const newUser = new User({ nickname, password: hashPassword, bankroll: 10000 });
     await newUser.save();
     res.status(200).send({ _id: newUser._id, bankroll: newUser.bankroll });
   });
