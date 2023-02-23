@@ -17,9 +17,7 @@ export interface IUserGamestate {
 
 export interface IUser {
   nickname: string;
-  password: string;
   _id: string;
-  __v?: number;
   bankroll: number;
   gameState: IUserGamestate;
 }

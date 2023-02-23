@@ -49,13 +49,13 @@ const Poker_table = (): JSX.Element => {
   const [currentValue, setCurrentValue] = useState(BLIND_SIZE);
   const minBet = currentUser ? currentBet - currentUser.gameState.bet + BLIND_SIZE : 0;
   const maxBet = currentUser ? currentUser.gameState.stack : 10000;
-
-  useEffect(() => {
-    connectSocket(user);
-    return () => {
-      socket.disconnect();
-    };
-  }, []);
+  console.log();
+  // useEffect(() => {
+  //   connectSocket(user);
+  //   return () => {
+  //     socket.disconnect();
+  //   };
+  // }, []);
 
   useEffect(() => {
     let timerId: NodeJS.Timeout | undefined;
@@ -160,7 +160,7 @@ const Poker_table = (): JSX.Element => {
             </div>
           )}
           <div className='action__bar'>
-            {currentUser?._id === _id && (
+            {currentUser && currentUser._id === _id && (
               <div>
                 <div className='action__buttons'>
                   <button className='action__buttons__fold' onClick={handleFold}>

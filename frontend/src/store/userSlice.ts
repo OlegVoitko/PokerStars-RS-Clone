@@ -8,7 +8,6 @@ const initialState: IUserState = {
   user: {
     _id: String(Date.now()),
     nickname: 'Guest',
-    password: '',
     bankroll: START_BANKROLL,
     gameState: {
       hand: [],
@@ -41,14 +40,14 @@ export const registerUserThunk = createAsyncThunk(
         throw new Error('sth went wrong');
       }
       const data = await response.json();
+      console.log(data);
       const userData = {
         _id: data._id,
-        nickname: data.nickname,
-        password: data.password,
-        bankroll: START_BANKROLL,
+        nickname: user.nickname,
+        bankroll: data.bankroll,
         gameState: {
           hand: [],
-          stack: START_BANKROLL,
+          stack: data.bankroll,
           state: 'wait',
           bet: 0,
           action: '',
@@ -81,14 +80,14 @@ export const loginUserThunk = createAsyncThunk(
         throw new Error('loginUserThunk sth went wrong');
       }
       const data = await response.json();
+      console.log(data);
       const userData = {
         _id: data._id,
-        nickname: data.nickname,
-        password: data.password,
-        bankroll: START_BANKROLL,
+        nickname: user.nickname,
+        bankroll: data.bankroll,
         gameState: {
           hand: [],
-          stack: START_BANKROLL,
+          stack: data.bankroll,
           state: 'wait',
           bet: 0,
           action: '',
@@ -97,11 +96,10 @@ export const loginUserThunk = createAsyncThunk(
           combinationRating: 0,
         },
       };
-      // console.log('loginUserThunk data', data);
+      console.log(userData);
       dispatch(registerUser(userData));
       connectSocket(userData);
     } catch (error) {
-      // console.log('createAsyncThunk error', error);
       return rejectWithValue(error);
     }
   }
