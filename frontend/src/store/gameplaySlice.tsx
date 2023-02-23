@@ -109,9 +109,11 @@ const toNextStage = (state: IGameplay) => {
       state.currentUser = null;
       const winner = state.usersInDeal[0];
       state.winners = [winner];
-      winner.gameState.stack += state.bank;
-      const winnerTable = state.usersAtTable.find((u) => u._id === winner._id) as IUser;
-      winnerTable.gameState.stack += state.bank;
+      if (winner) {
+        winner.gameState.stack += state.bank;
+        const winnerTable = state.usersAtTable.find((u) => u._id === winner._id) as IUser;
+        winnerTable.gameState.stack += state.bank;
+      }
       state.currentBet = 0;
       state.bank = 0;
       break;
