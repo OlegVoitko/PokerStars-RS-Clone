@@ -4,22 +4,22 @@ import { IUser, INewUser, IUserState, IUserGamestate } from '../types/interfaces
 import { START_BANKROLL } from '../utils/constants';
 
 const initialState: IUserState = {
-  // user: null,
-  user: {
-    _id: String(Date.now()),
-    nickname: 'Guest',
-    bankroll: START_BANKROLL,
-    gameState: {
-      hand: [],
-      stack: START_BANKROLL,
-      state: 'wait',
-      bet: 0,
-      action: '',
-      bestCombination: [],
-      restBestCards: [],
-      combinationRating: 0,
-    },
-  },
+  user: null,
+  // user: {
+  //   _id: String(Date.now()),
+  //   nickname: 'Guest',
+  //   bankroll: START_BANKROLL,
+  //   gameState: {
+  //     hand: [],
+  //     stack: START_BANKROLL,
+  //     state: 'wait',
+  //     bet: 0,
+  //     action: '',
+  //     bestCombination: [],
+  //     restBestCards: [],
+  //     combinationRating: 0,
+  //   },
+  // },
   status: null,
   error: null,
 };
