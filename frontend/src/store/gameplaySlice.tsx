@@ -226,7 +226,7 @@ const gameplaySlice = createSlice({
     checkAction: (state) => {
       state.usersCompleteAction += 1;
       if (state.usersCompleteAction === state.usersCount) {
-        let nextUser = 0;
+        let nextUser = state.indexOfSB === state.usersCount ? 0 : state.indexOfSB;
         while (state.usersInDeal[nextUser].gameState.state === 'ALLIN') {
           nextUser = nextUser + 1 > state.usersCount - 1 ? 0 : nextUser + 1;
         }
@@ -234,8 +234,8 @@ const gameplaySlice = createSlice({
         state.usersCompleteAction = state.usersAllin;
         // state.activePosition = nextUser;
         // state.currentUser = state.usersInDeal[nextUser];
-        state.activePosition = state.indexOfSB;
-        state.currentUser = state.usersInDeal[state.indexOfSB];
+        state.activePosition = nextUser;
+        state.currentUser = state.usersInDeal[nextUser];
         state.usersInDeal.forEach((u) => (u.gameState.bet = 0));
         toNextStage(state);
         return;
@@ -305,7 +305,7 @@ const gameplaySlice = createSlice({
         return;
       }
       if (state.usersCompleteAction === state.usersCount) {
-        let nextUser = 0;
+        let nextUser = state.indexOfSB === state.usersCount ? 0 : state.indexOfSB;
         while (state.usersInDeal[nextUser].gameState.state === 'ALLIN') {
           nextUser = nextUser + 1 > state.usersCount - 1 ? 0 : nextUser + 1;
         }
@@ -313,8 +313,8 @@ const gameplaySlice = createSlice({
         state.usersCompleteAction = state.usersAllin;
         // state.activePosition = nextUser;
         // state.currentUser = state.usersInDeal[nextUser];
-        state.activePosition = state.indexOfSB;
-        state.currentUser = state.usersInDeal[state.indexOfSB];
+        state.activePosition = nextUser;
+        state.currentUser = state.usersInDeal[nextUser];
         state.userOptions = ['fold', 'check', 'call', 'raise'];
         state.usersInDeal.forEach((u) => (u.gameState.bet = 0));
         state.usersAtTable.forEach((u) => (u.gameState.bet = 0));

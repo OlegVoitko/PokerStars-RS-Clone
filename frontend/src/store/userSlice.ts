@@ -5,23 +5,23 @@ import { START_BANKROLL } from '../utils/constants';
 import { userSeatOut } from './gameplaySlice';
 
 const initialState: IUserState = {
-  user: null,
-  // user: {
-  //   _id: String(Date.now()),
-  //   nickname: 'Guest',
-  //   bankroll: START_BANKROLL,
-  //   gameState: {
-  //     hand: [],
-  //     stack: START_BANKROLL,
-  //     state: 'wait',
-  //     bet: 0,
-  //     roundBets: 0,
-  //     action: '',
-  //     bestCombination: [],
-  //     restBestCards: [],
-  //     combinationRating: 0,
-  //   },
-  // },
+  // user: null,
+  user: {
+    _id: String(Date.now()),
+    nickname: 'Guest',
+    bankroll: START_BANKROLL,
+    gameState: {
+      hand: [],
+      stack: START_BANKROLL,
+      state: 'wait',
+      bet: 0,
+      roundBets: 0,
+      action: '',
+      bestCombination: [],
+      restBestCards: [],
+      combinationRating: 0,
+    },
+  },
   status: null,
   error: null,
 };
