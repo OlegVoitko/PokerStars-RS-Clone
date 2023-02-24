@@ -103,6 +103,9 @@ const run = async () => {
     socket.on('game:seatOutUser', async (user) => {
       console.log(user);
       state.users = state.users.filter((u) => u._id !== user._id);
+			if(user.nickname === 'Guest') {
+				return io.emit('game:seatOutUser', user);
+			}
       const userDB = await User.findOne({ _id: user._id });
       console.log(userDB);
       userDB.bankroll = user.gameState.stack;

@@ -4,7 +4,7 @@ import { Suit } from '.';
 import styled from '@emotion/styled';
 import { ICard, IGameplay } from 'types/interfaces';
 import { useAppSelector } from '../../hooks/hook';
-import './PlayerCard.scss';
+import './RenderPlayer';
 
 const CardWrapper = styled.div`
   background-color: white;

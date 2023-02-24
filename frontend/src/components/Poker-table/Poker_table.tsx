@@ -24,7 +24,7 @@ import SoundOnOff from './SoundOnOff';
 import { connectSocket, socket } from 'socket';
 import { useTranslation } from 'react-i18next';
 
-const Poker_table = (): JSX.Element => {  
+const Poker_table = (): JSX.Element => {
   const [isShowSeat, setIsShowSeat] = useState(true);
   const [timer, setTimer] = useState(TIMER);
   const timerRef = useRef(TIMER);
