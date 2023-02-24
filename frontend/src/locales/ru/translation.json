@@ -11,7 +11,7 @@
   "Invalid login or password": "Неверный логин или пароль",
   "User already Exist": "Такой пользователь уже существует",
   "required_field": "Поле обязательно для заполнения",
-  "min_length_rule": "Минимальное количество символов 6",
+  "min_length_rule": "Минимальное количество символов 4",
   "max_length_rule": "Max length 10 symbols",
   "joinGame": "присоединил(и)сь к игре",
   "takePot": "взял(и) банк",

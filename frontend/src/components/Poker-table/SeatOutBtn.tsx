@@ -10,7 +10,7 @@ interface ISeatOutBtnProps {
 
 const SeatOutBtn = (props: ISeatOutBtnProps) => {
   const { toggleSeatBtn } = props;
-  const user = useAppSelector((state) => state.user.user);
+  const user = useAppSelector((state) => state.gameplay.currentUser) as IUser;
   const dispatch = useAppDispatch();
 
   const handleSeatOut = (user: IUser) => {

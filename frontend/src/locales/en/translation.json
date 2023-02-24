@@ -11,7 +11,7 @@
   "Invalid login or password": "Invalid login or password",
   "User already Exist": "User already Exist",
   "required_field": "This field is required",
-  "min_length_rule": "Min length 6 symbols",
+  "min_length_rule": "Min length 4 symbols",
   "max_length_rule": "Max length 10 symbols",
   "joinGame": "join the game",
   "takePot": "took the pot",
