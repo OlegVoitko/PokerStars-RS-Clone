@@ -5,7 +5,7 @@ import CustomizedSlider from './Slider_table';
 import Sound from './SoundOnOff';
 import SeatBtn from './SeatBtn';
 import { useAppDispatch, useAppSelector } from '../../hooks/hook';
-import { shuffle, getWinner } from '../../utils/gameHelper';
+import { shuffle } from '../../utils/gameHelper';
 import { IUser, IGameplay } from '../../types/interfaces';
 import {
   checkActionFetch,
@@ -22,12 +22,14 @@ import { RenderPlayer } from 'components/Cards-style/PlayerCards';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { connectSocket, socket } from 'socket';
+import { useTranslation } from 'react-i18next';
 
 const Poker_table = (): JSX.Element => {
   const [isShowSeat, setIsShowSeat] = useState(true);
   const [timer, setTimer] = useState(TIMER);
   const timerRef = useRef(TIMER);
   const dispatch = useAppDispatch();
+  const { t } = useTranslation();
   const {
     indexOfSB,
     usersInDeal,
@@ -42,6 +44,7 @@ const Poker_table = (): JSX.Element => {
     currentBet,
     bank,
     userOptions,
+    winners,
   } = useAppSelector((state: { gameplay: IGameplay }) => state.gameplay);
   const user = useAppSelector((state) => state.user.user) as IUser;
   const { _id } = user;
@@ -86,15 +89,18 @@ const Poker_table = (): JSX.Element => {
       (stage === 100 && usersAtTable.length > 1) ||
       (waitToSeat.length > 1 && usersAtTable.length === 1)
     ) {
-      if (stage === 4) {
-        const winners = getWinner(usersInDeal);
-        toast.success(`${winners.map((w) => w.nickname).join(' & ')} took the pot`);
+      if (stage === 4 || stage === 999) {
+        const winnersInfo = winners?.map((w) => [
+          w.nickname,
+          t(`PC_${w.gameState.combinationRating}`),
+        ]);
+        toast.success(`${winnersInfo?.join(' & ')} ${t('takePot')}`);
       }
       if (stage === 100 && usersInDeal[0]) {
-        toast.success(`${usersInDeal[0].nickname} took the pot`);
+        toast.success(`${usersInDeal[0].nickname} ${t('takePot')}`);
       }
       if (waitToSeat.length && user._id === waitToSeat[0]._id) {
-        toast(`${waitToSeat.map((u) => u.nickname).join(' & ')} join the game`);
+        toast(`${waitToSeat.map((u) => u.nickname).join(' & ')} ${t('joinGame')}`);
         setTimeout(() => {
           const deck = shuffle();
           dispatch(restartDealFetch({ deck, usersAtTable, indexOfSB }));
