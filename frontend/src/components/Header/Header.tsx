@@ -2,10 +2,13 @@ import React, { useState } from 'react';
 import './Header.scss';
 import { Languages } from '../../helper';
 import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
+import { useAppSelector } from 'hooks/hook';
 
 const Header = (): JSX.Element => {
   const { i18n } = useTranslation();
   const [language, setLanguage] = useState('en');
+  const user = useAppSelector((state) => state.user.user);
 
   const handleChangeLanguage = (event: React.MouseEvent<HTMLButtonElement>): void => {
     event.preventDefault();
@@ -15,7 +18,16 @@ const Header = (): JSX.Element => {
   };
 
   return (
-    <div className='header'>
+    <div className='header container'>
+      <nav className='header__nav'>
+        <Link className='header__link' to={'profile'}>
+          {user ? `${user.nickname} bankroll: ${user.bankroll}` : 'Login'}
+        </Link>
+        <Link className='header__link' to={'/'}>
+          Home
+        </Link>
+      </nav>
+
       <div className='language'>
         {language === 'en' ? (
           <button
