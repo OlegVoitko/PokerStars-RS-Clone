@@ -231,8 +231,10 @@ const gameplaySlice = createSlice({
         }
         state.stage += 1;
         state.usersCompleteAction = state.usersAllin;
-        state.activePosition = nextUser;
-        state.currentUser = state.usersInDeal[nextUser];
+        // state.activePosition = nextUser;
+        // state.currentUser = state.usersInDeal[nextUser];
+        state.activePosition = state.indexOfSB;
+        state.currentUser = state.usersInDeal[state.indexOfSB];
         state.usersInDeal.forEach((u) => (u.gameState.bet = 0));
         toNextStage(state);
         return;
@@ -308,8 +310,10 @@ const gameplaySlice = createSlice({
         }
         state.stage += 1;
         state.usersCompleteAction = state.usersAllin;
-        state.activePosition = nextUser;
-        state.currentUser = state.usersInDeal[nextUser];
+        // state.activePosition = nextUser;
+        // state.currentUser = state.usersInDeal[nextUser];
+        state.activePosition = state.indexOfSB;
+        state.currentUser = state.usersInDeal[state.indexOfSB];
         state.userOptions = ['fold', 'check', 'call', 'raise'];
         state.usersInDeal.forEach((u) => (u.gameState.bet = 0));
         state.usersAtTable.forEach((u) => (u.gameState.bet = 0));
@@ -336,8 +340,10 @@ const gameplaySlice = createSlice({
         state.stage += 1;
         state.userOptions = ['fold', 'check', 'call', 'raise'];
         state.usersCompleteAction = state.usersAllin;
-        state.activePosition = 0; // calculate position when all
-        state.currentUser = state.usersInDeal[0];
+        // state.activePosition = 0; // calculate position when all
+        // state.currentUser = state.usersInDeal[0];
+        state.activePosition = state.usersInDeal[state.indexOfSB] ? state.indexOfSB : 0;
+        state.currentUser = state.usersInDeal[state.activePosition];
         state.usersInDeal.forEach((u) => (u.gameState.bet = 0));
         state.usersAtTable.forEach((u) => (u.gameState.bet = 0));
         toNextStage(state);
@@ -350,6 +356,8 @@ const gameplaySlice = createSlice({
       }
       state.currentUser = state.usersInDeal[nextUser];
       state.activePosition = nextUser;
+      // state.activePosition = state.usersInDeal[state.indexOfSB] ? state.indexOfSB : 0;
+      // state.currentUser = state.usersInDeal[state.activePosition];
     },
     restartDeal: (state, { payload }: { payload: IRestartDeal }) => {
       const { deck, usersAtTable, indexOfSB } = payload;
