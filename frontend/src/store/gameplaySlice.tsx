@@ -83,7 +83,8 @@ const toNextStage = (state: IGameplay) => {
     case 4: {
       state.currentUser = null;
       state.currentBet = 0;
-      const winners = getWinner(current(state.usersInDeal));
+      const winners = getWinner(state.usersInDeal);
+      // const winners = getWinner(current(state.usersInDeal));
       state.winners = winners;
       const statesInDeal = state.usersInDeal.map((u) => u.gameState.state);
       if (!statesInDeal.includes('ALLIN')) {
@@ -336,6 +337,12 @@ const gameplaySlice = createSlice({
         return;
       }
       state.usersCount -= 1;
+      if (state.usersCount === state.usersAllin + 1 || state.usersCount === state.usersAllin) {
+        state.stage = 4;
+        state.showCards = state.board.slice(0, 5);
+        toNextStage(state);
+        return;
+      }
       if (state.usersCompleteAction === state.usersCount) {
         state.stage += 1;
         state.userOptions = ['fold', 'check', 'call', 'raise'];
