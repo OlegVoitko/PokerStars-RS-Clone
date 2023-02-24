@@ -79,7 +79,7 @@ html {
 
 body {
   // background-color: $color-background;
-	background-image: url('../public/bakcpng-1.png');
+	// background-image: url('../public/bakcpng-1.png');
   font-family: Verdana, Geneva, Tahoma, sans-serif;
   height: 100%;
   display: flex;
@@ -98,4 +98,12 @@ body {
   display: flex;
   flex-direction: column;
   height: 100%;
+}
+
+#root {
+	background-image: url('../public/bakcpng-1.png');
+	background-color: $color-background;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 }

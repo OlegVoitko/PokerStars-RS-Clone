@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from 'react';
 import Chat from '../Chat/Chat';
 import './Poker_table.scss';
 import CustomizedSlider from './Slider_table';
-import Sound from './SoundOnOff';
 import SeatBtn from './SeatBtn';
 import { useAppDispatch, useAppSelector } from '../../hooks/hook';
 import { shuffle } from '../../utils/gameHelper';
@@ -16,11 +15,12 @@ import {
 } from '../../store/gameplaySlice';
 import SeatOutBtn from './SeatOutBtn';
 import { BLIND_SIZE, TIMER } from '../../utils/constants';
-import '../Cards-style/RenderCards.scss';
-import { RenderCards } from 'components/Cards-style';
-import { RenderPlayer } from 'components/Cards-style/PlayerCards';
+import '../Player/RenderCards.scss';
+import { RenderCards } from 'components/Player';
+import { RenderPlayer } from 'components/Player/RenderPlayer';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import SoundOnOff from './SoundOnOff';
 import { connectSocket, socket } from 'socket';
 import { useTranslation } from 'react-i18next';
 
@@ -52,7 +52,6 @@ const Poker_table = (): JSX.Element => {
   const [currentValue, setCurrentValue] = useState(BLIND_SIZE);
   const minBet = currentUser ? currentBet - currentUser.gameState.bet + BLIND_SIZE : 0;
   const maxBet = currentUser ? currentUser.gameState.stack : 10000;
-  console.log();
   // useEffect(() => {
   //   connectSocket(user);
   //   return () => {
@@ -136,7 +135,7 @@ const Poker_table = (): JSX.Element => {
       <div className='poker__background'>
         <div className='poker-table__container gradient-border' id='box'>
           <div className='additional-features'>
-            <Sound />
+            <SoundOnOff />
           </div>
           <div className='poker__container'>
             <img
@@ -170,16 +169,16 @@ const Poker_table = (): JSX.Element => {
               <div>
                 <div className='action__buttons'>
                   <button className='action__buttons__fold' onClick={handleFold}>
-                    Fold
+                    {t('fold')}
                   </button>
                   {!!currentBet && (
                     <button className='action__buttons__Call' onClick={handleCall}>
-                      Call
+                      {t('call')}
                     </button>
                   )}
                   {userOptions.includes('check') && (
                     <button className='action__buttons__Call' onClick={handleCheck}>
-                      Check
+                      {t('check')}
                     </button>
                   )}
                   {currentValue <= currentUser.gameState.stack && usersCount > usersAllin + 1 && (
@@ -187,7 +186,7 @@ const Poker_table = (): JSX.Element => {
                       className='action__buttons__RaiseTo'
                       onClick={() => handleBet({ _id, betSize: currentValue })}
                     >
-                      Raise To
+                      {t('raise to')}
                     </button>
                   )}
                 </div>

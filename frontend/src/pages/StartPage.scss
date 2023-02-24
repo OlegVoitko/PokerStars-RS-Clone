@@ -85,3 +85,27 @@
   right: 15%;
   top: 40%;
 }
+
+@media (max-width: 1700px) {
+	.app-title span {
+		position: unset;
+	}
+	.form-container {
+		padding: 0px;
+	}
+}
+
+@media (max-width: 1000px) {
+	.form-container {
+		padding: 0px;
+	}
+}
+
+@media (max-width: 850px) {
+	.app-title span {
+		font-size: 10rem;
+	}
+	.app-enter-buttons__button {
+		font-size: 1.2rem;
+	}
+}

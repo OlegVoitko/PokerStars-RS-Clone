@@ -13,7 +13,7 @@
     overflow-y: scroll;
 		color: rgba(255, 255, 255, 0.555);
 		font-size: 14px;
-  }
+  }	
   &__form {
     display: flex;
 		height: 24px;
@@ -57,4 +57,8 @@
 	@keyframes pulsate {
 		50% {color: #fff; text-shadow: 0 -1px rgba(0,0,0,.3), 0 0 5px #ffd, 0 0 8px #fff;}
 	}
+}
+
+.chat__messages-list::-webkit-scrollbar {
+	width: 0;
 }

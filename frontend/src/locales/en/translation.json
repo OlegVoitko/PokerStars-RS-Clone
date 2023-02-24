@@ -24,5 +24,12 @@
   "PC_4": "Three Kind",
   "PC_3": "Two Pairs",
   "PC_2": "One Pair",
-  "PC_1": "High Card"
+  "PC_1": "High Card",
+	"fold": "Fold",
+	"call": "Call",
+	"check": "Check",
+	"raise to": "Raise to",
+	"seat": "Seat",
+	"seatOut": "SeatOut",
+	"Send": "Send"
 }
