@@ -1,17 +1,20 @@
-import React, { FC, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import './SoundOnOff.scss';
 
-const song = require('../../assets/sounds/background_music.mp3');
-
-interface Sound {
-  // audioEl: HTMLAudioElement;
-  isPlaying: boolean;
-  setIsPlaying: (isPlaying: boolean) => void;
-}
-const SoundOnOff: FC<Sound> = ({ audioEl, isPlaying, setIsPlaying }): JSX.Element => {
+const SoundOnOff = (): JSX.Element => {
+  const [isPlaying, setIsPlaying] = useState(false);
+  const audioEl = useRef<HTMLAudioElement>(null);
   const playPause = () => {
     setIsPlaying(!isPlaying);
   };
+
+  useEffect(() => {
+    if (isPlaying) {
+      audioEl.current?.play();
+    } else {
+      audioEl.current?.pause();
+    }
+  }, [isPlaying]);
 
   return (
     <>

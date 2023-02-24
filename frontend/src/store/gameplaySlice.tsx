@@ -234,6 +234,7 @@ const gameplaySlice = createSlice({
       state.bank += payload.betSize;
       state.currentBet = payload.betSize + currentUser.gameState.bet;
       currentUser.gameState.bet += payload.betSize;
+      currentUserTable.gameState.bet += payload.betSize;
 
       state.userOptions = ['fold', 'call', 'raise'];
       if (currentUser.gameState.stack === 0) {
@@ -251,6 +252,7 @@ const gameplaySlice = createSlice({
         currentUser.gameState.state = 'ALLIN';
         state.usersAllin += 1;
       }
+      currentUserTable.gameState.bet += callSize;
       currentUser.gameState.bet += callSize;
       currentUser.gameState.stack -= callSize;
       currentUserTable.gameState.stack -= callSize;
@@ -282,6 +284,7 @@ const gameplaySlice = createSlice({
         state.currentUser = state.usersInDeal[nextUser];
         state.userOptions = ['fold', 'check', 'call', 'raise'];
         state.usersInDeal.forEach((u) => (u.gameState.bet = 0));
+        state.usersAtTable.forEach((u) => (u.gameState.bet = 0));
         toNextStage(state);
         return;
       }
@@ -308,6 +311,7 @@ const gameplaySlice = createSlice({
         state.activePosition = 0; // calculate position when all
         state.currentUser = state.usersInDeal[0];
         state.usersInDeal.forEach((u) => (u.gameState.bet = 0));
+        state.usersAtTable.forEach((u) => (u.gameState.bet = 0));
         toNextStage(state);
         return;
       }

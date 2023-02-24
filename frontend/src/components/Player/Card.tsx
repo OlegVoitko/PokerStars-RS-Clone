@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Suit } from '../Cards-style';
+import { Suit } from '.';
 import styled from '@emotion/styled';
 import { ICard } from 'types/interfaces';
 

@@ -15,12 +15,11 @@ import {
 } from '../../store/gameplaySlice';
 import SeatOutBtn from './SeatOutBtn';
 import { BLIND_SIZE, TIMER } from '../../utils/constants';
-import '../Cards-style/RenderCards.scss';
-import { RenderCards } from 'components/Cards-style';
-import { RenderPlayer } from 'components/Cards-style/PlayerCards';
+import '../Player/RenderCards.scss';
+import { RenderCards } from 'components/Player';
+import { RenderPlayer } from 'components/Player/RenderPlayer';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { connectSocket, socket } from 'socket';
 import { useTranslation } from 'react-i18next';
 import SoundOnOff from './SoundOnOff';
 
@@ -51,16 +50,6 @@ const Poker_table = (): JSX.Element => {
   const [currentValue, setCurrentValue] = useState(BLIND_SIZE);
   const minBet = currentUser ? currentBet - currentUser.gameState.bet + BLIND_SIZE : 0;
   const maxBet = currentUser ? currentUser.gameState.stack : 10000;
-
-  const [isPlaying, setIsPlaying] = useState(false);
-  const audioEl = useRef<HTMLAudioElement>(null);
-
-  // useEffect(() => {
-  //   connectSocket(user);
-  //   return () => {
-  //     socket.disconnect();
-  //   };
-  // }, []);
 
   useEffect(() => {
     let timerId: NodeJS.Timeout | undefined;
@@ -130,20 +119,12 @@ const Poker_table = (): JSX.Element => {
   };
   const toggleSeatBtn = () => setIsShowSeat(!isShowSeat);
 
-  useEffect(() => {
-    if (isPlaying) {
-      audioEl.current.play();
-    } else {
-      audioEl.current.pause();
-    }
-  }, [isPlaying]);
-
   return (
     <div className='poker-table__wrapper'>
       <div className='poker__background'>
         <div className='poker-table__container gradient-border' id='box'>
           <div className='additional-features'>
-            <SoundOnOff isPlaying={isPlaying} setIsPlaying={setIsPlaying} audioEl={audioEl} />
+            <SoundOnOff />
           </div>
           <div className='poker__container'>
             <img
