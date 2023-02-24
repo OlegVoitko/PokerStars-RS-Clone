@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { connectSocket } from 'socket';
 import { IUser, INewUser, IUserState, IUserGamestate } from '../types/interfaces';
 import { START_BANKROLL } from '../utils/constants';
+import { userSeatOut } from './gameplaySlice';
 
 const initialState: IUserState = {
   user: null,
@@ -142,6 +143,9 @@ const userSlice = createSlice({
     builder.addCase(loginUserThunk.rejected, (state) => {
       state.status = 'rejected';
       state.error = 'Invalid login or password';
+    });
+    builder.addCase(userSeatOut, (state, action) => {
+      if (state.user) state.user.bankroll = action.payload.gameState.stack;
     });
   },
 });
