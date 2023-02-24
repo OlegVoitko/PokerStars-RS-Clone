@@ -4,7 +4,7 @@ import './Poker_table.scss';
 import CustomizedSlider from './Slider_table';
 import SeatBtn from './SeatBtn';
 import { useAppDispatch, useAppSelector } from '../../hooks/hook';
-import { shuffle, getWinner } from '../../utils/gameHelper';
+import { shuffle } from '../../utils/gameHelper';
 import { IUser, IGameplay } from '../../types/interfaces';
 import {
   checkActionFetch,
@@ -20,15 +20,16 @@ import { RenderCards } from 'components/Player';
 import { RenderPlayer } from 'components/Player/RenderPlayer';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { useTranslation } from 'react-i18next';
 import SoundOnOff from './SoundOnOff';
+import { connectSocket, socket } from 'socket';
+import { useTranslation } from 'react-i18next';
 
-const Poker_table = (): JSX.Element => {
-  const { t } = useTranslation();
+const Poker_table = (): JSX.Element => {  
   const [isShowSeat, setIsShowSeat] = useState(true);
   const [timer, setTimer] = useState(TIMER);
   const timerRef = useRef(TIMER);
   const dispatch = useAppDispatch();
+  const { t } = useTranslation();
   const {
     indexOfSB,
     usersInDeal,
@@ -43,6 +44,7 @@ const Poker_table = (): JSX.Element => {
     currentBet,
     bank,
     userOptions,
+    winners,
   } = useAppSelector((state: { gameplay: IGameplay }) => state.gameplay);
   const user = useAppSelector((state) => state.user.user) as IUser;
   const { _id } = user;
@@ -50,6 +52,12 @@ const Poker_table = (): JSX.Element => {
   const [currentValue, setCurrentValue] = useState(BLIND_SIZE);
   const minBet = currentUser ? currentBet - currentUser.gameState.bet + BLIND_SIZE : 0;
   const maxBet = currentUser ? currentUser.gameState.stack : 10000;
+  // useEffect(() => {
+  //   connectSocket(user);
+  //   return () => {
+  //     socket.disconnect();
+  //   };
+  // }, []);
 
   useEffect(() => {
     let timerId: NodeJS.Timeout | undefined;
@@ -80,15 +88,18 @@ const Poker_table = (): JSX.Element => {
       (stage === 100 && usersAtTable.length > 1) ||
       (waitToSeat.length > 1 && usersAtTable.length === 1)
     ) {
-      if (stage === 4) {
-        const winners = getWinner(usersInDeal);
-        toast.success(`${winners.map((w) => w.nickname).join(' & ')} took the pot`);
+      if (stage === 4 || stage === 999) {
+        const winnersInfo = winners?.map((w) => [
+          w.nickname,
+          t(`PC_${w.gameState.combinationRating}`),
+        ]);
+        toast.success(`${winnersInfo?.join(' & ')} ${t('takePot')}`);
       }
-      if (stage === 100) {
-        toast.success(`${usersInDeal[0].nickname} took the pot`);
+      if (stage === 100 && usersInDeal[0]) {
+        toast.success(`${usersInDeal[0].nickname} ${t('takePot')}`);
       }
       if (waitToSeat.length && user._id === waitToSeat[0]._id) {
-        toast(`${waitToSeat.map((u) => u.nickname).join(' & ')} join the game`);
+        toast(`${waitToSeat.map((u) => u.nickname).join(' & ')} ${t('joinGame')}`);
         setTimeout(() => {
           const deck = shuffle();
           dispatch(restartDealFetch({ deck, usersAtTable, indexOfSB }));
@@ -148,13 +159,13 @@ const Poker_table = (): JSX.Element => {
               <SeatBtn toggleSeatBtn={toggleSeatBtn} />
             </div>
           )}
-          {!isShowSeat && (
+          {!isShowSeat && stage !== 100 && (
             <div className='poker-table__seat-btn action__buttons'>
               <SeatOutBtn toggleSeatBtn={toggleSeatBtn} />
             </div>
           )}
           <div className='action__bar'>
-            {currentUser?._id === _id && (
+            {currentUser && currentUser._id === _id && (
               <div>
                 <div className='action__buttons'>
                   <button className='action__buttons__fold' onClick={handleFold}>

@@ -22,6 +22,7 @@ const EnterChoice = (): JSX.Element => {
         stack: START_BANKROLL,
         state: 'wait',
         bet: 0,
+        roundBets: 0,
         action: '',
         bestCombination: [],
         restBestCards: [],

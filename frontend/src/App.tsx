@@ -9,6 +9,8 @@ import Header from './components/Header/Header';
 import EnterChoice from './components/EnterChoice/EnterChoice';
 import Login from './components/Login/Login';
 import { ToastContainer } from 'react-toastify';
+import ProfilePage from 'pages/ProfilePage/ProfilePage';
+import RequireAuth from 'components/RequireAuth/RequireAuth';
 
 function App() {
   return (
@@ -20,6 +22,14 @@ function App() {
           <Route path='register' element={<Auth />} />
           <Route path='login' element={<Login />} />
         </Route>
+        <Route
+          path='profile'
+          element={
+            <RequireAuth>
+              <ProfilePage />
+            </RequireAuth>
+          }
+        />
         <Route path='table' element={<TableRoom />} />
         <Route path='player' element={<PlayerRoom />} />
       </Routes>

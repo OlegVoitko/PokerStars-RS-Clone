@@ -2,7 +2,9 @@ import React from 'react';
 
 import { Suit } from '.';
 import styled from '@emotion/styled';
-import { ICard } from 'types/interfaces';
+import { ICard, IGameplay } from 'types/interfaces';
+import { useAppSelector } from '../../hooks/hook';
+import './PlayerCard.scss';
 
 const CardWrapper = styled.div`
   background-color: white;
@@ -67,8 +69,18 @@ interface CardProps {
 }
 
 export const Card: React.FC<CardProps> = ({ card }) => {
+  const { winners, stage } = useAppSelector((state: { gameplay: IGameplay }) => state.gameplay);
+  const winCards = winners
+    ?.map((w) => [...w.gameState.bestCombination, ...w.gameState.restBestCards])
+    .flat()
+    .map((card) => JSON.stringify(card));
+
   return (
-    <>
+    <div
+      className={`${
+        winCards?.includes(JSON.stringify(card)) && (stage === 4 || stage === 999) ? 'win-card' : ''
+      }`}
+    >
       <CardWrapper data-suit={card.suit}>
         <span className='cardInfo top'>
           <div>{card.cardFace}</div>
@@ -78,6 +90,6 @@ export const Card: React.FC<CardProps> = ({ card }) => {
           <Suit suit={card.suit} />
         </div>
       </CardWrapper>
-    </>
+    </div>
   );
 };

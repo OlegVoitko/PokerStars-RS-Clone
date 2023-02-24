@@ -2,25 +2,26 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { connectSocket } from 'socket';
 import { IUser, INewUser, IUserState, IUserGamestate } from '../types/interfaces';
 import { START_BANKROLL } from '../utils/constants';
+import { userSeatOut } from './gameplaySlice';
 
 const initialState: IUserState = {
-  // user: null,
-  user: {
-    _id: String(Date.now()),
-    nickname: 'Guest',
-    password: '',
-    bankroll: START_BANKROLL,
-    gameState: {
-      hand: [],
-      stack: START_BANKROLL,
-      state: 'wait',
-      bet: 0,
-      action: '',
-      bestCombination: [],
-      restBestCards: [],
-      combinationRating: 0,
-    },
-  },
+  user: null,
+  // user: {
+  //   _id: String(Date.now()),
+  //   nickname: 'Guest',
+  //   bankroll: START_BANKROLL,
+  //   gameState: {
+  //     hand: [],
+  //     stack: START_BANKROLL,
+  //     state: 'wait',
+  //     bet: 0,
+  //     roundBets: 0,
+  //     action: '',
+  //     bestCombination: [],
+  //     restBestCards: [],
+  //     combinationRating: 0,
+  //   },
+  // },
   status: null,
   error: null,
 };
@@ -41,16 +42,17 @@ export const registerUserThunk = createAsyncThunk(
         throw new Error('sth went wrong');
       }
       const data = await response.json();
+      console.log(data);
       const userData = {
         _id: data._id,
-        nickname: data.nickname,
-        password: data.password,
-        bankroll: START_BANKROLL,
+        nickname: user.nickname,
+        bankroll: data.bankroll,
         gameState: {
           hand: [],
-          stack: START_BANKROLL,
+          stack: data.bankroll,
           state: 'wait',
           bet: 0,
+          roundBets: 0,
           action: '',
           bestCombination: [],
           restBestCards: [],
@@ -81,27 +83,27 @@ export const loginUserThunk = createAsyncThunk(
         throw new Error('loginUserThunk sth went wrong');
       }
       const data = await response.json();
+      console.log(data);
       const userData = {
         _id: data._id,
-        nickname: data.nickname,
-        password: data.password,
-        bankroll: START_BANKROLL,
+        nickname: user.nickname,
+        bankroll: data.bankroll,
         gameState: {
           hand: [],
-          stack: START_BANKROLL,
+          stack: data.bankroll,
           state: 'wait',
           bet: 0,
+          roundBets: 0,
           action: '',
           bestCombination: [],
           restBestCards: [],
           combinationRating: 0,
         },
       };
-      // console.log('loginUserThunk data', data);
+      console.log(userData);
       dispatch(registerUser(userData));
       connectSocket(userData);
     } catch (error) {
-      // console.log('createAsyncThunk error', error);
       return rejectWithValue(error);
     }
   }
@@ -144,6 +146,9 @@ const userSlice = createSlice({
     builder.addCase(loginUserThunk.rejected, (state) => {
       state.status = 'rejected';
       state.error = 'Invalid login or password';
+    });
+    builder.addCase(userSeatOut, (state, action) => {
+      if (state.user) state.user.bankroll = action.payload.gameState.stack;
     });
   },
 });

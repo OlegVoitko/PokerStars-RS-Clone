@@ -8,6 +8,7 @@ export interface IUserGamestate {
   hand: ICard[];
   stack: number;
   bet: number;
+  roundBets: number;
   state: string;
   action: string; //'check' | 'fold' | 'call'
   bestCombination: ICard[];
@@ -17,9 +18,7 @@ export interface IUserGamestate {
 
 export interface IUser {
   nickname: string;
-  password: string;
   _id: string;
-  __v?: number;
   bankroll: number;
   gameState: IUserGamestate;
 }
@@ -57,6 +56,7 @@ export interface IGameplay {
   waitToSeat: IUser[];
   loading: 'idle' | 'pending' | 'succeeded' | 'failed';
   indexOfSB: number;
+  winners: IUser[] | null;
 }
 
 export interface IHand {
