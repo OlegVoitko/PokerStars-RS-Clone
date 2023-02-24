@@ -22,7 +22,7 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { connectSocket, socket } from 'socket';
 import { useTranslation } from 'react-i18next';
-import SoundOnOff from './SoundOn';
+import SoundOnOff from './SoundOnOff';
 
 const Poker_table = (): JSX.Element => {
   const { t } = useTranslation();
@@ -52,8 +52,8 @@ const Poker_table = (): JSX.Element => {
   const minBet = currentUser ? currentBet - currentUser.gameState.bet + BLIND_SIZE : 0;
   const maxBet = currentUser ? currentUser.gameState.stack : 10000;
 
-	const [isPlaying, setIsPlaying] = useState(false);
-  const audioEl = useRef();
+  const [isPlaying, setIsPlaying] = useState(false);
+  const audioEl = useRef<HTMLAudioElement>(null);
 
   // useEffect(() => {
   //   connectSocket(user);
