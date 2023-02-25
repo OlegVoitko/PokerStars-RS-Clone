@@ -187,17 +187,19 @@ const gameplaySlice = createSlice({
     },
     userSeatOut: (state, { payload }: { payload: IUser }) => {
       const userInDeal = state.usersInDeal.find((user) => user._id === payload._id);
-      const userInWaitToSeat = state.waitToSeat.find((user) => user._id === payload._id);
-      if (userInWaitToSeat) {
-        state.waitToSeat = state.waitToSeat.filter((user) => user._id !== payload._id);
-        // return;
-      }
+      // const userInWaitToSeat = state.waitToSeat.find((user) => user._id === payload._id);
+      // if (userInWaitToSeat) {
+      //   state.waitToSeat = state.waitToSeat.filter((user) => user._id !== payload._id);
+      //   // return;
+      // }
       if (!userInDeal) {
         state.usersAtTable = state.usersAtTable.filter((user) => user._id !== payload._id);
+        state.waitToSeat = state.waitToSeat.filter((user) => user._id !== payload._id);
         return;
       }
+      state.waitToSeat = state.waitToSeat.filter((user) => user._id !== payload._id);
       state.usersAtTable = state.usersAtTable.filter((user) => user._id !== payload._id);
-      state.usersInDeal = state.usersAtTable;
+      state.usersInDeal = state.usersInDeal.filter((user) => user._id !== payload._id);
       if (state.usersAtTable.length < 2) {
         state.isDeal = false;
       }
@@ -205,23 +207,32 @@ const gameplaySlice = createSlice({
         state.currentUser = null;
         state.stage = 100;
         toNextStage(state);
-        //TODO add win message + restart game
         return;
       }
       state.usersCount -= 1;
       if (state.usersCompleteAction === state.usersCount) {
         state.stage += 1;
         state.usersCompleteAction = 0;
-        state.activePosition = 0;
-        state.currentUser = state.usersInDeal[0];
+        state.activePosition = state.usersInDeal[state.indexOfSB] ? state.indexOfSB : 0;
+        state.currentUser = state.usersInDeal[state.activePosition];
         state.usersInDeal.forEach((u) => (u.gameState.bet = 0));
+        state.usersAtTable.forEach((u) => (u.gameState.bet = 0));
         toNextStage(state);
         return;
+        // state.activePosition = 0;
+        // state.currentUser = state.usersInDeal[0];
+        // state.usersInDeal.forEach((u) => (u.gameState.bet = 0));
+        // toNextStage(state);
+        // return;
       }
-
-      const newActivePosition = state.activePosition > state.usersCount ? 0 : state.activePosition;
-      state.currentUser = state.usersInDeal[newActivePosition];
-      state.activePosition = newActivePosition;
+      if (payload._id === state.currentUser?._id) {
+        let nextUser = state.activePosition === state.usersCount ? 0 : state.activePosition;
+        while (state.usersInDeal[nextUser].gameState.state === 'ALLIN') {
+          nextUser = nextUser + 1 > state.usersCount - 1 ? 0 : nextUser + 1;
+        }
+        state.currentUser = state.usersInDeal[nextUser];
+        state.activePosition = nextUser;
+      }
     },
     checkAction: (state) => {
       state.usersCompleteAction += 1;
