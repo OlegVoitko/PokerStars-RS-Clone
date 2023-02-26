@@ -10,7 +10,7 @@ import { IUser } from '../../types/interfaces';
 // }
 //
 // const SeatBtn = (props: ISeatBtnProps) => {
-  const SeatBtn = () => {
+const SeatBtn = () => {
   const { t } = useTranslation();
   // const { toggleSeatBtn } = props;
   const user = useAppSelector((state) => state.user.user);

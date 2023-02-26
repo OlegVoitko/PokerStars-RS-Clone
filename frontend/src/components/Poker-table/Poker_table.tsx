@@ -25,7 +25,7 @@ import SoundOnOff from './SoundOnOff';
 import { useTranslation } from 'react-i18next';
 
 const Poker_table = (): JSX.Element => {
-  const [isShowSeat, setIsShowSeat] = useState(true);
+  // const [isShowSeat, setIsShowSeat] = useState(true);
   const [timer, setTimer] = useState(TIMER);
   const timerRef = useRef(TIMER);
   const dispatch = useAppDispatch();
@@ -129,7 +129,7 @@ const Poker_table = (): JSX.Element => {
   const handleFold = () => {
     dispatch(foldActionThunk({ _id }));
   };
-  const toggleSeatBtn = () => setIsShowSeat(!isShowSeat);
+  // const toggleSeatBtn = () => setIsShowSeat(!isShowSeat);
 
   return (
     <div className='poker-table__wrapper'>
@@ -151,15 +151,18 @@ const Poker_table = (): JSX.Element => {
               <img src={require('../../assets/chip-bank.png')} alt='chip bank' />
               <h4>{bank}$</h4>
             </div>
-            <div className='players-in-deal'>
-              <RenderPlayer timer={timer} users={usersAtTable} />
-            </div>
+            {Boolean(usersAtTable.length) && (
+              <div className='players-in-deal'>
+                <RenderPlayer timer={timer} users={usersAtTable} />
+              </div>
+            )}
           </div>
           <div className='poker-table__seat-btn action__buttons'>
-            {(usersAtTableIDS.length ? !usersAtTableIDS.includes(_id) : true)
-              ? <SeatBtn />
-              : <SeatOutBtn />
-            }
+            {(usersAtTableIDS.length ? !usersAtTableIDS.includes(_id) : true) ? (
+              <SeatBtn />
+            ) : (
+              <SeatOutBtn />
+            )}
           </div>
           {/*{(isShowSeat && usersAtTableIDS.length ? !usersAtTableIDS.includes(_id) : true) && (*/}
           {/*  <div className='poker-table__seat-btn action__buttons'>*/}
