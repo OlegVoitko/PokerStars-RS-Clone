@@ -18,7 +18,7 @@
 }
 
 .poker__container {
-	height: 65vh;
+  height: 65vh;
 }
 
 .poker-table__table-image {
@@ -53,7 +53,7 @@
 
   h4 {
     color: white;
-		font-family: Arial, Helvetica, sans-serif;
+    font-family: Arial, Helvetica, sans-serif;
   }
 }
 
@@ -62,7 +62,7 @@
 }
 
 .action__bar {
-	flex-direction: initial;
+  flex-direction: initial;
   display: flex;
   align-items: center;
   justify-content: end;
@@ -197,30 +197,30 @@
 }
 
 .player-two-cards__fold {
-	animation: fade-in-out 0.5s;
-	animation-fill-mode: both;
+  animation: fade-in-out 0.5s;
+  animation-fill-mode: both;
 }
 
 @keyframes fade-in-out {
-	0% {
-		opacity: 1;
-		transform: translateY(0%);
-	}
-	100% {
-		opacity: 0;
-		transform: translateY(-100%)
-	}
+ 0% {
+    opacity: 1;
+    transform: translateY(0%);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-100%)
+  }
 }
 
 @keyframes fade-in-up {
-	0% {
-		opacity: 0;
-		transform: translateY(-100%)
-	}
-	100% {
-		opacity: 1;
-		transform: translateY(0%);
-	}
+  0% {
+    opacity: 0;
+    transform: translateY(-100%)
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0%);
+  }
 }
 
 .playing-card1,
@@ -231,23 +231,23 @@
 .player-name {
   display: flex;
   justify-content: center;
-	font-family: Arial, Helvetica, sans-serif;
+  font-family: Arial, Helvetica, sans-serif;
   color: rgb(138, 137, 137);
   font-size: 15px;
-	margin: auto;
+  margin: auto;
 }
 
 .player-avatar-container {
-	width: 75px;
-	height: 82px;
-	border: 2px solid;
-	margin: 10px auto;
+  width: 75px;
+  height: 82px;
+  border: 2px solid;
+  margin: 10px auto;
   background-color: #302e2bb5;
 
-	&_active {
-		border: 5px solid red;
-		border-radius: 10px;
-	}
+  &_active {
+    border: 5px solid red;
+    border-radius: 10px;
+  }
 }
 
 .player-avatar_img {
@@ -258,7 +258,7 @@
   font-size: 12px;
   display: flex;
   justify-content: center;
-	font-family: Arial, Helvetica, sans-serif;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 .p2 {
@@ -305,11 +305,15 @@
 }
 
 .seat-btn-plug {
-	display: flex;
+  display: flex;
 }
 
 .btn-plug {
   font-size: 1em;
   padding: 0.3em 1em;
-	visibility: hidden;
+  visibility: hidden;
+}
+
+.seat-btn-plug-flex {
+	display: flex;
 }

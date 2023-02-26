@@ -154,23 +154,24 @@ const Poker_table = (): JSX.Element => {
               <RenderPlayer timer={timer} users={usersAtTable} />
             </div>
           </div>
-          <div className='seat-btn-plug'>
-            {isShowSeat && (
-              <div className='poker-table__seat-btn action__buttons'>
-                <SeatBtn toggleSeatBtn={toggleSeatBtn} />
-              </div>
-            )}
-            <button className='btn-plug'>p</button>
+          <div className='seat-btn-plug-flex'>
+            <div className='seat-btn-plug'>
+              {isShowSeat && (
+                <div className='poker-table__seat-btn action__buttons'>
+                  <SeatBtn toggleSeatBtn={toggleSeatBtn} />
+                </div>
+              )}
+              <button className='btn-plug'>p</button>
+            </div>
+            <div className='seat-btn-plug'>
+              {!isShowSeat && stage !== 100 && (
+                <div className='poker-table__seat-btn action__buttons'>
+                  <SeatOutBtn toggleSeatBtn={toggleSeatBtn} />
+                </div>
+              )}
+              <button className='btn-plug'>p</button>
+            </div>
           </div>
-          <div className='seat-btn-plug'>
-            {!isShowSeat && stage !== 100 && (
-              <div className='poker-table__seat-btn action__buttons'>
-                <SeatOutBtn toggleSeatBtn={toggleSeatBtn} />
-              </div>
-            )}
-            <button className='btn-plug'>p</button>
-          </div>
-
           <div className='action__bar'>
             {currentUser && currentUser._id === _id && (
               <div>
