@@ -121,11 +121,12 @@ const userSlice = createSlice({
         state.user.gameState = payload;
       }
     },
-    // upBalance: (state) => {
-    //   if (state.user) {
-    //     state.user.bankroll += START_BANKROLL;
-    //   }
-    // },
+    upBalance: (state) => {
+      if (state.user) {
+        state.user.bankroll += START_BANKROLL;
+        state.user.gameState.stack += START_BANKROLL;
+      }
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(registerUserThunk.pending, (state) => {
@@ -153,14 +154,14 @@ const userSlice = createSlice({
       state.error = 'Invalid login or password';
     });
     builder.addCase(userSeatOut, (state, action) => {
-      if (state.user) state.user.bankroll = action.payload.gameState.stack;
+      if (state.user) {
+        state.user.bankroll = action.payload.gameState.stack;
+        state.user.gameState.stack = action.payload.gameState.stack;
+      }
     });
-    // builder.addCase(upBalance, (state, action)) => {
-    //   if (state.user) state.user.bankroll += START_BANKROLL;
-    // });
   },
 });
 
-export const { registerUser, setUserGamestate } = userSlice.actions;
+export const { registerUser, setUserGamestate, upBalance } = userSlice.actions;
 
 export default userSlice.reducer;

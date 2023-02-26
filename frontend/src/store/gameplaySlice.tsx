@@ -2,8 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { IRestartDeal, socket } from '../socket';
 import { IUser, IGameplay } from '../types/interfaces';
 import { deal, findBestCombination, getWinner } from '../utils/gameHelper';
-import { current } from '@reduxjs/toolkit';
-import { BLIND_SIZE, SMALL_BLIND_SIZE, START_BANKROLL } from '../utils/constants';
+import { BLIND_SIZE, SMALL_BLIND_SIZE } from '../utils/constants';
 
 const initialState: IGameplay = {
   stage: 0,
@@ -227,14 +226,6 @@ const gameplaySlice = createSlice({
         state.activePosition = nextUser;
       }
     },
-    upBalance: (state, { payload }: { payload: IUser }) => {
-      const curUser = state.waitToSeat.find((user) => user._id === payload._id);
-      if (curUser) {
-        console.log('upBalance', curUser);
-        curUser.gameState.stack += START_BANKROLL;
-        curUser.bankroll += START_BANKROLL;
-      }
-    },
     checkAction: (state, { payload }: { payload: { _id: string } }) => {
       const { _id } = payload;
       const currentUser = state.usersInDeal.find((u) => u._id === _id) as IUser;
@@ -454,7 +445,6 @@ export const {
   betAction,
   callAction,
   foldAction,
-  upBalance,
 } = gameplaySlice.actions;
 
 export default gameplaySlice.reducer;
