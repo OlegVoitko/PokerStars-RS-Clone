@@ -121,6 +121,11 @@ const userSlice = createSlice({
         state.user.gameState = payload;
       }
     },
+    // upBalance: (state) => {
+    //   if (state.user) {
+    //     state.user.bankroll += START_BANKROLL;
+    //   }
+    // },
   },
   extraReducers: (builder) => {
     builder.addCase(registerUserThunk.pending, (state) => {
@@ -150,6 +155,9 @@ const userSlice = createSlice({
     builder.addCase(userSeatOut, (state, action) => {
       if (state.user) state.user.bankroll = action.payload.gameState.stack;
     });
+    // builder.addCase(upBalance, (state, action)) => {
+    //   if (state.user) state.user.bankroll += START_BANKROLL;
+    // });
   },
 });
 
