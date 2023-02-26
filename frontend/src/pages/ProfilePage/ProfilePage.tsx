@@ -28,23 +28,18 @@ const ProfilePage = () => {
         </h2>
         <div className='profile__bankroll'>
           {t('bankroll')}: {user.bankroll}$
-          {/*{t('bankroll')}:{' '}*/}
-          {/*{waitToSeatIDs.includes(user._id)*/}
-          {/*  ? waitToSeat.filter((u) => u._id === user._id)[0].gameState.stack*/}
-          {/*  : user.bankroll}*/}
-          {/*$*/}
         </div>
       </div>
 
-      {user.bankroll === 0 ||
-        waitToSeat.filter((u) => u._id === user._id)[0].gameState.stack === 0 ||
-        (usersAtTable.filter((u) => u._id === user._id)[0].gameState.stack === 0 && (
-          <div className='action__buttons'>
-            <button className='action__buttons__fold' onClick={handleBankroll}>
-              {t('upToBankroll')}
-            </button>
-          </div>
-        ))}
+      {user.bankroll === 0 &&
+      !usersAtTable.find((u) => u._id === user._id) &&
+      !waitToSeat.find((u) => u._id === user._id) && (
+        <div className='action__buttons'>
+          <button className='action__buttons__fold' onClick={handleBankroll}>
+            {t('upToBankroll')}
+          </button>
+        </div>
+      )}
 
       <Link className='profile__link' to={'/table'}>
         {t('backTable')}
