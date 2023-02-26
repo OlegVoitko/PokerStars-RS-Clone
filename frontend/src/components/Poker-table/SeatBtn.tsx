@@ -5,13 +5,14 @@ import { useAppDispatch, useAppSelector } from '../../hooks/hook';
 import { seatUserThunk } from '../../store/gameplaySlice';
 import { IUser } from '../../types/interfaces';
 
-interface ISeatBtnProps {
-  toggleSeatBtn: () => void;
-}
-
-const SeatBtn = (props: ISeatBtnProps) => {
+// interface ISeatBtnProps {
+//   toggleSeatBtn: () => void;
+// }
+//
+// const SeatBtn = (props: ISeatBtnProps) => {
+const SeatBtn = () => {
   const { t } = useTranslation();
-  const { toggleSeatBtn } = props;
+  // const { toggleSeatBtn } = props;
   const user = useAppSelector((state) => state.user.user);
   const dispatch = useAppDispatch();
 
@@ -22,7 +23,7 @@ const SeatBtn = (props: ISeatBtnProps) => {
   // }, [waitToSeat]);
 
   const handleSeat = (user: IUser): void => {
-    toggleSeatBtn();
+    // toggleSeatBtn();
     dispatch(seatUserThunk(user));
   };
 

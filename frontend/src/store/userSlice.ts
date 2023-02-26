@@ -5,23 +5,23 @@ import { START_BANKROLL } from '../utils/constants';
 import { userSeatOut } from './gameplaySlice';
 
 const initialState: IUserState = {
-  user: null,
-  // user: {
-  //   _id: String(Date.now()),
-  //   nickname: 'Guest',
-  //   bankroll: START_BANKROLL,
-  //   gameState: {
-  //     hand: [],
-  //     stack: START_BANKROLL,
-  //     state: 'wait',
-  //     bet: 0,
-  //     roundBets: 0,
-  //     action: '',
-  //     bestCombination: [],
-  //     restBestCards: [],
-  //     combinationRating: 0,
-  //   },
-  // },
+  // user: null,
+  user: {
+    _id: String(Date.now()),
+    nickname: 'Guest',
+    bankroll: START_BANKROLL,
+    gameState: {
+      hand: [],
+      stack: START_BANKROLL,
+      state: 'wait',
+      bet: 0,
+      roundBets: 0,
+      action: false,
+      bestCombination: [],
+      restBestCards: [],
+      combinationRating: 0,
+    },
+  },
   status: null,
   error: null,
 };
@@ -42,7 +42,7 @@ export const registerUserThunk = createAsyncThunk(
         throw new Error('sth went wrong');
       }
       const data = await response.json();
-      console.log(data);
+      // console.log(data);
       const userData = {
         _id: data._id,
         nickname: user.nickname,
@@ -53,7 +53,7 @@ export const registerUserThunk = createAsyncThunk(
           state: 'wait',
           bet: 0,
           roundBets: 0,
-          action: '',
+          action: false,
           bestCombination: [],
           restBestCards: [],
           combinationRating: 0,
@@ -94,7 +94,7 @@ export const loginUserThunk = createAsyncThunk(
           state: 'wait',
           bet: 0,
           roundBets: 0,
-          action: '',
+          action: false,
           bestCombination: [],
           restBestCards: [],
           combinationRating: 0,

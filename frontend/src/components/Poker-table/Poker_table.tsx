@@ -25,7 +25,7 @@ import { connectSocket, socket } from 'socket';
 import { useTranslation } from 'react-i18next';
 
 const Poker_table = (): JSX.Element => {
-  const [isShowSeat, setIsShowSeat] = useState(true);
+  // const [isShowSeat, setIsShowSeat] = useState(true);
   const [timer, setTimer] = useState(TIMER);
   const timerRef = useRef(TIMER);
   const dispatch = useAppDispatch();
@@ -47,17 +47,18 @@ const Poker_table = (): JSX.Element => {
     winners,
   } = useAppSelector((state: { gameplay: IGameplay }) => state.gameplay);
   const user = useAppSelector((state) => state.user.user) as IUser;
-  const { _id } = user;
+  const _id = user ? user._id : '';
+  const waitToSeatIDs = waitToSeat.map((u) => u._id);
 
   const [currentValue, setCurrentValue] = useState(BLIND_SIZE);
   const minBet = currentUser ? currentBet - currentUser.gameState.bet + BLIND_SIZE : 0;
   const maxBet = currentUser ? currentUser.gameState.stack : 10000;
-  // useEffect(() => {
-  //   connectSocket(user);
-  //   return () => {
-  //     socket.disconnect();
-  //   };
-  // }, []);
+  useEffect(() => {
+    connectSocket(user);
+    return () => {
+      socket.disconnect();
+    };
+  }, []);
 
   useEffect(() => {
     let timerId: NodeJS.Timeout | undefined;
@@ -114,7 +115,7 @@ const Poker_table = (): JSX.Element => {
   }, [stage, waitToSeat, currentUser]);
 
   const handleCheck = () => {
-    dispatch(checkActionFetch());
+    dispatch(checkActionFetch({ _id }));
   };
 
   const handleBet = ({ _id, betSize }: { _id: string; betSize: number }) => {
@@ -128,7 +129,7 @@ const Poker_table = (): JSX.Element => {
   const handleFold = () => {
     dispatch(foldActionThunk({ _id }));
   };
-  const toggleSeatBtn = () => setIsShowSeat(!isShowSeat);
+  // const toggleSeatBtn = () => setIsShowSeat(!isShowSeat);
 
   return (
     <div className='poker-table__wrapper'>
@@ -150,20 +151,15 @@ const Poker_table = (): JSX.Element => {
               <img src={require('../../assets/chip-bank.png')} alt='chip bank' />
               <h4>{bank}$</h4>
             </div>
-            <div className='players-in-deal'>
-              <RenderPlayer timer={timer} users={usersAtTable} />
-            </div>
+            {Boolean(usersAtTable.length) && (
+              <div className='players-in-deal'>
+                <RenderPlayer timer={timer} users={usersAtTable} />
+              </div>
+            )}
           </div>
-          {isShowSeat && (
-            <div className='poker-table__seat-btn action__buttons'>
-              <SeatBtn toggleSeatBtn={toggleSeatBtn} />
-            </div>
-          )}
-          {!isShowSeat && stage !== 100 && (
-            <div className='poker-table__seat-btn action__buttons'>
-              <SeatOutBtn toggleSeatBtn={toggleSeatBtn} />
-            </div>
-          )}
+          <div className='poker-table__seat-btn action__buttons'>
+            {waitToSeatIDs.includes(_id) ? <SeatOutBtn /> : <SeatBtn />}
+          </div>
           <div className='action__bar'>
             {currentUser && currentUser._id === _id && (
               <div>

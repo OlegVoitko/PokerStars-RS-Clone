@@ -23,7 +23,7 @@ const EnterChoice = (): JSX.Element => {
         state: 'wait',
         bet: 0,
         roundBets: 0,
-        action: '',
+        action: false,
         bestCombination: [],
         restBestCards: [],
         combinationRating: 0,
