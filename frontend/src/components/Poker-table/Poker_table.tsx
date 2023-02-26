@@ -21,7 +21,7 @@ import { RenderPlayer } from 'components/Player/RenderPlayer';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import SoundOnOff from './SoundOnOff';
-// import { connectSocket, socket } from 'socket';
+import { connectSocket, socket } from 'socket';
 import { useTranslation } from 'react-i18next';
 
 const Poker_table = (): JSX.Element => {
@@ -47,18 +47,18 @@ const Poker_table = (): JSX.Element => {
     winners,
   } = useAppSelector((state: { gameplay: IGameplay }) => state.gameplay);
   const user = useAppSelector((state) => state.user.user) as IUser;
-  const { _id } = user;
-  const usersAtTableIDS = usersAtTable.map((u) => u._id);
+  const _id = user ? user._id : '';
+  const waitToSeatIDs = waitToSeat.map((u) => u._id);
 
   const [currentValue, setCurrentValue] = useState(BLIND_SIZE);
   const minBet = currentUser ? currentBet - currentUser.gameState.bet + BLIND_SIZE : 0;
   const maxBet = currentUser ? currentUser.gameState.stack : 10000;
-  // useEffect(() => {
-  //   connectSocket(user);
-  //   return () => {
-  //     socket.disconnect();
-  //   };
-  // }, []);
+  useEffect(() => {
+    connectSocket(user);
+    return () => {
+      socket.disconnect();
+    };
+  }, []);
 
   useEffect(() => {
     let timerId: NodeJS.Timeout | undefined;
@@ -158,23 +158,8 @@ const Poker_table = (): JSX.Element => {
             )}
           </div>
           <div className='poker-table__seat-btn action__buttons'>
-            {(usersAtTableIDS.length ? !usersAtTableIDS.includes(_id) : true) ? (
-              <SeatBtn />
-            ) : (
-              <SeatOutBtn />
-            )}
+            {waitToSeatIDs.includes(_id) ? <SeatOutBtn /> : <SeatBtn />}
           </div>
-          {/*{(isShowSeat && usersAtTableIDS.length ? !usersAtTableIDS.includes(_id) : true) && (*/}
-          {/*  <div className='poker-table__seat-btn action__buttons'>*/}
-          {/*    <SeatBtn toggleSeatBtn={toggleSeatBtn} />*/}
-          {/*  </div>*/}
-          {/*)}*/}
-          {/*{(!isShowSeat && usersAtTableIDS.length ? usersAtTableIDS.includes(_id) : '') &&*/}
-          {/*  stage !== 100 && (*/}
-          {/*    <div className='poker-table__seat-btn action__buttons'>*/}
-          {/*      <SeatOutBtn toggleSeatBtn={toggleSeatBtn} />*/}
-          {/*    </div>*/}
-          {/*  )}*/}
           <div className='action__bar'>
             {currentUser && currentUser._id === _id && (
               <div>

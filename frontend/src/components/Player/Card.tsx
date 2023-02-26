@@ -71,7 +71,7 @@ interface CardProps {
 export const Card: React.FC<CardProps> = ({ card }) => {
   const { winners, stage } = useAppSelector((state: { gameplay: IGameplay }) => state.gameplay);
   const winCards = winners
-    ?.map((w) => [...w.gameState.bestCombination, ...w.gameState.restBestCards])
+    .map((w) => [...w.gameState.bestCombination, ...w.gameState.restBestCards])
     .flat()
     .map((card) => JSON.stringify(card));
 
