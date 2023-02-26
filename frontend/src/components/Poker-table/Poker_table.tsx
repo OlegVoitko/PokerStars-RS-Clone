@@ -156,7 +156,10 @@ const Poker_table = (): JSX.Element => {
             </div>
           </div>
           <div className='poker-table__seat-btn action__buttons'>
-            {(usersAtTableIDS.length ? !usersAtTableIDS.includes(_id) : true) ? <SeatBtn /> : <SeatOutBtn />}
+            {(usersAtTableIDS.length ? !usersAtTableIDS.includes(_id) : true)
+              ? <SeatBtn />
+              : <SeatOutBtn />
+            }
           </div>
           {/*{(isShowSeat && usersAtTableIDS.length ? !usersAtTableIDS.includes(_id) : true) && (*/}
           {/*  <div className='poker-table__seat-btn action__buttons'>*/}
