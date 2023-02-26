@@ -203,6 +203,7 @@ const gameplaySlice = createSlice({
       if (!userInDeal) {
         state.usersAtTable = state.usersAtTable.filter((user) => user._id !== payload._id);
         state.waitToSeat = state.waitToSeat.filter((user) => user._id !== payload._id);
+        console.log(111);
         return;
       }
       state.waitToSeat = state.waitToSeat.filter((user) => user._id !== payload._id);

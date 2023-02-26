@@ -48,7 +48,7 @@ const Poker_table = (): JSX.Element => {
   } = useAppSelector((state: { gameplay: IGameplay }) => state.gameplay);
   const user = useAppSelector((state) => state.user.user) as IUser;
   const { _id } = user;
-  const usersAtTableIDS = usersAtTable.map((u) => u._id);
+  const waitToSeatIDs = waitToSeat.map((u) => u._id);
 
   const [currentValue, setCurrentValue] = useState(BLIND_SIZE);
   const minBet = currentUser ? currentBet - currentUser.gameState.bet + BLIND_SIZE : 0;
@@ -158,23 +158,8 @@ const Poker_table = (): JSX.Element => {
             )}
           </div>
           <div className='poker-table__seat-btn action__buttons'>
-            {(usersAtTableIDS.length ? !usersAtTableIDS.includes(_id) : true) ? (
-              <SeatBtn />
-            ) : (
-              <SeatOutBtn />
-            )}
+            {waitToSeatIDs.includes(_id) ? <SeatOutBtn /> : <SeatBtn />}
           </div>
-          {/*{(isShowSeat && usersAtTableIDS.length ? !usersAtTableIDS.includes(_id) : true) && (*/}
-          {/*  <div className='poker-table__seat-btn action__buttons'>*/}
-          {/*    <SeatBtn toggleSeatBtn={toggleSeatBtn} />*/}
-          {/*  </div>*/}
-          {/*)}*/}
-          {/*{(!isShowSeat && usersAtTableIDS.length ? usersAtTableIDS.includes(_id) : '') &&*/}
-          {/*  stage !== 100 && (*/}
-          {/*    <div className='poker-table__seat-btn action__buttons'>*/}
-          {/*      <SeatOutBtn toggleSeatBtn={toggleSeatBtn} />*/}
-          {/*    </div>*/}
-          {/*  )}*/}
           <div className='action__bar'>
             {currentUser && currentUser._id === _id && (
               <div>
