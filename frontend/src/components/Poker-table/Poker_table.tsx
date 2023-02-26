@@ -148,22 +148,29 @@ const Poker_table = (): JSX.Element => {
             </div>
             <div className='bank__container'>
               <img src={require('../../assets/chip-bank.png')} alt='chip bank' />
-              <h4>{bank}$</h4>
+              <h4>{bank} $</h4>
             </div>
             <div className='players-in-deal'>
               <RenderPlayer timer={timer} users={usersAtTable} />
             </div>
           </div>
-          {isShowSeat && (
-            <div className='poker-table__seat-btn action__buttons'>
-              <SeatBtn toggleSeatBtn={toggleSeatBtn} />
-            </div>
-          )}
-          {!isShowSeat && stage !== 100 && (
-            <div className='poker-table__seat-btn action__buttons'>
-              <SeatOutBtn toggleSeatBtn={toggleSeatBtn} />
-            </div>
-          )}
+          <div className='seat-btn-plug'>
+            {isShowSeat && (
+              <div className='poker-table__seat-btn action__buttons'>
+                <SeatBtn toggleSeatBtn={toggleSeatBtn} />
+              </div>
+            )}
+            <button className='btn-plug'>p</button>
+          </div>
+          <div className='seat-btn-plug'>
+            {!isShowSeat && stage !== 100 && (
+              <div className='poker-table__seat-btn action__buttons'>
+                <SeatOutBtn toggleSeatBtn={toggleSeatBtn} />
+              </div>
+            )}
+            <button className='btn-plug'>p</button>
+          </div>
+
           <div className='action__bar'>
             {currentUser && currentUser._id === _id && (
               <div>

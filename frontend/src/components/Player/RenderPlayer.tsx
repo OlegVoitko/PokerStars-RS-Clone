@@ -4,6 +4,8 @@ import { IGameplay, IUser } from 'types/interfaces';
 import { Suit } from './Suit';
 import { useAppSelector } from '../../hooks/hook';
 import './RenderPlayer.scss';
+import { useTranslation } from 'react-i18next';
+
 const CardWrapper = styled.div`
   background-color: white;
   border-radius: 8px;
@@ -95,12 +97,20 @@ export const RenderPlayer: React.FC<PlayersProps> = ({ users, timer }) => {
     ?.map((w) => [...w.gameState.bestCombination, ...w.gameState.restBestCards])
     .flat()
     .map((card) => JSON.stringify(card));
+  const { t } = useTranslation();
   return (
     <>
       {users.map((u, i) => (
         <div className={`${'player'} ${'p' + [i]}`} key={i}>
           {user._id === u._id && <div className='player__timer'>{timer}</div>}
-          {!!u.gameState.bet && <div className='player-bank'>Bet {u.gameState.bet}</div>}
+          <div className='bank-plug'>
+            {!!u.gameState.bet && (
+              <div className='player-bank'>
+                {t('Bet')} {u.gameState.bet}
+              </div>
+            )}
+            <div className='player-bank-plug'>bet</div>
+          </div>
           <div className='player-two-cards'>
             {user._id === u._id || stage === 4 ? (
               <>

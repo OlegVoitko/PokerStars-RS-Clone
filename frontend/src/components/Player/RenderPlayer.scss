@@ -19,6 +19,8 @@
 
 
 .player__timer {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 18px;
   position: absolute;
   top: 133px;
   right: -19px;
@@ -31,5 +33,17 @@
 .win-card {
   border: 5px solid orangered;
   border-radius: 8px;
-  transform: translateY(-10px);
+	animation: fade-in-out 1s;
+	animation-fill-mode: both;
+}
+
+@keyframes fade-in-out {
+	0% {
+		opacity: 1;
+		transform: translateY(0%);
+	}
+	100% {
+		opacity: 1;
+		transform: translateY(-10%)
+	}
 }
