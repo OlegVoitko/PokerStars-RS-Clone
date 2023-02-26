@@ -23,7 +23,7 @@ interface ServerToClientEvents {
   ['new message']: (data: IMessage) => void;
   ['game:seatUser']: (data: IUser) => void;
   ['game:seatOutUser']: (data: IUser) => void;
-  ['game:checkAction']: () => void;
+  ['game:checkAction']: (data: { _id: string }) => void;
   ['game:betAction']: (data: { _id: string; betSize: number }) => void;
   ['game:callAction']: (data: { _id: string }) => void;
   ['game:foldAction']: (data: { _id: string }) => void;
@@ -35,7 +35,7 @@ interface ClientToServerEvents {
   send: (data: IMessage) => void;
   ['game:seatUser']: (data: IUser) => void;
   ['game:seatOutUser']: (data: IUser) => void;
-  ['game:checkAction']: () => void;
+  ['game:checkAction']: (data: { _id: string }) => void;
   ['game:betAction']: (deck: { _id: string; betSize: number }) => void;
   ['game:callAction']: (data: { _id: string }) => void;
   ['game:foldAction']: (data: { _id: string }) => void;
@@ -63,8 +63,8 @@ export const connectSocket = (user: IUser) => {
   socket.on('game:seatOutUser', (data) => {
     store.dispatch(userSeatOut(data));
   });
-  socket.on('game:checkAction', () => {
-    store.dispatch(checkAction());
+  socket.on('game:checkAction', (data) => {
+    store.dispatch(checkAction(data));
   });
   socket.on('game:betAction', (data) => {
     store.dispatch(betAction(data));

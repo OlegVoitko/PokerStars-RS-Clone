@@ -21,7 +21,7 @@ import { RenderPlayer } from 'components/Player/RenderPlayer';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import SoundOnOff from './SoundOnOff';
-import { connectSocket, socket } from 'socket';
+// import { connectSocket, socket } from 'socket';
 import { useTranslation } from 'react-i18next';
 
 const Poker_table = (): JSX.Element => {
@@ -52,12 +52,12 @@ const Poker_table = (): JSX.Element => {
   const [currentValue, setCurrentValue] = useState(BLIND_SIZE);
   const minBet = currentUser ? currentBet - currentUser.gameState.bet + BLIND_SIZE : 0;
   const maxBet = currentUser ? currentUser.gameState.stack : 10000;
-  useEffect(() => {
-    connectSocket(user);
-    return () => {
-      socket.disconnect();
-    };
-  }, []);
+  // useEffect(() => {
+  //   connectSocket(user);
+  //   return () => {
+  //     socket.disconnect();
+  //   };
+  // }, []);
 
   useEffect(() => {
     let timerId: NodeJS.Timeout | undefined;
@@ -114,7 +114,7 @@ const Poker_table = (): JSX.Element => {
   }, [stage, waitToSeat, currentUser]);
 
   const handleCheck = () => {
-    dispatch(checkActionFetch());
+    dispatch(checkActionFetch({ _id }));
   };
 
   const handleBet = ({ _id, betSize }: { _id: string; betSize: number }) => {
