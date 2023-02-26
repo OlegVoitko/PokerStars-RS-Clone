@@ -23,7 +23,7 @@ const initialState: IGameplay = {
   waitToSeat: [],
   loading: 'idle',
   indexOfSB: -1,
-  winners: null,
+  winners: [],
 };
 
 const cutBlinds = (state: IGameplay) => {
@@ -122,17 +122,6 @@ const toNextStage = (state: IGameplay) => {
       state.bank = 0;
       break;
     }
-    case 999: {
-      state.currentUser = null;
-      state.currentBet = 0;
-      const winners = getWinner(current(state.usersInDeal));
-      state.winners = winners;
-      divideBank(state);
-      state.showCards = state.board;
-      // state.showCards = [{ cardFace: 'ALLIN', value: 0, suit: '' }];
-      state.bank = 0;
-      break;
-    }
     default:
       console.log('something went wrong');
   }
@@ -203,7 +192,6 @@ const gameplaySlice = createSlice({
       if (!userInDeal) {
         state.usersAtTable = state.usersAtTable.filter((user) => user._id !== payload._id);
         state.waitToSeat = state.waitToSeat.filter((user) => user._id !== payload._id);
-        console.log(111);
         return;
       }
       state.waitToSeat = state.waitToSeat.filter((user) => user._id !== payload._id);
@@ -213,6 +201,7 @@ const gameplaySlice = createSlice({
         state.isDeal = false;
       }
       if (state.usersCount === 2) {
+        state.usersCount -= 1;
         state.currentUser = null;
         state.stage = 100;
         toNextStage(state);
@@ -228,11 +217,6 @@ const gameplaySlice = createSlice({
         state.usersAtTable.forEach((u) => (u.gameState.bet = 0));
         toNextStage(state);
         return;
-        // state.activePosition = 0;
-        // state.currentUser = state.usersInDeal[0];
-        // state.usersInDeal.forEach((u) => (u.gameState.bet = 0));
-        // toNextStage(state);
-        // return;
       }
       if (payload._id === state.currentUser?._id) {
         let nextUser = state.activePosition === state.usersCount ? 0 : state.activePosition;
@@ -400,7 +384,7 @@ const gameplaySlice = createSlice({
       state.activePosition = 0;
       state.usersCompleteAction = 0;
       state.usersAllin = 0;
-      state.winners = null;
+      state.winners = [];
       state.userOptions = ['fold', 'call', 'check', 'rais'];
       const ids = usersAtTable.map(({ _id }) => _id);
       state.waitToSeat.forEach((u) => {
