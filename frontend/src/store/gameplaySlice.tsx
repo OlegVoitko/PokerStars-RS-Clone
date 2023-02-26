@@ -347,7 +347,10 @@ const gameplaySlice = createSlice({
         return;
       }
       state.usersCount -= 1;
-      if (state.usersCount === state.usersAllin + 1 || state.usersCount === state.usersAllin) {
+      if (
+        state.usersCompleteAction === state.usersAllin + 1 ||
+        state.usersCount === state.usersAllin
+      ) {
         state.stage = 4;
         state.showCards = state.board.slice(0, 5);
         toNextStage(state);
