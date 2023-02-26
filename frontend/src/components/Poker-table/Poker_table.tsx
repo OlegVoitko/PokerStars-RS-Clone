@@ -47,7 +47,7 @@ const Poker_table = (): JSX.Element => {
     winners,
   } = useAppSelector((state: { gameplay: IGameplay }) => state.gameplay);
   const user = useAppSelector((state) => state.user.user) as IUser;
-  const { _id } = user;
+  const _id = user ? user._id : '';
   const waitToSeatIDs = waitToSeat.map((u) => u._id);
 
   const [currentValue, setCurrentValue] = useState(BLIND_SIZE);
