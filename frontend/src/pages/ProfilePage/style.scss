@@ -10,7 +10,8 @@
   flex-direction: column;
   &__title {
     align-self: center;
-    margin-bottom: 40px;
+    margin: 40px 0;
+    //margin-bottom: 40px;
   }
   &__wrap {
     display: grid;
