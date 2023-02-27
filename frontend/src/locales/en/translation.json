@@ -35,5 +35,7 @@
   "upToBankroll": "Top Up the Balance",
   "profile": "PLAYER PROFILE",
   "bankroll": "Bankroll",
-  "backTable": "Go to the Table"
+  "backTable": "Go to the Table",
+	"Bet": "Bet",
+	"Home": "Home"
 }

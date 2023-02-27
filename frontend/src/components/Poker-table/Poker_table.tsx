@@ -149,7 +149,7 @@ const Poker_table = (): JSX.Element => {
             </div>
             <div className='bank__container'>
               <img src={require('../../assets/chip-bank.png')} alt='chip bank' />
-              <h4>{bank}$</h4>
+              <h4>{bank} $</h4>
             </div>
             {Boolean(usersAtTable.length) && (
               <div className='players-in-deal'>
