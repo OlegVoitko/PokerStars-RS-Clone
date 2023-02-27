@@ -26,7 +26,7 @@ const Header = (): JSX.Element => {
             {t('profile')}
           </Link>
           <Link className='header__link' to={'/'}>
-            Home
+            {t('Home')}
           </Link>
           <Link className='header__link' to={'/table'}>
             {t('backTable')}
