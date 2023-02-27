@@ -24,6 +24,7 @@ const SeatBtn = () => {
 
   const handleSeat = (user: IUser): void => {
     // toggleSeatBtn();
+    console.log(user);
     dispatch(seatUserThunk(user));
   };
 

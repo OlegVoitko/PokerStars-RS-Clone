@@ -5,23 +5,23 @@ import { START_BANKROLL } from '../utils/constants';
 import { userSeatOut } from './gameplaySlice';
 
 const initialState: IUserState = {
-  // user: null,
-  user: {
-    _id: String(Date.now()),
-    nickname: 'Guest',
-    bankroll: START_BANKROLL,
-    gameState: {
-      hand: [],
-      stack: START_BANKROLL,
-      state: 'wait',
-      bet: 0,
-      roundBets: 0,
-      action: false,
-      bestCombination: [],
-      restBestCards: [],
-      combinationRating: 0,
-    },
-  },
+  user: null,
+  // user: {
+  //   _id: String(Date.now()),
+  //   nickname: 'Guest',
+  //   bankroll: START_BANKROLL,
+  //   gameState: {
+  //     hand: [],
+  //     stack: START_BANKROLL,
+  //     state: 'wait',
+  //     bet: 0,
+  //     roundBets: 0,
+  //     action: false,
+  //     bestCombination: [],
+  //     restBestCards: [],
+  //     combinationRating: 0,
+  //   },
+  // },
   status: null,
   error: null,
 };
@@ -121,6 +121,12 @@ const userSlice = createSlice({
         state.user.gameState = payload;
       }
     },
+    upBalance: (state) => {
+      if (state.user) {
+        state.user.bankroll += START_BANKROLL;
+        state.user.gameState.stack += START_BANKROLL;
+      }
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(registerUserThunk.pending, (state) => {
@@ -148,11 +154,14 @@ const userSlice = createSlice({
       state.error = 'Invalid login or password';
     });
     builder.addCase(userSeatOut, (state, action) => {
-      if (state.user) state.user.bankroll = action.payload.gameState.stack;
+      if (state.user) {
+        state.user.bankroll = action.payload.gameState.stack;
+        state.user.gameState.stack = action.payload.gameState.stack;
+      }
     });
   },
 });
 
-export const { registerUser, setUserGamestate } = userSlice.actions;
+export const { registerUser, setUserGamestate, upBalance } = userSlice.actions;
 
 export default userSlice.reducer;

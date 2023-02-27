@@ -31,5 +31,9 @@
 	"raise to": "Raise to",
 	"seat": "Seat",
 	"seatOut": "SeatOut",
-	"Send": "Send"
+	"Send": "Send",
+  "upToBankroll": "Top Up the Balance",
+  "profile": "PLAYER PROFILE",
+  "bankroll": "Bankroll",
+  "backTable": "Go to the Table"
 }

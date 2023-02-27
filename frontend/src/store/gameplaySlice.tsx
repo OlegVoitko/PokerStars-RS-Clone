@@ -1,8 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { IRestartDeal, socket } from '../socket';
-import { ICard, IUser, IGameplay } from '../types/interfaces';
+import { IUser, IGameplay } from '../types/interfaces';
 import { deal, findBestCombination, getWinner } from '../utils/gameHelper';
-import { current } from '@reduxjs/toolkit';
 import { BLIND_SIZE, SMALL_BLIND_SIZE } from '../utils/constants';
 
 const initialState: IGameplay = {
