@@ -22,7 +22,7 @@ export const userTWO_PAIRS = {
     state: 'wait',
     bet: 0,
     roundBets: 0,
-    action: '',
+    action: false,
     bestCombination: [
       {
         cardFace: '4',
@@ -77,7 +77,7 @@ export const user1TWO_PAIRS = {
     state: 'wait',
     bet: 0,
     roundBets: 0,
-    action: '',
+    action: false,
     bestCombination: [
       {
         cardFace: '4',
@@ -132,7 +132,7 @@ export const user2TWO_PAIRS = {
     state: 'wait',
     bet: 0,
     roundBets: 0,
-    action: '',
+    action: false,
     bestCombination: [
       {
         cardFace: '4',
@@ -187,7 +187,7 @@ export const user3TWO_PAIRS = {
     state: 'wait',
     bet: 0,
     roundBets: 0,
-    action: '',
+    action: false,
     bestCombination: [
       {
         cardFace: '4',
@@ -242,7 +242,7 @@ export const user4TWO_PAIRS = {
     state: 'wait',
     bet: 0,
     roundBets: 0,
-    action: '',
+    action: false,
     bestCombination: [
       {
         cardFace: '4',
@@ -299,7 +299,7 @@ export const userONE_PAIR = {
     state: 'wait',
     bet: 0,
     roundBets: 0,
-    action: '',
+    action: false,
     bestCombination: [
       {
         cardFace: '9',
@@ -354,7 +354,7 @@ export const userONE_PAIR2 = {
     state: 'wait',
     bet: 0,
     roundBets: 0,
-    action: '',
+    action: false,
     bestCombination: [
       {
         cardFace: 'J',
@@ -407,7 +407,7 @@ export const userONE_PAIR3 = {
     ],
     stack: 10000,
     state: 'wait',
-       bet: 0, roundBets: 0,    action: '',
+       bet: 0, roundBets: 0,    action: false,
     bestCombination: [
       {
         cardFace: 'J',
@@ -463,7 +463,7 @@ export const userFULL_HOUSE = {
     ],
     stack: 10000,
     state: 'wait',
-       bet: 0, roundBets: 0,    action: '',
+       bet: 0, roundBets: 0,    action: false,
     bestCombination: [
       {
         cardFace: 'A',
@@ -516,7 +516,7 @@ export const userFULL_HOUSE2 = {
     ],
     stack: 10000,
     state: 'wait',
-       bet: 0, roundBets: 0,    action: '',
+       bet: 0, roundBets: 0,    action: false,
     bestCombination: [
       {
         cardFace: 'A',
@@ -569,7 +569,7 @@ export const userFULL_HOUSE3 = {
     ],
     stack: 10000,
     state: 'wait',
-       bet: 0, roundBets: 0,    action: '',
+       bet: 0, roundBets: 0,    action: false,
     bestCombination: [
       {
         cardFace: '2',
@@ -622,7 +622,7 @@ export const userFULL_HOUSE4 = {
     ],
     stack: 10000,
     state: 'wait',
-       bet: 0, roundBets: 0,    action: '',
+       bet: 0, roundBets: 0,    action: false,
     bestCombination: [
       {
         cardFace: '5',
@@ -676,7 +676,7 @@ export const userHIGH_CARD = {
     ],
     stack: 10000,
     state: 'wait',
-       bet: 0, roundBets: 0,    action: '',
+       bet: 0, roundBets: 0,    action: false,
     bestCombination: [
       {
         cardFace: 'A',
@@ -731,7 +731,7 @@ export const userSTRAIGHT = {
     ],
     stack: 10000,
     state: 'wait',
-       bet: 0, roundBets: 0,    action: '',
+       bet: 0, roundBets: 0,    action: false,
     bestCombination: [
       { cardFace: '3', suit: 'Club', value: 2 },
       { cardFace: '4', suit: 'Heart', value: 3 },
@@ -763,7 +763,7 @@ export const userSTRAIGHT2 = {
     ],
     stack: 10000,
     state: 'wait',
-       bet: 0, roundBets: 0,    action: '',
+       bet: 0, roundBets: 0,    action: false,
     bestCombination: [
       { cardFace: '8', suit: 'Club', value: 7 },
       { cardFace: '9', suit: 'Heart', value: 8 },
@@ -799,7 +799,7 @@ export const userFLUSH = {
     ],
     stack: 10000,
     state: 'wait',
-       bet: 0, roundBets: 0,    action: '',
+       bet: 0, roundBets: 0,    action: false,
     bestCombination: [
       {
         cardFace: '6',
@@ -852,7 +852,7 @@ export const userFLUSH2 = {
   ],
     stack: 10000,
     state: 'wait',
-       bet: 0, roundBets: 0,    action: '',
+       bet: 0, roundBets: 0,    action: false,
     bestCombination: [
     {
       cardFace: '4',
@@ -906,7 +906,7 @@ export const userFOUR_KIND = {
     ],
     stack: 10000,
     state: 'wait',
-       bet: 0, roundBets: 0,    action: '',
+       bet: 0, roundBets: 0,    action: false,
     bestCombination: [
       { cardFace: 'J', suit: 'Club', value: 10 },
       { cardFace: 'J', suit: 'Heart', value: 10 },
@@ -939,7 +939,7 @@ export const userFOUR_KIND2 = {
     ],
     stack: 10000,
     state: 'wait',
-       bet: 0, roundBets: 0,    action: '',
+       bet: 0, roundBets: 0,    action: false,
     bestCombination: [
       { cardFace: 'J', suit: 'Club', value: 10 },
       { cardFace: 'J', suit: 'Heart', value: 10 },
@@ -972,7 +972,7 @@ export const userFOUR_KIND3 = {
     ],
     stack: 10000,
     state: 'wait',
-       bet: 0, roundBets: 0,    action: '',
+       bet: 0, roundBets: 0,    action: false,
     bestCombination: [
       { cardFace: 'J', suit: 'Club', value: 10 },
       { cardFace: 'J', suit: 'Heart', value: 10 },
@@ -1005,7 +1005,7 @@ export const userFOUR_KIND4 = {
     ],
     stack: 10000,
     state: 'wait',
-       bet: 0, roundBets: 0,    action: '',
+       bet: 0, roundBets: 0,    action: false,
     bestCombination: [
       { cardFace: '3', suit: 'Club', value: 2 },
       { cardFace: '3', suit: 'Heart', value: 2 },
@@ -1040,7 +1040,7 @@ export const userHIGH_CARD1 = {
     ],
     stack: 10000,
     state: 'wait',
-       bet: 0, roundBets: 0,    action: '',
+       bet: 0, roundBets: 0,    action: false,
     bestCombination: [
       { cardFace: 'K', suit: 'Diamond', value: 12 }
     ],
@@ -1073,7 +1073,7 @@ export const userHIGH_CARD2 = {
     ],
     stack: 10000,
     state: 'wait',
-       bet: 0, roundBets: 0,    action: '',
+       bet: 0, roundBets: 0,    action: false,
     bestCombination: [
       { cardFace: 'K', suit: 'Diamond', value: 12 }
     ],
@@ -1106,7 +1106,7 @@ export const userHIGH_CARD3 = {
     ],
     stack: 10000,
     state: 'wait',
-       bet: 0, roundBets: 0,    action: '',
+       bet: 0, roundBets: 0,    action: false,
     bestCombination: [
       { cardFace: 'K', suit: 'Diamond', value: 12 }
     ],
@@ -1139,7 +1139,7 @@ export const userHIGH_CARD4 = {
     ],
     stack: 10000,
     state: 'wait',
-       bet: 0, roundBets: 0,    action: '',
+       bet: 0, roundBets: 0,    action: false,
     bestCombination: [
       { cardFace: 'K', suit: 'Diamond', value: 12 }
     ],
@@ -1172,7 +1172,7 @@ export const userHIGH_CARD5 = {
     ],
     stack: 10000,
     state: 'wait',
-       bet: 0, roundBets: 0,    action: '',
+       bet: 0, roundBets: 0,    action: false,
     bestCombination: [
       { cardFace: 'A', suit: 'Diamond', value: 13 }
     ],
@@ -1208,7 +1208,7 @@ export const userTWO_PAIRS1 = {
     ],
     stack: 10000,
     state: 'wait',
-       bet: 0, roundBets: 0,    action: '',
+       bet: 0, roundBets: 0,    action: false,
     bestCombination: [
       {
         cardFace: '7',
@@ -1262,7 +1262,7 @@ export const userTWO_PAIRS2 = {
     ],
     stack: 10000,
     state: 'wait',
-       bet: 0, roundBets: 0,    action: '',
+       bet: 0, roundBets: 0,    action: false,
     bestCombination: [
       {
         cardFace: 'Q',
@@ -1316,7 +1316,7 @@ export const userTWO_PAIRS3 = {
     ],
     stack: 10000,
     state: 'wait',
-       bet: 0, roundBets: 0,    action: '',
+       bet: 0, roundBets: 0,    action: false,
     bestCombination: [
       {
         cardFace: '7',
@@ -1370,7 +1370,7 @@ export const userTWO_PAIRS4 = {
     ],
     stack: 10000,
     state: 'wait',
-       bet: 0, roundBets: 0,    action: '',
+       bet: 0, roundBets: 0,    action: false,
     bestCombination: [
       {
         cardFace: '7',
@@ -1425,7 +1425,7 @@ export const userTHREE_KIND = {
     ],
     stack: 10000,
     state: 'wait',
-       bet: 0, roundBets: 0,    action: '',
+       bet: 0, roundBets: 0,    action: false,
     bestCombination: [
       {
         cardFace: '9',
@@ -1478,7 +1478,7 @@ export const userTHREE_KIND1 = {
     ],
     stack: 10000,
     state: 'wait',
-       bet: 0, roundBets: 0,    action: '',
+       bet: 0, roundBets: 0,    action: false,
     bestCombination: [
       {
         cardFace: '9',
@@ -1531,7 +1531,7 @@ export const userTHREE_KIND2 = {
     ],
     stack: 10000,
     state: 'wait',
-       bet: 0, roundBets: 0,    action: '',
+       bet: 0, roundBets: 0,    action: false,
     bestCombination: [
       {
         cardFace: 'J',

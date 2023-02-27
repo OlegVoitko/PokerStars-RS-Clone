@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import { useAppSelector } from 'hooks/hook';
 
 const Header = (): JSX.Element => {
+  const { t } = useTranslation();
   const { i18n } = useTranslation();
   const [language, setLanguage] = useState('en');
   const user = useAppSelector((state) => state.user.user);
@@ -19,14 +20,16 @@ const Header = (): JSX.Element => {
 
   return (
     <div className='header container'>
-      <nav className='header__nav'>
-        <Link className='header__link' to={'profile'}>
-          {user ? `${user.nickname} bankroll: ${user.bankroll}` : 'Login'}
-        </Link>
-        <Link className='header__link' to={'/'}>
-          Home
-        </Link>
-      </nav>
+      {user && (
+        <nav className='header__nav'>
+          <Link className='header__link' to={'profile'}>
+            {t('profile')}
+          </Link>
+          <Link className='header__link' to={'/'}>
+            Home
+          </Link>
+        </nav>
+      )}
 
       <div className='language'>
         {language === 'en' ? (

@@ -1,24 +1,23 @@
-// import { useAddPlayerMutation } from '../../services/gameplayApi';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAppDispatch, useAppSelector } from '../../hooks/hook';
 import { seatOutUserThunk } from '../../store/gameplaySlice';
-import { IUser } from '../../types/interfaces';
+import { IGameplay, IUser } from '../../types/interfaces';
 
-interface ISeatOutBtnProps {
-  toggleSeatBtn: () => void;
-}
-
-const SeatOutBtn = (props: ISeatOutBtnProps) => {
+const SeatOutBtn = () => {
   const { t } = useTranslation();
-  const { toggleSeatBtn } = props;
-  const user = useAppSelector((state) => state.gameplay.currentUser) as IUser;
+  const user = useAppSelector((state) => state.user.user) as IUser;
+  const { usersInDeal, usersAtTable } = useAppSelector(
+    (state: { gameplay: IGameplay }) => state.gameplay
+  );
+
   const dispatch = useAppDispatch();
 
   const handleSeatOut = (user: IUser) => {
-    toggleSeatBtn();
-    console.log('seatOut'); // TODO SeatOut
-    dispatch(seatOutUserThunk(user));
+    const actualUserStateTable = usersAtTable.filter((u) => u._id === user._id)[0];
+    const actualUserState =
+      usersInDeal.filter((u) => u._id === user._id)[0] || actualUserStateTable || user;
+    dispatch(seatOutUserThunk(actualUserState));
   };
 
   return (

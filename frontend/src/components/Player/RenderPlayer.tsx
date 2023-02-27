@@ -121,15 +121,17 @@ export const RenderPlayer: React.FC<PlayersProps> = ({ users, timer }) => {
                   ${winCards?.includes(JSON.stringify(u.gameState.hand[0])) ? 'win-card' : ''}
                   `}
                 >
-                  <CardWrapper data-suit={u.gameState.hand[0].suit}>
-                    <span className='cardInfo top'>
-                      <div>{u.gameState.hand[0].cardFace}</div>
-                      <Suit suit={u.gameState.hand[0].suit} />
-                    </span>
-                    <div className='cardSuit'>
-                      <Suit suit={u.gameState.hand[0].suit} />
-                    </div>
-                  </CardWrapper>
+                  {u.gameState.hand.length > 0 && (
+                    <CardWrapper data-suit={u.gameState.hand[0].suit}>
+                      <span className='cardInfo top'>
+                        <div>{u.gameState.hand[0].cardFace}</div>
+                        <Suit suit={u.gameState.hand[0].suit} />
+                      </span>
+                      <div className='cardSuit'>
+                        <Suit suit={u.gameState.hand[0].suit} />
+                      </div>
+                    </CardWrapper>
+                  )}
                 </div>
                 <div
                   className={`playing-card2 ${
@@ -138,15 +140,17 @@ export const RenderPlayer: React.FC<PlayersProps> = ({ users, timer }) => {
                   ${winCards?.includes(JSON.stringify(u.gameState.hand[1])) ? 'win-card' : ''}
                   `}
                 >
-                  <CardWrapper data-suit={u.gameState.hand[1].suit}>
-                    <span className='cardInfo top'>
-                      <div>{u.gameState.hand[1].cardFace}</div>
-                      <Suit suit={u.gameState.hand[1].suit} />
-                    </span>
-                    <div className='cardSuit'>
-                      <Suit suit={u.gameState.hand[1].suit} />
-                    </div>
-                  </CardWrapper>
+                  {u.gameState.hand.length > 0 && (
+                    <CardWrapper data-suit={u.gameState.hand[1].suit}>
+                      <span className='cardInfo top'>
+                        <div>{u.gameState.hand[1].cardFace}</div>
+                        <Suit suit={u.gameState.hand[1].suit} />
+                      </span>
+                      <div className='cardSuit'>
+                        <Suit suit={u.gameState.hand[1].suit} />
+                      </div>
+                    </CardWrapper>
+                  )}
                 </div>
               </>
             ) : (

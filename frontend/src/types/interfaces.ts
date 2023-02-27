@@ -10,7 +10,7 @@ export interface IUserGamestate {
   bet: number;
   roundBets: number;
   state: string;
-  action: string; //'check' | 'fold' | 'call'
+  action: boolean;
   bestCombination: ICard[];
   restBestCards: ICard[];
   combinationRating: number;
@@ -56,7 +56,7 @@ export interface IGameplay {
   waitToSeat: IUser[];
   loading: 'idle' | 'pending' | 'succeeded' | 'failed';
   indexOfSB: number;
-  winners: IUser[] | null;
+  winners: IUser[];
 }
 
 export interface IHand {

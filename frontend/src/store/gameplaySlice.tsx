@@ -1,8 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { IRestartDeal, socket } from '../socket';
-import { ICard, IUser, IGameplay } from '../types/interfaces';
+import { IUser, IGameplay } from '../types/interfaces';
 import { deal, findBestCombination, getWinner } from '../utils/gameHelper';
-import { current } from '@reduxjs/toolkit';
 import { BLIND_SIZE, SMALL_BLIND_SIZE } from '../utils/constants';
 
 const initialState: IGameplay = {
@@ -23,7 +22,7 @@ const initialState: IGameplay = {
   waitToSeat: [],
   loading: 'idle',
   indexOfSB: -1,
-  winners: null,
+  winners: [],
 };
 
 const cutBlinds = (state: IGameplay) => {
@@ -71,19 +70,23 @@ const toNextStage = (state: IGameplay) => {
     case 1:
       state.showCards.push(...state.board.slice(0, 3));
       state.currentBet = 0;
+      state.usersInDeal.forEach((u) => (u.gameState.action = false));
       break;
     case 2:
       state.showCards.push(state.board[3]);
       state.currentBet = 0;
+      state.usersInDeal.forEach((u) => (u.gameState.action = false));
       break;
     case 3:
       state.showCards.push(state.board[4]);
       state.currentBet = 0;
+      state.usersInDeal.forEach((u) => (u.gameState.action = false));
       break;
     case 4: {
       state.currentUser = null;
       state.currentBet = 0;
-      const winners = getWinner(current(state.usersInDeal));
+      const winners = getWinner(state.usersInDeal);
+      // const winners = getWinner(current(state.usersInDeal));
       state.winners = winners;
       const statesInDeal = state.usersInDeal.map((u) => u.gameState.state);
       if (!statesInDeal.includes('ALLIN')) {
@@ -118,17 +121,6 @@ const toNextStage = (state: IGameplay) => {
       state.bank = 0;
       break;
     }
-    case 999: {
-      state.currentUser = null;
-      state.currentBet = 0;
-      const winners = getWinner(current(state.usersInDeal));
-      state.winners = winners;
-      divideBank(state);
-      state.showCards = state.board;
-      // state.showCards = [{ cardFace: 'ALLIN', value: 0, suit: '' }];
-      state.bank = 0;
-      break;
-    }
     default:
       console.log('something went wrong');
   }
@@ -144,9 +136,13 @@ export const seatOutUserThunk = createAsyncThunk('game/seatOutUser', async (user
   return user;
 });
 
-export const checkActionFetch = createAsyncThunk('game/checkAction', async () => {
-  socket.emit('game:checkAction');
-});
+export const checkActionFetch = createAsyncThunk(
+  'game/checkAction',
+  async (data: { _id: string }) => {
+    socket.emit('game:checkAction', data);
+    return data;
+  }
+);
 
 export const betActionThunk = createAsyncThunk(
   'game/checkAction',
@@ -186,51 +182,64 @@ const gameplaySlice = createSlice({
     },
     userSeatOut: (state, { payload }: { payload: IUser }) => {
       const userInDeal = state.usersInDeal.find((user) => user._id === payload._id);
-      const userInWaitToSeat = state.waitToSeat.find((user) => user._id === payload._id);
-      if (userInWaitToSeat) {
-        state.waitToSeat = state.waitToSeat.filter((user) => user._id !== payload._id);
-        // return;
-      }
+      // const userInWaitToSeat = state.waitToSeat.find((user) => user._id === payload._id);
+      // if (userInWaitToSeat) {
+      //   state.waitToSeat = state.waitToSeat.filter((user) => user._id !== payload._id);
+      //   // return;
+      // }
+      if (userInDeal?.gameState.action === true) state.usersCompleteAction -= 1;
       if (!userInDeal) {
         state.usersAtTable = state.usersAtTable.filter((user) => user._id !== payload._id);
+        state.waitToSeat = state.waitToSeat.filter((user) => user._id !== payload._id);
         return;
       }
+      state.waitToSeat = state.waitToSeat.filter((user) => user._id !== payload._id);
       state.usersAtTable = state.usersAtTable.filter((user) => user._id !== payload._id);
-      state.usersInDeal = state.usersAtTable;
+      state.usersInDeal = state.usersInDeal.filter((user) => user._id !== payload._id);
       if (state.usersAtTable.length < 2) {
         state.isDeal = false;
       }
       if (state.usersCount === 2) {
+        state.usersCount -= 1;
         state.currentUser = null;
         state.stage = 100;
         toNextStage(state);
-        //TODO add win message + restart game
         return;
       }
       state.usersCount -= 1;
       if (state.usersCompleteAction === state.usersCount) {
         state.stage += 1;
         state.usersCompleteAction = 0;
-        state.activePosition = 0;
-        state.currentUser = state.usersInDeal[0];
+        state.activePosition = state.usersInDeal[state.indexOfSB] ? state.indexOfSB : 0;
+        state.currentUser = state.usersInDeal[state.activePosition];
         state.usersInDeal.forEach((u) => (u.gameState.bet = 0));
+        state.usersAtTable.forEach((u) => (u.gameState.bet = 0));
         toNextStage(state);
         return;
       }
-
-      const newActivePosition = state.activePosition > state.usersCount ? 0 : state.activePosition;
-      state.currentUser = state.usersInDeal[newActivePosition];
-      state.activePosition = newActivePosition;
+      if (payload._id === state.currentUser?._id) {
+        let nextUser = state.activePosition === state.usersCount ? 0 : state.activePosition;
+        while (state.usersInDeal[nextUser].gameState.state === 'ALLIN') {
+          nextUser = nextUser + 1 > state.usersCount - 1 ? 0 : nextUser + 1;
+        }
+        state.currentUser = state.usersInDeal[nextUser];
+        state.activePosition = nextUser;
+      }
     },
-    checkAction: (state) => {
+    checkAction: (state, { payload }: { payload: { _id: string } }) => {
+      const { _id } = payload;
+      const currentUser = state.usersInDeal.find((u) => u._id === _id) as IUser;
+      currentUser.gameState.action = true;
       state.usersCompleteAction += 1;
       if (state.usersCompleteAction === state.usersCount) {
-        let nextUser = 0;
+        let nextUser = state.indexOfSB === state.usersCount ? 0 : state.indexOfSB;
         while (state.usersInDeal[nextUser].gameState.state === 'ALLIN') {
           nextUser = nextUser + 1 > state.usersCount - 1 ? 0 : nextUser + 1;
         }
         state.stage += 1;
         state.usersCompleteAction = state.usersAllin;
+        // state.activePosition = nextUser;
+        // state.currentUser = state.usersInDeal[nextUser];
         state.activePosition = nextUser;
         state.currentUser = state.usersInDeal[nextUser];
         state.usersInDeal.forEach((u) => (u.gameState.bet = 0));
@@ -248,9 +257,11 @@ const gameplaySlice = createSlice({
       state.usersCompleteAction = 1 + state.usersAllin;
       const currentUser = state.usersInDeal.find(({ _id }) => _id === payload._id) as IUser;
       const currentUserTable = state.usersAtTable.find(({ _id }) => _id === payload._id) as IUser; // To save stack state after restart deal
-
+      state.usersInDeal.forEach((u) => (u.gameState.action = false));
       currentUserTable.gameState.stack -= payload.betSize;
+      currentUserTable.gameState.action = true;
       currentUser.gameState.stack -= payload.betSize;
+      currentUser.gameState.action = true;
       let nextUser = state.activePosition + 1 > state.usersCount - 1 ? 0 : state.activePosition + 1;
       while (state.usersInDeal[nextUser].gameState.state === 'ALLIN') {
         nextUser = nextUser + 1 > state.usersCount - 1 ? 0 : nextUser + 1;
@@ -283,6 +294,7 @@ const gameplaySlice = createSlice({
       currentUser.gameState.bet += callSize;
       currentUser.gameState.roundBets += callSize;
       currentUser.gameState.stack -= callSize;
+      currentUser.gameState.action = true;
       currentUserTable.gameState.stack -= callSize;
       state.bank += callSize;
       state.usersCompleteAction += 1;
@@ -302,12 +314,14 @@ const gameplaySlice = createSlice({
         return;
       }
       if (state.usersCompleteAction === state.usersCount) {
-        let nextUser = 0;
+        let nextUser = state.indexOfSB === state.usersCount ? 0 : state.indexOfSB;
         while (state.usersInDeal[nextUser].gameState.state === 'ALLIN') {
           nextUser = nextUser + 1 > state.usersCount - 1 ? 0 : nextUser + 1;
         }
         state.stage += 1;
         state.usersCompleteAction = state.usersAllin;
+        // state.activePosition = nextUser;
+        // state.currentUser = state.usersInDeal[nextUser];
         state.activePosition = nextUser;
         state.currentUser = state.usersInDeal[nextUser];
         state.userOptions = ['fold', 'check', 'call', 'raise'];
@@ -332,12 +346,23 @@ const gameplaySlice = createSlice({
         return;
       }
       state.usersCount -= 1;
+      if (
+        state.usersCompleteAction === state.usersAllin + 1 ||
+        state.usersCount === state.usersAllin
+      ) {
+        state.stage = 4;
+        state.showCards = state.board.slice(0, 5);
+        toNextStage(state);
+        return;
+      }
       if (state.usersCompleteAction === state.usersCount) {
         state.stage += 1;
         state.userOptions = ['fold', 'check', 'call', 'raise'];
         state.usersCompleteAction = state.usersAllin;
-        state.activePosition = 0; // calculate position when all
-        state.currentUser = state.usersInDeal[0];
+        // state.activePosition = 0; // calculate position when all
+        // state.currentUser = state.usersInDeal[0];
+        state.activePosition = state.usersInDeal[state.indexOfSB] ? state.indexOfSB : 0;
+        state.currentUser = state.usersInDeal[state.activePosition];
         state.usersInDeal.forEach((u) => (u.gameState.bet = 0));
         state.usersAtTable.forEach((u) => (u.gameState.bet = 0));
         toNextStage(state);
@@ -350,6 +375,8 @@ const gameplaySlice = createSlice({
       }
       state.currentUser = state.usersInDeal[nextUser];
       state.activePosition = nextUser;
+      // state.activePosition = state.usersInDeal[state.indexOfSB] ? state.indexOfSB : 0;
+      // state.currentUser = state.usersInDeal[state.activePosition];
     },
     restartDeal: (state, { payload }: { payload: IRestartDeal }) => {
       const { deck, usersAtTable, indexOfSB } = payload;
@@ -359,7 +386,7 @@ const gameplaySlice = createSlice({
       state.activePosition = 0;
       state.usersCompleteAction = 0;
       state.usersAllin = 0;
-      state.winners = null;
+      state.winners = [];
       state.userOptions = ['fold', 'call', 'check', 'rais'];
       const ids = usersAtTable.map(({ _id }) => _id);
       state.waitToSeat.forEach((u) => {
@@ -390,6 +417,7 @@ const gameplaySlice = createSlice({
         u.gameState.state = 'ACTIVE';
         u.gameState.bet = 0;
         u.gameState.roundBets = 0;
+        u.gameState.action = false;
       });
       state.usersInDeal.forEach((user) => {
         const { bestCombination, restBestCards, combinationRating } = findBestCombination(

@@ -57,7 +57,6 @@ const run = async () => {
   app.post('/signup', async (req, res) => {
     const { nickname, password } = req.body;
     const guess = await User.findOne({ nickname });
-    console.log(guess);
     if (guess) {
       res.status(400).send({ error: 'User already Exist' });
       return;
@@ -81,7 +80,6 @@ const run = async () => {
     if (!isValidPassword) {
       return res.status(400).send({ error: 'Invalid login or password' });
     }
-    console.log(user);
     const token = generateAccessToken(user._id);
     res.status(200).send({ _id: user._id, bankroll: user.bankroll, token });
     return;
@@ -97,15 +95,15 @@ const run = async () => {
     //game
     socket.on('game:seatUser', (user) => {
       state.users.push(user);
-
+      console.log(state.users);
       io.emit('game:seatUser', user);
     });
     socket.on('game:seatOutUser', async (user) => {
       console.log(user);
       state.users = state.users.filter((u) => u._id !== user._id);
-			if(user.nickname === 'Guest') {
-				return io.emit('game:seatOutUser', user);
-			}
+      if (user.nickname === 'Guest') {
+        return io.emit('game:seatOutUser', user);
+      }
       const userDB = await User.findOne({ _id: user._id });
       console.log(userDB);
       userDB.bankroll = user.gameState.stack;

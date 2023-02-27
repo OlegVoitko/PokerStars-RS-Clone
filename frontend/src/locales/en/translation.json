@@ -32,5 +32,12 @@
 	"seat": "Seat",
 	"seatOut": "SeatOut",
 	"Send": "Send",
+<<<<<<< HEAD
 	"Bet": "Bet"
+=======
+  "upToBankroll": "Top Up the Balance",
+  "profile": "PLAYER PROFILE",
+  "bankroll": "Bankroll",
+  "backTable": "Go to the Table"
+>>>>>>> develop
 }

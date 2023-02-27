@@ -16,7 +16,7 @@ const initialState: IUserState = {
   //     state: 'wait',
   //     bet: 0,
   //     roundBets: 0,
-  //     action: '',
+  //     action: false,
   //     bestCombination: [],
   //     restBestCards: [],
   //     combinationRating: 0,
@@ -42,7 +42,7 @@ export const registerUserThunk = createAsyncThunk(
         throw new Error('sth went wrong');
       }
       const data = await response.json();
-      console.log(data);
+      // console.log(data);
       const userData = {
         _id: data._id,
         nickname: user.nickname,
@@ -53,7 +53,7 @@ export const registerUserThunk = createAsyncThunk(
           state: 'wait',
           bet: 0,
           roundBets: 0,
-          action: '',
+          action: false,
           bestCombination: [],
           restBestCards: [],
           combinationRating: 0,
@@ -94,7 +94,7 @@ export const loginUserThunk = createAsyncThunk(
           state: 'wait',
           bet: 0,
           roundBets: 0,
-          action: '',
+          action: false,
           bestCombination: [],
           restBestCards: [],
           combinationRating: 0,
@@ -119,6 +119,12 @@ const userSlice = createSlice({
     setUserGamestate: (state, { payload }: { payload: IUserGamestate }) => {
       if (state.user) {
         state.user.gameState = payload;
+      }
+    },
+    upBalance: (state) => {
+      if (state.user) {
+        state.user.bankroll += START_BANKROLL;
+        state.user.gameState.stack += START_BANKROLL;
       }
     },
   },
@@ -148,11 +154,14 @@ const userSlice = createSlice({
       state.error = 'Invalid login or password';
     });
     builder.addCase(userSeatOut, (state, action) => {
-      if (state.user) state.user.bankroll = action.payload.gameState.stack;
+      if (state.user) {
+        state.user.bankroll = action.payload.gameState.stack;
+        state.user.gameState.stack = action.payload.gameState.stack;
+      }
     });
   },
 });
 
-export const { registerUser, setUserGamestate } = userSlice.actions;
+export const { registerUser, setUserGamestate, upBalance } = userSlice.actions;
 
 export default userSlice.reducer;
