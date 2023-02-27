@@ -1,0 +1,29 @@
+{
+  "files": {
+    "main.css": "/static/css/main.cbdecf6f.css",
+    "main.js": "/static/js/main.baadda3f.js",
+    "static/media/background_music.mp3": "/static/media/background_music.93e116f09321a7e633bf.mp3",
+    "static/media/bakcpng-1.png": "/static/media/bakcpng-1.d938c0830217f6393247.png",
+    "static/media/poker_table.jpg": "/static/media/poker_table.763047e8ad1ba66b2c2a.jpg",
+    "static/media/cardFacce.jpg": "/static/media/cardFacce.524cd9717711a18b353c.jpg",
+    "static/media/background_start_page1.jpg": "/static/media/background_start_page1.90e9a719143e04b5c755.jpg",
+    "static/media/mentor.png": "/static/media/mentor.668d2d4c2868adf86e9b.png",
+    "static/media/works.png": "/static/media/works.7e5280b57dfabeae57f0.png",
+    "static/media/chip-bank.png": "/static/media/chip-bank.385b8b992ca35fbfb880.png",
+    "static/media/rs_school_js.svg": "/static/media/rs_school_js.8944fbea4fa6b225597c.svg",
+    "static/media/icons8-github.svg": "/static/media/icons8-github.b2294bccaa20da50b7d5.svg",
+    "static/media/united-kingdom-flag-icon.svg": "/static/media/united-kingdom-flag-icon.8411a74a2d01099b9cd8.svg",
+    "static/media/russia-flag-icon.svg": "/static/media/russia-flag-icon.b011ecd6d2f81948e336.svg",
+    "static/media/Clubs.svg": "/static/media/Clubs.e6dd2a0287463b9e5ab8e0bc1e33b27b.svg",
+    "static/media/Spades.svg": "/static/media/Spades.cd28377be86d82fe910fbd33225a0097.svg",
+    "index.html": "/index.html",
+    "static/media/Diamonds.svg": "/static/media/Diamonds.6887fe22e118ce795b368849390ea6a7.svg",
+    "static/media/Hearts.svg": "/static/media/Hearts.3f1b9c5744c576b7fd6a3dd25549bc2c.svg",
+    "main.cbdecf6f.css.map": "/static/css/main.cbdecf6f.css.map",
+    "main.baadda3f.js.map": "/static/js/main.baadda3f.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.cbdecf6f.css",
+    "static/js/main.baadda3f.js"
+  ]
+}
