@@ -64,16 +64,32 @@
   transform: rotate(50deg);
 }
 
-.logo__rsSchool {
-  background-image: url(../assets/icons/rs_school_js.svg);
+.logo__footer {
+  //background-image: url(../assets/icons/rs_school_js.svg);
   background-repeat: no-repeat;
   width: 110px;
   height: 50px;
   display: block;
   position: absolute;
-  right: 2%;
+  //right: 2%;
   bottom: 2%;
   cursor: pointer;
+  &_rsSchool {
+    right: 2%;
+    background-image: url(../assets/icons/rs_school_js.svg);
+  }
+  &_github_1 {
+    right: 13%;
+    background-image: url(../assets/icons/icons8-github.svg);
+  }
+  &_github_2 {
+    right: 10%;
+    background-image: url(../assets/icons/icons8-github.svg);
+  }
+  &_github_3 {
+    right: 7%;
+    background-image: url(../assets/icons/icons8-github.svg);
+  }
 }
 
 .form-container {

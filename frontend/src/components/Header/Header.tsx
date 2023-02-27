@@ -28,6 +28,9 @@ const Header = (): JSX.Element => {
           <Link className='header__link' to={'/'}>
             Home
           </Link>
+          <Link className='header__link' to={'/table'}>
+            {t('backTable')}
+          </Link>
         </nav>
       )}
 

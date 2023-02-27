@@ -11,6 +11,7 @@ const SoundOnOff = (): JSX.Element => {
   useEffect(() => {
     if (isPlaying) {
       audioEl.current?.play();
+      (audioEl.current as HTMLAudioElement).loop = true;
     } else {
       audioEl.current?.pause();
     }
