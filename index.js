@@ -38,7 +38,6 @@ const run = async () => {
   );
   try {
     await mongoose.connect(db);
-    console.log('db connct');
     const users = await User.find();
   } catch (e) {
     console.log(e);
@@ -62,7 +61,6 @@ const run = async () => {
       return;
     }
     const hashPassword = await bcrypt.hash(password, 6);
-    console.log(hashPassword);
     const newUser = new User({ nickname, password: hashPassword, bankroll: 10000 });
     await newUser.save();
     const token = generateAccessToken(newUser._id);
@@ -95,19 +93,15 @@ const run = async () => {
     //game
     socket.on('game:seatUser', (user) => {
       state.users.push(user);
-      console.log(state.users);
       io.emit('game:seatUser', user);
     });
     socket.on('game:seatOutUser', async (user) => {
-      console.log(user);
       state.users = state.users.filter((u) => u._id !== user._id);
       if (user.nickname === 'Guest') {
         return io.emit('game:seatOutUser', user);
       }
       const userDB = await User.findOne({ _id: user._id });
-      console.log(userDB);
       userDB.bankroll = user.gameState.stack;
-      console.log(userDB);
       await userDB.save();
       io.emit('game:seatOutUser', user);
     });
@@ -134,7 +128,6 @@ const run = async () => {
       state.users = state.users.filter((u) => u._id !== socket.handshake.auth.user._id);
 
       io.emit('game:seatOutUser', socket.handshake.auth.user);
-      console.log('-----------------');
     });
   });
 

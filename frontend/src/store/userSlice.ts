@@ -42,7 +42,6 @@ export const registerUserThunk = createAsyncThunk(
         throw new Error('sth went wrong');
       }
       const data = await response.json();
-      // console.log(data);
       const userData = {
         _id: data._id,
         nickname: user.nickname,
@@ -83,7 +82,6 @@ export const loginUserThunk = createAsyncThunk(
         throw new Error('loginUserThunk sth went wrong');
       }
       const data = await response.json();
-      console.log(data);
       const userData = {
         _id: data._id,
         nickname: user.nickname,
@@ -100,7 +98,6 @@ export const loginUserThunk = createAsyncThunk(
           combinationRating: 0,
         },
       };
-      console.log(userData);
       dispatch(registerUser(userData));
       connectSocket(userData);
     } catch (error) {

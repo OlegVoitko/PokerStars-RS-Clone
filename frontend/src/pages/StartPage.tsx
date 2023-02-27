@@ -6,8 +6,6 @@ import { Outlet } from 'react-router-dom';
 import './StartPage.scss';
 
 const StartPage: FC = () => {
-  // const { user } = useSelector((state: RootState) => state.user);
-  // console.log('check slice', user);
   return (
     <>
       <div className='start-page-container'>
