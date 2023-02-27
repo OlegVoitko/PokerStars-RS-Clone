@@ -7,9 +7,9 @@
 - The server works with 2 players. 3 or more players need to check locally
 
 # Locally
-git clone https://github.com/OlegVoitko/PokerStars-RS-Clone
-npm install
-cd frontend
-npm install
-cd ..
-npm run dev
+git clone https://github.com/OlegVoitko/PokerStars-RS-Clone  
+npm install  
+cd frontend  
+npm install  
+cd ..  
+npm run dev  
