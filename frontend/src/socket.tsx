@@ -46,7 +46,7 @@ interface ClientToServerEvents {
 export let socket: Socket<ServerToClientEvents, ClientToServerEvents>;
 
 export const connectSocket = (user: IUser) => {
-  socket = io('http://localhost:8000/', {
+  socket = io('http://localhost:3000/', {
     auth: {
       user,
     },

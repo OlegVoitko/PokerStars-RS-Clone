@@ -25,7 +25,6 @@ test('FullHouse', () => {
     data.boardFullHouse,
     data.handFullHouse
   );
-  console.log(bestCombination);
   expect(combinationRating).toBe(POKER_COMBINATIONS.FULL_HOUSE);
 });
 
@@ -34,7 +33,6 @@ test('FullHouse with two pairs', () => {
     data.boardFullHouse2,
     data.handFullHouse2
   );
-  console.log(bestCombination);
   expect(combinationRating).toBe(POKER_COMBINATIONS.FULL_HOUSE);
 });
 
@@ -43,7 +41,6 @@ test('FullHouse with two pairs', () => {
     data.boardFullHouse2,
     data.handFullHouse2
   );
-  console.log(bestCombination);
   expect(combinationRating).toBe(POKER_COMBINATIONS.FULL_HOUSE);
 });
 

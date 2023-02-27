@@ -30,7 +30,7 @@ export const registerUserThunk = createAsyncThunk(
   'userSlice/registerUserThunk',
   async (user: INewUser, { rejectWithValue, dispatch }) => {
     try {
-      const response = await fetch('http://localhost:8000/signup', {
+      const response = await fetch('http://localhost:3000/signup', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -42,7 +42,6 @@ export const registerUserThunk = createAsyncThunk(
         throw new Error('sth went wrong');
       }
       const data = await response.json();
-      // console.log(data);
       const userData = {
         _id: data._id,
         nickname: user.nickname,
@@ -71,7 +70,7 @@ export const loginUserThunk = createAsyncThunk(
   'userSlice/loginUserThunk',
   async (user: INewUser, { rejectWithValue, dispatch }) => {
     try {
-      const response = await fetch('http://localhost:8000/signin', {
+      const response = await fetch('http://localhost:3000/signin', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -83,7 +82,6 @@ export const loginUserThunk = createAsyncThunk(
         throw new Error('loginUserThunk sth went wrong');
       }
       const data = await response.json();
-      console.log(data);
       const userData = {
         _id: data._id,
         nickname: user.nickname,
@@ -100,7 +98,6 @@ export const loginUserThunk = createAsyncThunk(
           combinationRating: 0,
         },
       };
-      console.log(userData);
       dispatch(registerUser(userData));
       connectSocket(userData);
     } catch (error) {
