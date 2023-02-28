@@ -49,6 +49,7 @@ const Poker_table = (): JSX.Element => {
   const user = useAppSelector((state) => state.user.user) as IUser;
   const _id = user ? user._id : '';
   const waitToSeatIDs = waitToSeat.map((u) => u._id);
+  const usersAtTableIDs = usersAtTable.map((u) => u._id);
 
   const [currentValue, setCurrentValue] = useState(BLIND_SIZE);
   const minBet = currentUser ? currentBet - currentUser.gameState.bet + BLIND_SIZE : 0;
@@ -85,11 +86,10 @@ const Poker_table = (): JSX.Element => {
     if (
       (!isDeal && waitToSeat.length > 1) ||
       stage === 4 ||
-      stage === 999 ||
       (stage === 100 && usersAtTable.length > 1) ||
       (waitToSeat.length > 1 && usersAtTable.length === 1)
     ) {
-      if (stage === 4 || stage === 999) {
+      if (stage === 4) {
         const winnersInfo = winners?.map((w) => [
           w.nickname,
           t(`PC_${w.gameState.combinationRating}`),
@@ -100,7 +100,12 @@ const Poker_table = (): JSX.Element => {
         toast.success(`${usersInDeal[0].nickname} ${t('takePot')}`);
       }
       if (waitToSeat.length && user._id === waitToSeat[0]._id) {
-        toast(`${waitToSeat.map((u) => u.nickname).join(' & ')} ${t('joinGame')}`);
+        toast(
+          `${waitToSeat
+            .filter((u) => !usersAtTableIDs.includes(u._id))
+            .map((u) => u.nickname)
+            .join(' & ')} ${t('joinGame')}`
+        );
         setTimeout(() => {
           const deck = shuffle();
           dispatch(restartDealFetch({ deck, usersAtTable, indexOfSB }));
@@ -112,7 +117,7 @@ const Poker_table = (): JSX.Element => {
         }, 3000);
       }
     }
-  }, [stage, waitToSeat, currentUser]);
+  }, [stage, waitToSeat]);
 
   const handleCheck = () => {
     dispatch(checkActionFetch({ _id }));
@@ -129,7 +134,6 @@ const Poker_table = (): JSX.Element => {
   const handleFold = () => {
     dispatch(foldActionThunk({ _id }));
   };
-  // const toggleSeatBtn = () => setIsShowSeat(!isShowSeat);
 
   return (
     <div className='poker-table__wrapper'>
