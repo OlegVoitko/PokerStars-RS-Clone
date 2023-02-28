@@ -347,7 +347,8 @@ const gameplaySlice = createSlice({
       }
       state.usersCount -= 1;
       if (
-        state.usersCompleteAction === state.usersAllin + 1 ||
+        (state.usersCompleteAction === state.usersCount &&
+          state.usersAllin + 1 === state.usersCompleteAction) ||
         state.usersCount === state.usersAllin
       ) {
         state.stage = 4;
