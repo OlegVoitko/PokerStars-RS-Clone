@@ -30,7 +30,7 @@ const EnterChoice = (): JSX.Element => {
       },
     };
     dispatch(registerUser(guest));
-    connectSocket(guest);
+    // connectSocket(guest);
     navigate('/table');
   };
 

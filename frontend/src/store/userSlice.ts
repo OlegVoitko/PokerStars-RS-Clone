@@ -59,7 +59,7 @@ export const registerUserThunk = createAsyncThunk(
         },
       };
       dispatch(registerUser(userData));
-      connectSocket(userData);
+      // connectSocket(userData);
     } catch (error) {
       return rejectWithValue(error);
     }
@@ -99,7 +99,7 @@ export const loginUserThunk = createAsyncThunk(
         },
       };
       dispatch(registerUser(userData));
-      connectSocket(userData);
+      // connectSocket(userData);
     } catch (error) {
       return rejectWithValue(error);
     }

@@ -104,11 +104,12 @@ const Poker_table = (): JSX.Element => {
         if (newUsers.length > 0) {
           toast(`${newUsers.map((u) => u.nickname).join(' & ')} ${t('joinGame')}`);
         }
-
-        setTimeout(() => {
-          const deck = shuffle();
-          dispatch(restartDealFetch({ deck, usersAtTable, indexOfSB }));
-        }, 3000);
+        const deck = shuffle();
+        dispatch(restartDealFetch({ deck, usersAtTable, indexOfSB }));
+        // setTimeout(() => {
+        //   const deck = shuffle();
+        //   dispatch(restartDealFetch({ deck, usersAtTable, indexOfSB }));
+        // }, 3000);
       } else if (usersAtTable.length && user._id === usersAtTable[0]._id) {
         setTimeout(() => {
           const deck = shuffle();

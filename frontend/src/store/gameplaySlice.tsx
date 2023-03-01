@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { IRestartDeal, socket } from '../socket';
+import { connectSocket, IRestartDeal, socket } from '../socket';
 import { IUser, IGameplay } from '../types/interfaces';
 import { deal, findBestCombination, getWinner } from '../utils/gameHelper';
 import { BLIND_SIZE, SMALL_BLIND_SIZE } from '../utils/constants';
@@ -127,12 +127,14 @@ const toNextStage = (state: IGameplay) => {
 };
 
 export const seatUserThunk = createAsyncThunk('game/seatUser', async (user: IUser) => {
-  socket.emit('game:seatUser', user);
+  await connectSocket(user);
+  await socket.emit('game:seatUser', user);
   return user;
 });
 
 export const seatOutUserThunk = createAsyncThunk('game/seatOutUser', async (user: IUser) => {
-  socket.emit('game:seatOutUser', user);
+  await socket.emit('game:seatOutUser', user);
+  await socket.disconnect();
   return user;
 });
 
@@ -227,6 +229,7 @@ const gameplaySlice = createSlice({
       }
     },
     checkAction: (state, { payload }: { payload: { _id: string } }) => {
+      if (!state.currentUser) return;
       const { _id } = payload;
       const currentUser = state.usersInDeal.find((u) => u._id === _id) as IUser;
       currentUser.gameState.action = true;
@@ -254,6 +257,7 @@ const gameplaySlice = createSlice({
       state.activePosition = nextUser;
     },
     betAction: (state, { payload }: { payload: { _id: string; betSize: number } }) => {
+      if (!state.currentUser) return;
       state.usersCompleteAction = 1 + state.usersAllin;
       const currentUser = state.usersInDeal.find(({ _id }) => _id === payload._id) as IUser;
       const currentUserTable = state.usersAtTable.find(({ _id }) => _id === payload._id) as IUser; // To save stack state after restart deal
@@ -281,6 +285,7 @@ const gameplaySlice = createSlice({
       }
     },
     callAction: (state, { payload }: { payload: { _id: string } }) => {
+      if (!state.currentUser) return;
       const { _id } = payload;
       const currentUser = state.usersInDeal.find((u) => u._id === _id) as IUser;
       const currentUserTable = state.usersAtTable.find(({ _id }) => _id === payload._id) as IUser; // To save stack state after restart deal
@@ -338,6 +343,7 @@ const gameplaySlice = createSlice({
       state.activePosition = nextUser;
     },
     foldAction: (state, { payload }: { payload: { _id: string } }) => {
+      if (!state.currentUser) return;
       state.usersInDeal = state.usersInDeal.filter((u) => u._id !== payload._id);
       if (state.usersCount === 2) {
         state.stage = 100;
@@ -435,6 +441,11 @@ const gameplaySlice = createSlice({
       state.currentUser = state.usersInDeal[state.activePosition];
       cutBlinds(state);
     },
+  },
+  extraReducers(builder) {
+    builder.addCase(seatOutUserThunk.fulfilled, () => {
+      return initialState;
+    });
   },
 });
 
