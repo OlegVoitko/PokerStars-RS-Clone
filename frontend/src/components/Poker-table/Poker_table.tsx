@@ -23,6 +23,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import SoundOnOff from './SoundOnOff';
 import { connectSocket, socket } from 'socket';
 import { useTranslation } from 'react-i18next';
+import _ from 'lodash';
 
 const Poker_table = (): JSX.Element => {
   // const [isShowSeat, setIsShowSeat] = useState(true);
@@ -49,7 +50,6 @@ const Poker_table = (): JSX.Element => {
   const user = useAppSelector((state) => state.user.user) as IUser;
   const _id = user ? user._id : '';
   const waitToSeatIDs = waitToSeat.map((u) => u._id);
-  const usersAtTableIDs = usersAtTable.map((u) => u._id);
 
   const [currentValue, setCurrentValue] = useState(BLIND_SIZE);
   const minBet = currentUser ? currentBet - currentUser.gameState.bet + BLIND_SIZE : 0;
@@ -100,12 +100,11 @@ const Poker_table = (): JSX.Element => {
         toast.success(`${usersInDeal[0].nickname} ${t('takePot')}`);
       }
       if (waitToSeat.length && user._id === waitToSeat[0]._id) {
-        toast(
-          `${waitToSeat
-            .filter((u) => !usersAtTableIDs.includes(u._id))
-            .map((u) => u.nickname)
-            .join(' & ')} ${t('joinGame')}`
-        );
+        const newUsers = _.differenceBy(waitToSeat, usersAtTable, '_id');
+        if (newUsers.length > 0) {
+          toast(`${newUsers.map((u) => u.nickname).join(' & ')} ${t('joinGame')}`);
+        }
+
         setTimeout(() => {
           const deck = shuffle();
           dispatch(restartDealFetch({ deck, usersAtTable, indexOfSB }));
