@@ -23,6 +23,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import SoundOnOff from './SoundOnOff';
 import { connectSocket, socket } from 'socket';
 import { useTranslation } from 'react-i18next';
+import _ from 'lodash';
 
 const Poker_table = (): JSX.Element => {
   // const [isShowSeat, setIsShowSeat] = useState(true);
@@ -85,11 +86,10 @@ const Poker_table = (): JSX.Element => {
     if (
       (!isDeal && waitToSeat.length > 1) ||
       stage === 4 ||
-      stage === 999 ||
       (stage === 100 && usersAtTable.length > 1) ||
       (waitToSeat.length > 1 && usersAtTable.length === 1)
     ) {
-      if (stage === 4 || stage === 999) {
+      if (stage === 4) {
         const winnersInfo = winners?.map((w) => [
           w.nickname,
           t(`PC_${w.gameState.combinationRating}`),
@@ -100,7 +100,11 @@ const Poker_table = (): JSX.Element => {
         toast.success(`${usersInDeal[0].nickname} ${t('takePot')}`);
       }
       if (waitToSeat.length && user._id === waitToSeat[0]._id) {
-        toast(`${waitToSeat.map((u) => u.nickname).join(' & ')} ${t('joinGame')}`);
+        const newUsers = _.differenceBy(waitToSeat, usersAtTable, '_id');
+        if (newUsers.length > 0) {
+          toast(`${newUsers.map((u) => u.nickname).join(' & ')} ${t('joinGame')}`);
+        }
+
         setTimeout(() => {
           const deck = shuffle();
           dispatch(restartDealFetch({ deck, usersAtTable, indexOfSB }));
@@ -112,7 +116,7 @@ const Poker_table = (): JSX.Element => {
         }, 3000);
       }
     }
-  }, [stage, waitToSeat, currentUser]);
+  }, [stage, waitToSeat]);
 
   const handleCheck = () => {
     dispatch(checkActionFetch({ _id }));
@@ -129,7 +133,6 @@ const Poker_table = (): JSX.Element => {
   const handleFold = () => {
     dispatch(foldActionThunk({ _id }));
   };
-  // const toggleSeatBtn = () => setIsShowSeat(!isShowSeat);
 
   return (
     <div className='poker-table__wrapper'>
