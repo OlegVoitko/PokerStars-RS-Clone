@@ -87,7 +87,7 @@ const Poker_table = (): JSX.Element => {
       (!isDeal && waitToSeat.length > 1) ||
       stage === 4 ||
       (stage === 100 && usersAtTable.length > 1) ||
-      (waitToSeat.length > 1 && usersAtTable.length === 1)
+      (waitToSeat.length > 1 && usersAtTable.length === 1) // maybe it's not needed
     ) {
       if (stage === 4) {
         const winnersInfo = winners?.map((w) => [
@@ -104,17 +104,16 @@ const Poker_table = (): JSX.Element => {
         if (newUsers.length > 0) {
           toast(`${newUsers.map((u) => u.nickname).join(' & ')} ${t('joinGame')}`);
         }
-
-        setTimeout(() => {
-          const deck = shuffle();
-          dispatch(restartDealFetch({ deck, usersAtTable, indexOfSB }));
-        }, 3000);
-      } else if (usersAtTable.length && user._id === usersAtTable[0]._id) {
         setTimeout(() => {
           const deck = shuffle();
           dispatch(restartDealFetch({ deck, usersAtTable, indexOfSB }));
         }, 3000);
       }
+      // } else if (usersAtTable.length && user._id === usersAtTable[0]._id) {
+      //   setTimeout(() => {
+      //     const deck = shuffle();
+      //     dispatch(restartDealFetch({ deck, usersAtTable, indexOfSB }));
+      //   }, 3000);
     }
   }, [stage, waitToSeat]);
 

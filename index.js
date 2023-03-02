@@ -93,6 +93,7 @@ const run = async () => {
     //game
     socket.on('game:seatUser', (user) => {
       state.users.push(user);
+      console.log(socket.handshake.auth.user._id);
       io.emit('game:seatUser', user);
     });
     socket.on('game:seatOutUser', async (user) => {
