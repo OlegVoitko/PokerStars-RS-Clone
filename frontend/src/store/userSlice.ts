@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { connectSocket } from 'socket';
 import { IUser, INewUser, IUserState, IUserGamestate } from '../types/interfaces';
 import { START_BANKROLL } from '../utils/constants';
-import { userSeatOut } from './gameplaySlice';
+import { seatOutUserThunk, seatUserThunk, userSeat, userSeatOut } from './gameplaySlice';
 
 const initialState: IUserState = {
   user: null,
@@ -48,7 +48,7 @@ export const registerUserThunk = createAsyncThunk(
         bankroll: data.bankroll,
         gameState: {
           hand: [],
-          stack: data.bankroll,
+          stack: 0,
           state: 'wait',
           bet: 0,
           roundBets: 0,
@@ -88,7 +88,7 @@ export const loginUserThunk = createAsyncThunk(
         bankroll: data.bankroll,
         gameState: {
           hand: [],
-          stack: data.bankroll,
+          stack: 0,
           state: 'wait',
           bet: 0,
           roundBets: 0,
@@ -150,10 +150,16 @@ const userSlice = createSlice({
       state.status = 'rejected';
       state.error = 'Invalid login or password';
     });
-    builder.addCase(userSeatOut, (state, action) => {
-      if (state.user) {
+    builder.addCase(userSeat, (state, action) => {
+      if (state.user && state.user._id === action.payload._id) {
+        state.user.gameState.stack = state.user.bankroll;
+        state.user.bankroll = 0;
+      }
+    });
+    builder.addCase(seatOutUserThunk.fulfilled, (state, action) => {
+      if (state.user && state.user._id === action.payload._id) {
         state.user.bankroll = action.payload.gameState.stack;
-        state.user.gameState.stack = action.payload.gameState.stack;
+        state.user.gameState.stack = 0;
       }
     });
   },

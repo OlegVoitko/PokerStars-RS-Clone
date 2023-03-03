@@ -180,6 +180,8 @@ const gameplaySlice = createSlice({
   initialState,
   reducers: {
     userSeat: (state, { payload }: { payload: IUser }) => {
+      const newUser = { ...payload };
+      newUser.gameState.stack = payload.bankroll;
       state.waitToSeat.push(payload);
     },
     userSeatOut: (state, { payload }: { payload: IUser }) => {
