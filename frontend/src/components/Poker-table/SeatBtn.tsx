@@ -24,7 +24,10 @@ const SeatBtn = () => {
 
   const handleSeat = (user: IUser): void => {
     // toggleSeatBtn();
-    dispatch(seatUserThunk(user));
+    const gameState = { ...user.gameState, stack: user.bankroll };
+    const newUser = { ...user, bankroll: 0, gameState };
+    console.log(newUser);
+    dispatch(seatUserThunk(newUser));
   };
 
   return (

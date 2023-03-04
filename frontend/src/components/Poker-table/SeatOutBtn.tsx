@@ -7,16 +7,15 @@ import { IGameplay, IUser } from '../../types/interfaces';
 const SeatOutBtn = () => {
   const { t } = useTranslation();
   const user = useAppSelector((state) => state.user.user) as IUser;
-  const { usersInDeal, usersAtTable } = useAppSelector(
-    (state: { gameplay: IGameplay }) => state.gameplay
-  );
+  const { usersInDeal, usersAtTable } = useAppSelector((state) => state.gameplay);
 
   const dispatch = useAppDispatch();
 
   const handleSeatOut = (user: IUser) => {
-    const actualUserStateTable = usersAtTable.filter((u) => u._id === user._id)[0];
+    const actualUserStateTable = usersAtTable.find((u) => u._id === user._id);
     const actualUserState =
-      usersInDeal.filter((u) => u._id === user._id)[0] || actualUserStateTable || user;
+      usersInDeal.find((u) => u._id === user._id) || actualUserStateTable || user;
+    console.log('seatOut', actualUserState);
     dispatch(seatOutUserThunk(actualUserState));
   };
 
