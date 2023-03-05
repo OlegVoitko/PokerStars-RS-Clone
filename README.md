@@ -22,6 +22,6 @@ npm run dev
 - Node.js
 - MongoDB
 - Socket.IO
-- i18n
+- i18next
 - SASS
 - Toastify
