@@ -1,0 +1,18 @@
+.btn {
+  cursor: pointer;
+  background-repeat: no-repeat;
+  opacity: 0.85;
+  height: 34px;
+  width: 34px;
+}
+
+.pause-btn {
+  background-image: url('../../assets/icons/note.png');
+  background-size: 31px;
+  opacity: 0.3;
+}
+
+.play-btn {
+  background-image: url('../../assets/icons/note.png');
+  background-size: 31px;
+}
