@@ -24,3 +24,4 @@ npm run dev
 - Socket.IO
 - i18n
 - SASS
+- Toastify
