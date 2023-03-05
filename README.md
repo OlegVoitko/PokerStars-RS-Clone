@@ -13,3 +13,14 @@ cd frontend
 npm install  
 cd ..  
 npm run dev  
+
+# Technology Stack
+- TypeScript
+- React
+- Redux Toolkit
+- Express.js
+- Node.js
+- MongoDB
+- Socket.IO
+- i18n
+- SASS
