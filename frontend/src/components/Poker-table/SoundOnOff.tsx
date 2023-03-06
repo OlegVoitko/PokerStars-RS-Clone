@@ -1,34 +1,34 @@
-import React, { Component } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import './SoundOnOff.scss';
 
-const song = require('../../assets/sounds/background_music.mp3');
-
-class Sound extends Component {
-  state = {
-    audio: new Audio(song),
-    isPlaying: false,
+const SoundOnOff = (): JSX.Element => {
+  const [isPlaying, setIsPlaying] = useState(false);
+  const audioEl = useRef<HTMLAudioElement>(null);
+  const playPause = () => {
+    setIsPlaying(!isPlaying);
   };
-  playPause = () => {
-    const isPlaying = this.state.isPlaying;
 
+  useEffect(() => {
     if (isPlaying) {
-      this.state.audio.pause();
+      audioEl.current?.play();
+      (audioEl.current as HTMLAudioElement).loop = true;
     } else {
-      this.state.audio.play();
+      audioEl.current?.pause();
     }
-    this.setState({ isPlaying: !isPlaying });
-  };
+  }, [isPlaying]);
 
-  render() {
-    return (
+  return (
+    <>
       <div className='poker__header'>
-        {/* <p>{this.state.isPlaying ? 'Song is Playing' : 'Song is Paused'}</p> */}
-        <button className='background__button' onClick={this.playPause}>
-          Play | Pause
-        </button>
+        {isPlaying ? (
+          <div className='btn play-btn' onClick={playPause}></div>
+        ) : (
+          <div className='btn pause-btn' onClick={playPause}></div>
+        )}
+        <audio src={require('../../assets/sounds/background_music.mp3')} ref={audioEl}></audio>
       </div>
-    );
-  }
-}
+    </>
+  );
+};
 
-export default Sound;
+export default SoundOnOff;

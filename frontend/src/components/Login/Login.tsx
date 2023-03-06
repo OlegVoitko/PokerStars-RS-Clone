@@ -47,7 +47,7 @@ const Login = (): JSX.Element => {
           placeholder={t('password')}
           type='password'
           className='auth-form__input'
-          {...register('password', { required: true, minLength: 6 })}
+          {...register('password', { required: true, minLength: 4 })}
         />
         {errors.password && errors.password.type === 'required' && (
           <span className='form__error-msg'>{t('required_field')}</span>

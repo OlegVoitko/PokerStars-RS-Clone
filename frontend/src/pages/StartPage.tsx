@@ -6,8 +6,6 @@ import { Outlet } from 'react-router-dom';
 import './StartPage.scss';
 
 const StartPage: FC = () => {
-  // const { user } = useSelector((state: RootState) => state.user);
-  // console.log('check slice', user);
   return (
     <>
       <div className='start-page-container'>
@@ -27,8 +25,17 @@ const StartPage: FC = () => {
         <div className='form-container'>
           <Outlet />
         </div>
+        <Link target='_blank' to='https://github.com/OlegVoitko'>
+          <span className='logo__footer logo__footer_github_1'></span>
+        </Link>
+        <Link target='_blank' to='https://github.com/Maksim1509'>
+          <span className='logo__footer logo__footer_github_2'></span>
+        </Link>
+        <Link target='_blank' to='https://github.com/Vi-user'>
+          <span className='logo__footer logo__footer_github_3'></span>
+        </Link>
         <Link target='_blank' to='https://rs.school/js/'>
-          <span className='logo__rsSchool'></span>
+          <span className='logo__footer logo__footer_rsSchool'></span>
         </Link>
       </div>
     </>

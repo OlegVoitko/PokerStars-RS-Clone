@@ -5,6 +5,7 @@ import { registerUser } from '../../store/userSlice';
 import { useAppDispatch } from '../../hooks/hook';
 import './EnterChoice.scss';
 import { START_BANKROLL } from '../../utils/constants';
+import { connectSocket } from 'socket';
 
 const EnterChoice = (): JSX.Element => {
   const dispatch = useAppDispatch();
@@ -21,13 +22,15 @@ const EnterChoice = (): JSX.Element => {
         stack: START_BANKROLL,
         state: 'wait',
         bet: 0,
-        action: '',
+        roundBets: 0,
+        action: false,
         bestCombination: [],
         restBestCards: [],
         combinationRating: 0,
       },
     };
     dispatch(registerUser(guest));
+    // connectSocket(guest);
     navigate('/table');
   };
 

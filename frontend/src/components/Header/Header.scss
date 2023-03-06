@@ -1,13 +1,47 @@
-.language {
+.container {
+  max-width: 1920px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.header {
   position: fixed;
-  right: 2%;
-  top: 2%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  &__nav {
+    display: flex;
+    column-gap: 15px;
+    width: 90%;
+    justify-content: space-between;
+  }
+  &__link {
+    color: #ffffff;
+    text-decoration: none;
+    cursor: pointer;
+    text-transform: uppercase;
+    font-weight: 500;
+    font-style: 24px;
+    transition: 0.3s;
+    &:hover {
+      color: #006aff;
+    }
+  }
+}
+
+.language {
   height: 3rem;
-  z-index: 5;
-  //background-image: url('../assets/icons/united-kingdom-flag-icon.svg');
 }
 
 .language-option {
-  background: url('../../assets/icons/russia-flag-icon.svg') no-repeat right 5px center;
-  //background-image: url('../assets/icons/russia-flag-icon.svg');
+  width: 4rem;
+  height: 3rem;
+  cursor: pointer;
+  &_ru {
+    background: url('../../assets/icons/russia-flag-icon.svg') no-repeat right 5px center;
+  }
+  &_en {
+    background: url('../../assets/icons/united-kingdom-flag-icon.svg') no-repeat right 5px center;
+  }
 }

@@ -286,13 +286,10 @@ export const getWinner = (users: IUser[]): IUser[] => {
     bestRatingCombination === POKER_COMBINATIONS.HIGH_CARD
   ) {
     const highCardValue = winners.map((user) => user.gameState.bestCombination[0].value);
-    console.log('highCardValue', highCardValue);
     const maxHighCard = Math.max(...highCardValue);
-    console.log('maxHighCard', maxHighCard);
     const winnersWithHighCard = winners.filter(
       (user) => user.gameState.bestCombination[0].value === maxHighCard
     );
-    console.log('winnersWithHighCard', winnersWithHighCard);
     if (winnersWithHighCard.length !== 1) {
       const restCardValues: number[][] = winnersWithHighCard.map((user) =>
         getSortedCardsValuesDesc(user.gameState.restBestCards)

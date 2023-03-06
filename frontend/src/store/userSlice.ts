@@ -1,25 +1,27 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { connectSocket } from 'socket';
 import { IUser, INewUser, IUserState, IUserGamestate } from '../types/interfaces';
 import { START_BANKROLL } from '../utils/constants';
+import { seatOutUserThunk, seatUserThunk, userSeat, userSeatOut } from './gameplaySlice';
 
 const initialState: IUserState = {
-  // user: null,
-  user: {
-    _id: String(Date.now()),
-    nickname: 'Guest',
-    password: '',
-    bankroll: START_BANKROLL,
-    gameState: {
-      hand: [],
-      stack: START_BANKROLL,
-      state: 'wait',
-      bet: 0,
-      action: '',
-      bestCombination: [],
-      restBestCards: [],
-      combinationRating: 0,
-    },
-  },
+  user: null,
+  // user: {
+  //   _id: String(Date.now()),
+  //   nickname: 'Guest',
+  //   bankroll: START_BANKROLL,
+  //   gameState: {
+  //     hand: [],
+  //     stack: START_BANKROLL,
+  //     state: 'wait',
+  //     bet: 0,
+  //     roundBets: 0,
+  //     action: false,
+  //     bestCombination: [],
+  //     restBestCards: [],
+  //     combinationRating: 0,
+  //   },
+  // },
   status: null,
   error: null,
 };
@@ -42,21 +44,22 @@ export const registerUserThunk = createAsyncThunk(
       const data = await response.json();
       const userData = {
         _id: data._id,
-        nickname: data.nickname,
-        password: data.password,
-        bankroll: START_BANKROLL,
+        nickname: user.nickname,
+        bankroll: data.bankroll,
         gameState: {
           hand: [],
-          stack: START_BANKROLL,
+          stack: 0,
           state: 'wait',
           bet: 0,
-          action: '',
+          roundBets: 0,
+          action: false,
           bestCombination: [],
           restBestCards: [],
           combinationRating: 0,
         },
       };
       dispatch(registerUser(userData));
+      // connectSocket(userData);
     } catch (error) {
       return rejectWithValue(error);
     }
@@ -81,24 +84,23 @@ export const loginUserThunk = createAsyncThunk(
       const data = await response.json();
       const userData = {
         _id: data._id,
-        nickname: data.nickname,
-        password: data.password,
-        bankroll: START_BANKROLL,
+        nickname: user.nickname,
+        bankroll: data.bankroll,
         gameState: {
           hand: [],
-          stack: START_BANKROLL,
+          stack: 0,
           state: 'wait',
           bet: 0,
-          action: '',
+          roundBets: 0,
+          action: false,
           bestCombination: [],
           restBestCards: [],
           combinationRating: 0,
         },
       };
-      // console.log('loginUserThunk data', data);
       dispatch(registerUser(userData));
+      // connectSocket(userData);
     } catch (error) {
-      // console.log('createAsyncThunk error', error);
       return rejectWithValue(error);
     }
   }
@@ -114,6 +116,12 @@ const userSlice = createSlice({
     setUserGamestate: (state, { payload }: { payload: IUserGamestate }) => {
       if (state.user) {
         state.user.gameState = payload;
+      }
+    },
+    upBalance: (state) => {
+      if (state.user) {
+        state.user.bankroll += START_BANKROLL;
+        state.user.gameState.stack += START_BANKROLL;
       }
     },
   },
@@ -142,9 +150,21 @@ const userSlice = createSlice({
       state.status = 'rejected';
       state.error = 'Invalid login or password';
     });
+    builder.addCase(userSeat, (state, action) => {
+      if (state.user && state.user._id === action.payload._id) {
+        state.user.gameState.stack = state.user.bankroll;
+        state.user.bankroll = 0;
+      }
+    });
+    builder.addCase(seatOutUserThunk.fulfilled, (state, action) => {
+      if (state.user && state.user._id === action.payload._id) {
+        state.user.bankroll = action.payload.gameState.stack;
+        state.user.gameState.stack = 0;
+      }
+    });
   },
 });
 
-export const { registerUser, setUserGamestate } = userSlice.actions;
+export const { registerUser, setUserGamestate, upBalance } = userSlice.actions;
 
 export default userSlice.reducer;

@@ -5,6 +5,8 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "start": "npx nodemon index.js",
     "server": "nodemon index",
     "frontend-install": "npm install --prefix frontend",
@@ -16,9 +18,11 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "^5.1.0",
     "concurrently": "^7.6.0",
     "cors": "^2.8.5",
     "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.0",
     "mongoose": "^6.9.0",
     "socket.io": "^4.5.4"
   },

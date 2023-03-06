@@ -43,3 +43,9 @@
   font-size: 2rem;
   font-weight: bold;
 }
+
+@media (max-width: 850px) {
+	.submit__success-msg {
+		font-size: 1.2rem;
+	}
+}

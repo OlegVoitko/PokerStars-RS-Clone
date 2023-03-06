@@ -1,31 +1,18 @@
-.background__button {
-	display: inline-block;	
-	box-sizing: border-box;
-	padding: 0 25px;
-	outline: none;
-	border: 1px solid #fff;
-	border-radius: 50px;
-	height: 34px;
-	line-height: 33px;
-	font-size: 14px;
-	font-weight: 600;
-	text-decoration: none;
-	color: #444;
-	background-color: #fff;
-	box-shadow: 0 4px 6px rgb(65 132 144 / 10%), 0 1px 3px rgb(0 0 0 / 8%);
-	cursor: pointer;
-	user-select: none;
-	appearance: none;
-	touch-action: manipulation;  
-	vertical-align: top;
-	transition: box-shadow 0.2s;
+.btn {
+  cursor: pointer;
+  background-repeat: no-repeat;
+  opacity: 0.85;
+  height: 34px;
+  width: 34px;
 }
 
-.background__button:hover {
-	transition: all 0.2s;
-	box-shadow: 0 7px 14px rgb(65 132 144 / 10%), 0 3px 6px rgb(0 0 0 / 8%);
+.pause-btn {
+  background-image: url('../../assets/icons/note.png');
+  background-size: 31px;
+  opacity: 0.3;
 }
 
-.background__button:active {
-	background-color: #808080;
+.play-btn {
+  background-image: url('../../assets/icons/note.png');
+  background-size: 31px;
 }

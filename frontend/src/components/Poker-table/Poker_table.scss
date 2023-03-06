@@ -1,26 +1,24 @@
 .tableroom__table {
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	margin-right: -50%;
-	transform: translate(-50%, -50%);
-	padding: 10px 20px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-right: -50%;
+  transform: translate(-50%, -50%);
+  padding: 10px 20px;
 }
 
 .poker-table__wrapper {
   width: 100%;
   height: 100%;
-  // position: absolute;
 }
 
 .poker-table__container {
   max-width: 1280px;
-	margin: auto;
-  // position: absolute;
-  // top: 50%;
-  // left: 50%;
-  // margin-right: -50%;
-  // transform: translate(-50%, -50%);
+  margin: auto;
+}
+
+.poker__container {
+  height: 65vh;
 }
 
 .poker-table__table-image {
@@ -34,17 +32,15 @@
   top: 33%;
   left: 37%;
   display: flex;
-  width: 25%;
-  height: 10%;
-  border: 1px solid #d5e3c3;
-  border-radius: 8px;
+  width: 30%;
+  height: 13%;  
 }
 
 .bank__container {
   display: flex;
   justify-content: center;
   position: absolute;
-  top: 44%;
+  top: 25%;
   left: 38%;
   width: 23%;
   height: 6%;
@@ -57,17 +53,19 @@
 
   h4 {
     color: white;
+    font-family: Arial, Helvetica, sans-serif;
   }
 }
 
 .additional-features {
-	padding: 7px;
+  padding: 7px;
 }
 
 .action__bar {
+  flex-direction: initial;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: end;
   column-gap: 14px;
   margin: 0px 25px;
 }
@@ -128,7 +126,6 @@
 }
 
 @media (max-width: 1270px) {
-
 }
 
 #box {
@@ -153,32 +150,40 @@
   left: calc(-1 * var(--borderWidth));
   height: calc(100% + var(--borderWidth) * 2);
   width: calc(100% + var(--borderWidth) * 2);
-  background: linear-gradient(60deg, #f79533, #f37055, #ef4e7b, #a166ab, #5073b8, #1098ad, #07b39b, #6fba82);
+  background: linear-gradient(
+    60deg,
+    #f79533,
+    #f37055,
+    #ef4e7b,
+    #a166ab,
+    #5073b8,
+    #1098ad,
+    #07b39b,
+    #6fba82
+  );
   border-radius: calc(2 * var(--borderWidth));
   z-index: -1;
   animation: animatedgradient 3s ease alternate infinite;
   background-size: 300% 300%;
 }
 
-
 @keyframes animatedgradient {
-	0% {
-		background-position: 0% 50%;
-	}
-	50% {
-		background-position: 100% 50%;
-	}
-	100% {
-		background-position: 0% 50%;
-	}
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
 .poker-table__seat-btn {
-	margin-left: 24px;
+  margin-left: 24px;
 }
 
 .players-in-deal {
-	// position: absolute;
   justify-content: center;
   top: 55%;
   left: 40%;
@@ -188,82 +193,113 @@
 }
 
 .player-two-cards {
-	display: flex;
+  display: flex;
 }
 
-.playing-card1, .playing-card2 {
-	// display: flex;
-	// justify-content: center;
-	// background-color: #dfb2b2;
-	// font-size: 13px;
-	// height: 50px;
-	// width: 35px;
-	margin: 0 2px;
-	// border: 1px solid gray;
-	// border-radius: 5px;
+.player-two-cards__fold {
+  animation: fade-in-out 0.5s;
+  animation-fill-mode: both;
 }
 
-.player-name {	
+@keyframes fade-in-out {
+ 0% {
+    opacity: 1;
+    transform: translateY(0%);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-100%)
+  }
+}
+
+@keyframes fade-in-up {
+  0% {
+    opacity: 0;
+    transform: translateY(-100%)
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0%);
+  }
+}
+
+.playing-card1,
+.playing-card2 {
+  margin: 0 2px;
+}
+
+.player-name {
   display: flex;
   justify-content: center;
-  border-radius: 25px;
-  bottom: -12px;
-  padding: 4px 0;
-  left: 50%;
-  width: 58%;
-  color: whitesmoke;
-  background-color: rgb(112 62 62 / 49%);
+  font-family: Arial, Helvetica, sans-serif;
+  color: rgb(138, 137, 137);
   font-size: 15px;
-	margin: auto;
+  margin: auto;
 }
 
 .player-avatar-container {
-	width: 75px;
-	height: 82px;
-	border: 2px solid;
-	margin: 10px auto;
+  width: 75px;
+  height: 82px;
+  border: 2px solid;
+  margin: 10px auto;
   background-color: #302e2bb5;
+
+  &_active {
+    border: 5px solid red;
+    border-radius: 10px;
+  }
 }
 
 .player-avatar_img {
-	width: 100%;
+  width: 100%;
 }
 
 .player-stack {
-	font-size: 12px;
-	display: flex;
+  font-size: 12px;
+  display: flex;
   justify-content: center;
-}
-
-.p0 {
-	position: absolute;
-  justify-content: center;
-  top: 53%;
-  left: 46%;
-}
-
-.p1 {
-	position: absolute;
-  justify-content: center;
-  top: 53%;
-  left: 33%;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 .p2 {
-	position: absolute;
+  position: absolute;
+  justify-content: center;
+  top: 50%;
+  left: 46%;
+}
+
+.p3 {
+  position: absolute;
+  justify-content: center;
+  top: 50%;
+  left: 33%;
+}
+
+.p4 {
+  position: absolute;
   justify-content: center;
   top: 43%;
   left: 20%;
 }
-.p3 {
-	position: absolute;
+.p0 {
+  position: absolute;
   justify-content: center;
   top: 43%;
   left: 71%;
 }
-.p4 {
-	position: absolute;
+.p1 {
+  position: absolute;
   justify-content: center;
-  top: 53%;
+  top: 50%;
   left: 59%;
+}
+
+.player-avatar-container_active {
+  border: 4px solid red;
+  box-shadow: 3px 2px 5px red, -3px -3px 5px red;
+}
+
+.player-avatar-container_winner {
+  border: 4px solid green;
+  box-shadow: 3px 2px 5px green, -3px -3px 5px green;
 }
