@@ -1,0 +1,49 @@
+.playing-card_hide {
+  background: no-repeat center/115% url('../../assets/cards/cardFacce.jpg');
+  border-radius: 8px;
+  cursor: pointer;
+  position: relative;
+  width: 43px;
+  height: 68px;
+
+  transition: all 0.2s ease-out;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.12);
+
+  color: #000;
+  user-select: none;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+.player__timer {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 18px;
+  position: absolute;
+  top: 133px;
+  right: -19px;
+}
+
+.retired-player {
+  opacity: 0.4;
+}
+
+.win-card {
+  border: 5px solid orangered;
+  border-radius: 8px;
+	animation: fade-in-out 1s;
+	animation-fill-mode: both;
+}
+
+@keyframes fade-in-out {
+	0% {
+		opacity: 1;
+		transform: translateY(0%);
+	}
+	100% {
+		opacity: 1;
+		transform: translateY(-10%)
+	}
+}

@@ -1,0 +1,53 @@
+.container {
+  max-width: 1920px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.profile {
+  display: flex;
+  flex-direction: column;
+  &__title {
+    align-self: center;
+    margin: 40px 0;
+    //margin-bottom: 40px;
+  }
+  &__wrap {
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    grid-template-rows: 1fr 1fr;
+    column-gap: 20px;
+    margin: 40px;
+  }
+  &__nick {
+    margin-bottom: 20px;
+  }
+  &__avatar {
+    grid-row: 1 / 3;
+    width: 80px;
+    height: 160px;
+    border: 3px solid #006aff;
+    border-radius: 4px;
+    background: url('../../assets/avatar/works.png') no-repeat;
+    background-size: cover;
+    background-color: #006aff;
+  }
+  &__bankroll {
+    text-transform: uppercase;
+    color: #2fff36;
+  }
+  &__link {
+    text-decoration: none;
+    color: #2fff36;
+    font-weight: bold;
+    font-size: 32px;
+    padding-left: 60px;
+    cursor: pointer;
+    transition: 0.3s;
+    &:hover {
+      color: #dcff2f;
+      transform: scale(105%);
+    }
+  }
+}
