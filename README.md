@@ -1,5 +1,10 @@
 # PokerStars-RS-Clone
 
+Screenshot: 
+![b22a674b](https://user-images.githubusercontent.com/97405771/221674967-c3b73820-b960-4ea4-8d7f-2ee5dd1ed887.jpg)
+
+Deploy: [pokerstars-allin-rs-clone.netlify.app](https://pokerstars-allin-rs-clone.netlify.app/)
+
 # Rules the game Texas HoldEm Poker no limit
 
 - You can refill the balance only if the account is zeroed (0). Press seatOut go to the player profile and click on top up the balance.
